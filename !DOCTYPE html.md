@@ -1,0 +1,1425 @@
+<!DOCTYPE html>  
+<html lang="it">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">  
+<title>Praxisy — Made by Porty</title>  
+<meta name="theme-color" content="#1a2e1a">  
+<meta name="mobile-web-app-capable" content="yes">  
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">  
+<meta name="apple-mobile-web-app-title" content="Praxisy">  
+<link id="manifest-link" rel="manifest">  
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%231a2e1a'/%3E%3Ctext x='256' y='340' font-family='serif' font-size='280' font-weight='900' text-anchor='middle' fill='%23f0ead8'%3EP%3C/text%3E%3C/svg%3E">  
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">  
+<style>  
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}  
+:root{--bg:#f0ead8;--ink:#1a2e1a;--green:#2d5a2d;--green2:#4a7c4a;--gold:#7a6e3a;--mist:#e2dcc8;--card:#f7f2e2;--border:#c8c0a8;--dim:#6b7d5a;--red:#8b2e2e}  
+html{scroll-behavior:smooth}  
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}  
+#splash{position:fixed;inset:0;background:var(--ink);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:opacity .5s}  
+#splash.out{opacity:0;pointer-events:none}  
+.sp-logo{font-family:'Playfair Display',serif;font-size:54px;font-weight:900;color:var(--bg)}.sp-logo span{color:#6aad6a}  
+.sp-sub{font-size:10px;color:#4a6e4a;letter-spacing:3px;text-transform:uppercase}  
+.sp-bar{width:52px;height:3px;background:#2e4e2e;border-radius:2px;overflow:hidden;margin-top:18px}  
+.sp-fill{height:100%;background:#6aad6a;border-radius:2px;animation:spload 1.5s ease forwards}  
+@keyframes spload{from{width:0}to{width:100%}}  
+#citypick{position:fixed;inset:0;background:var(--ink);z-index:8500;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow-y:auto}  
+.cp-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:30px 26px;width:100%;max-width:440px}  
+.cp-logo{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--ink);text-align:center}.cp-logo span{color:var(--green)}  
+.cp-brand{text-align:center;font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}  
+.cp-desc{text-align:center;font-size:12.5px;color:var(--dim);margin-bottom:20px;line-height:1.6}  
+.cp-featured{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}  
+.cp-feat-item{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .2s}  
+.cp-feat-item:hover,.cp-feat-item.on{border-color:var(--green);background:#eef5ee}  
+.cp-feat-icon{font-size:20px;margin-bottom:4px}  
+.cp-feat-name{font-size:11px;font-weight:600;color:var(--ink)}  
+.cp-feat-pop{font-size:9px;color:var(--dim);margin-top:1px}  
+.cp-feat-badge{font-size:8px;background:var(--green);color:white;padding:1px 5px;border-radius:20px;display:inline-block;margin-top:2px}  
+.cp-divider{display:flex;align-items:center;gap:8px;margin:12px 0;font-size:10px;color:var(--dim)}  
+.cp-divider::before,.cp-divider::after{content:'';flex:1;height:1px;background:var(--border)}  
+.cp-search{position:relative}  
+.cp-input{width:100%;border:1.5px solid var(--border);background:var(--mist);border-radius:10px;padding:12px 14px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--ink);outline:none;transition:border-color .2s}  
+.cp-input:focus{border-color:var(--green)}  
+.cp-list{position:absolute;top:100%;left:0;right:0;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-top:4px;max-height:180px;overflow-y:auto;z-index:300;display:none;box-shadow:0 8px 24px rgba(0,0,0,.13)}  
+.cp-list.on{display:block}  
+.cp-item{padding:9px 13px;cursor:pointer;border-bottom:1px solid var(--mist);transition:background .15s}  
+.cp-item:last-child{border-bottom:none}.cp-item:hover{background:var(--mist)}  
+.cp-item-name{font-size:13px;font-weight:500}.cp-item-pop{font-size:10px;color:var(--dim)}  
+.cp-selected{display:none;background:#eef5ee;border:1.5px solid var(--green2);border-radius:10px;padding:10px 13px;margin:10px 0;align-items:center;gap:9px}  
+.cp-selected.on{display:flex}  
+.cp-btn{width:100%;background:var(--green);color:white;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .2s}  
+.cp-btn:disabled{opacity:.35;cursor:default}  
+.cp-demo{text-align:center;margin-top:8px;font-size:11px;color:var(--dim)}  
+.cp-demo a{color:var(--green);cursor:pointer;text-decoration:underline}  
+#auth{position:fixed;inset:0;background:var(--ink);z-index:8000;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto}  
+.auth-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px 24px;width:100%;max-width:390px;margin:auto}  
+.auth-logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;text-align:center}.auth-logo span{color:var(--green)}  
+.auth-sub{text-align:center;font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}  
+.atabs{display:flex;border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:16px}  
+.atab{flex:1;padding:9px;text-align:center;font-size:13px;font-weight:500;cursor:pointer;background:var(--mist);color:var(--dim);border:none;font-family:'DM Sans',sans-serif;transition:all .2s}  
+.atab.on{background:var(--ink);color:var(--bg)}  
+.apanel{display:none}.apanel.on{display:block}  
+.ag{margin-bottom:11px}  
+.al{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;display:block}  
+.ai{width:100%;border:1px solid var(--border);background:var(--mist);border-radius:9px;padding:10px 12px;font-size:13.5px;font-family:'DM Sans',sans-serif;color:var(--ink);outline:none;transition:border-color .2s}  
+.ai:focus{border-color:var(--green)}  
+.asub{width:100%;background:var(--green);color:white;border:none;border-radius:9px;padding:12px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:3px;transition:opacity .2s}  
+.asub:hover{opacity:.88}  
+.adiv{display:flex;align-items:center;gap:10px;margin:12px 0}  
+.adiv-l{flex:1;height:1px;background:var(--border)}.adiv-t{font-size:10px;color:var(--dim)}  
+.aguest{width:100%;background:transparent;color:var(--ink);border:1px solid var(--border);border-radius:9px;padding:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}  
+.aguest:hover{background:var(--mist)}  
+.aerr{background:#fde8e2;border:1px solid #f4c0b0;border-radius:7px;padding:7px 11px;font-size:12px;color:#7a2010;margin-bottom:10px;display:none}  
+.aerr.on{display:block}  
+.privacy-note{font-size:10px;color:var(--dim);background:var(--mist);border-radius:7px;padding:8px 10px;margin-top:10px;line-height:1.5}  
+.gbanner{background:var(--ink);color:var(--bg);padding:8px 18px;display:none;align-items:center;justify-content:space-between;font-size:11.5px;border-bottom:1px solid #243d24}  
+.gbanner.on{display:flex}  
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:226px;background:var(--ink);z-index:100;display:flex;flex-direction:column}  
+.sb-brand{padding:20px 18px 14px;border-bottom:1px solid #243d24}  
+.sb-logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--bg)}.sb-logo span{color:#6aad6a}  
+.sb-tagline{font-size:8px;color:#4a6e4a;letter-spacing:2px;text-transform:uppercase;margin-top:2px}  
+.sb-comune{margin:9px;background:#1e3520;border:1px solid #2e4e2e;border-radius:7px;padding:8px 11px;cursor:pointer;transition:background .2s}  
+.sb-comune:hover{background:#263d26}  
+.sb-comune-lbl{font-size:8px;color:#4a6e4a;text-transform:uppercase;letter-spacing:1px}  
+.sb-comune-name{font-size:13px;color:var(--bg);font-weight:500;margin-top:1px}  
+.sb-comune-pop{font-size:9px;color:#4a6e4a}  
+.sb-nav{padding:7px;flex:1;overflow-y:auto}  
+.sb-sec{font-size:8px;color:#3a5c3a;text-transform:uppercase;letter-spacing:2px;padding:0 8px;margin:11px 0 4px}  
+.navi{display:flex;align-items:center;gap:7px;padding:8px 9px;border-radius:7px;cursor:pointer;color:#6b8b6b;font-size:12.5px;margin-bottom:1px;border:1px solid transparent;transition:all .2s;user-select:none}  
+.navi:hover{background:#1e3520;color:var(--bg)}.navi.on{background:var(--green);color:white;font-weight:500}  
+.navi .ni{font-size:14px;width:16px;text-align:center}  
+.navi .badge{margin-left:auto;background:#6aad6a;color:var(--ink);font-size:8px;font-weight:700;padding:1px 5px;border-radius:20px}  
+.navi.locked{opacity:.35;pointer-events:none}  
+.sb-foot{padding:9px;border-top:1px solid #243d24}  
+.ai-pill{display:flex;align-items:center;gap:6px;background:#1e3520;border:1px solid #2e4e2e;border-radius:7px;padding:7px 10px}  
+.ai-dot{width:6px;height:6px;border-radius:50%;background:#6aad6a;box-shadow:0 0 5px #6aad6a;animation:pulse 2s infinite}  
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}  
+.ai-txt{font-size:10px;color:#6b8b6b}.ai-txt strong{color:var(--bg);display:block;font-size:11px}  
+.main{margin-left:226px;min-height:100vh;display:flex;flex-direction:column}  
+.topbar{position:sticky;top:0;background:rgba(240,234,216,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;z-index:50}  
+.tb-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700}  
+.tb-act{display:flex;gap:6px;align-items:center}  
+.btn{padding:7px 13px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .15s}  
+.btn-p{background:var(--green);color:white}.btn-p:hover{opacity:.88}  
+.btn-g{background:transparent;color:var(--ink);border:1px solid var(--border)}.btn-g:hover{background:var(--mist)}  
+.upill{display:flex;align-items:center;gap:6px;padding:4px 9px;border-radius:7px;background:var(--mist);border:1px solid var(--border);cursor:pointer}  
+.ua{width:24px;height:24px;border-radius:50%;background:var(--green);color:white;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}  
+.ua.ceo{background:var(--red)}  
+.ubadge{font-size:9px;padding:2px 6px;border-radius:20px;font-weight:600;text-transform:uppercase}  
+.ubadge.ceo{background:var(--red);color:white}.ubadge.user{background:#e8f0e8;color:var(--green)}.ubadge.guest{background:var(--mist);color:var(--dim)}  
+.content{padding:24px;flex:1}  
+.view{display:none}.view.on{display:block}  
+.card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:16px}  
+.card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}  
+.card-title{font-family:'Playfair Display',serif;font-size:14px;font-weight:700}  
+.ctag{font-size:9px;background:var(--mist);border:1px solid var(--border);padding:2px 8px;border-radius:20px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}  
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:20px}  
+.stat{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:14px;position:relative;overflow:hidden;transition:transform .2s}  
+.stat:hover{transform:translateY(-2px)}  
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}  
+.s1::before{background:var(--green)}.s2::before{background:var(--gold)}.s3::before{background:var(--green2)}.s4::before{background:#5a8a5a}  
+.stat-lbl{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}  
+.stat-val{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;line-height:1;margin:5px 0 2px}  
+.stat-d{font-size:10px;color:var(--green2)}.stat-d.neg{color:var(--red)}  
+.ai-insight{background:var(--ink);border-radius:11px;padding:14px;color:var(--bg);position:relative;overflow:hidden;margin-bottom:18px}  
+.ai-insight::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 15% 50%,rgba(106,173,106,.12) 0%,transparent 60%)}  
+.ai-chip{font-size:9px;background:var(--green);color:white;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;font-weight:600}  
+.ai-hd{display:flex;align-items:center;gap:7px;margin-bottom:8px;position:relative}  
+.ai-body{font-size:12.5px;line-height:1.7;color:#b8c8b8;position:relative}.ai-body strong{color:var(--bg)}  
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}  
+.g3{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px}  
+.prio{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid var(--mist)}  
+.prio:last-child{border-bottom:none}  
+.prio-rank{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:var(--mist);width:24px;text-align:center;flex-shrink:0;margin-top:2px}  
+.prio-rank.top{color:var(--green)}  
+.prio-name{font-size:12.5px;font-weight:500}  
+.prio-votes{font-size:9px;color:var(--dim);margin-top:1px}  
+.prio-score{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);margin-left:auto;flex-shrink:0}  
+.prop-item{border:1px solid var(--border);border-radius:9px;padding:12px;margin-bottom:8px;background:var(--bg);transition:all .2s}  
+.prop-item:hover{border-color:var(--green)}  
+.prop-item.ai-gen{border-color:#5a8a5a;background:#eef5ee}  
+.ai-lbl{font-size:8px;background:var(--ink);color:#6aad6a;padding:1px 6px;border-radius:20px;font-weight:600;letter-spacing:1px}  
+.pmeta{display:flex;align-items:center;gap:5px;margin-bottom:5px;flex-wrap:wrap}  
+.tag{font-size:8px;padding:2px 7px;border-radius:20px;font-weight:500;text-transform:uppercase;letter-spacing:.5px}  
+.t-i{background:#ddeedd;color:var(--green)}.t-c{background:#f5eedd;color:var(--gold)}.t-a{background:#dde8dd;color:var(--green2)}.t-s{background:#e8dde8;color:#5a3a5a}.t-d{background:#dde5ee;color:#3a5a7a}  
+.ptitle{font-weight:600;font-size:13px;margin-bottom:3px}  
+.pdesc{font-size:11.5px;color:#5a6e4a;line-height:1.5;margin-bottom:8px}  
+.vbar{margin-bottom:7px}  
+.vbar-lbl{display:flex;justify-content:space-between;font-size:9px;color:var(--dim);margin-bottom:2px}  
+.vbar-track{height:4px;background:var(--mist);border-radius:2px;overflow:hidden}  
+.vbar-fill{height:100%;background:var(--green2);border-radius:2px;transition:width .8s}  
+.vacts{display:flex;gap:5px;align-items:center;flex-wrap:wrap}  
+.vbtn{padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:white;font-size:11px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;font-weight:500}  
+.vbtn:hover{background:var(--green);color:white;border-color:var(--green)}  
+.vbtn.voted{background:var(--green);color:white;border-color:var(--green)}  
+.vbtn.dnvoted{background:var(--red);color:white;border-color:var(--red)}  
+.cmts{margin-top:8px;border-top:1px solid var(--mist);padding-top:8px;display:none}  
+.cmts.on{display:block}  
+.cmt{display:flex;gap:6px;margin-bottom:6px}  
+.cav{width:22px;height:22px;border-radius:50%;background:var(--green2);color:white;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0}  
+.cav.ceo{background:var(--red)}.cav.ai{background:var(--ink)}  
+.cbody{flex:1}.cmeta{font-size:9px;color:var(--dim);margin-bottom:1px}.cmeta strong{color:var(--ink);font-size:10px}  
+.ctext{font-size:12px;line-height:1.5}  
+.c-row{display:flex;gap:5px;margin-top:6px}  
+.c-in{flex:1;border:1px solid var(--border);background:var(--card);border-radius:7px;padding:6px 10px;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--ink);outline:none}  
+.c-in:focus{border-color:var(--green)}  
+.c-send{background:var(--green);color:white;border:none;border-radius:7px;padding:0 11px;cursor:pointer;font-size:13px}  
+.poll-opt{background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:10px 12px;cursor:pointer;margin-bottom:7px;position:relative;overflow:hidden;transition:all .2s}  
+.poll-opt:hover{border-color:var(--green)}.poll-opt.voted{border-color:var(--green);background:#eef5ee}  
+.poll-bar{position:absolute;left:0;top:0;bottom:0;background:rgba(74,124,74,.1);border-radius:9px;transition:width .8s}  
+.poll-name{font-size:12.5px;font-weight:500;position:relative}.poll-pct{font-size:10px;color:var(--dim);position:relative;margin-top:1px}  
+.del{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--mist)}  
+.del:last-child{border-bottom:none}  
+.del-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);white-space:nowrap;padding-top:1px}  
+.sdot{width:6px;height:6px;border-radius:50%;display:inline-block}  
+.s-ok{background:var(--green2)}.s-dr{background:var(--gold)}.s-rv{background:var(--red)}  
+.bi{margin-bottom:11px}  
+.bi-hd{display:flex;justify-content:space-between;margin-bottom:3px}  
+.bname{font-size:12px;font-weight:500}.bamt{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold)}  
+.btrack{height:5px;background:var(--mist);border-radius:3px;overflow:hidden}  
+.bfill{height:100%;border-radius:3px;transition:width .8s}  
+.prom{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:12px;margin-bottom:8px}  
+.prom-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}  
+.prom-title{font-size:13px;font-weight:600;flex:1;padding-right:8px}  
+.prom-pct{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;line-height:1}  
+.prom-pct.hi{color:var(--green2)}.prom-pct.mid{color:var(--gold)}.prom-pct.lo{color:var(--red)}  
+.prom-track{height:4px;background:var(--mist);border-radius:2px;overflow:hidden;margin-bottom:4px}  
+.prom-fill{height:100%;border-radius:2px}  
+.f-hi{background:var(--green2)}.f-mid{background:var(--gold)}.f-lo{background:var(--red)}  
+.chat-wrap{display:flex;flex-direction:column;height:380px;background:var(--bg);border-radius:9px;border:1px solid var(--border);overflow:hidden}  
+.chat-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}  
+.msg{max-width:82%;padding:8px 11px;border-radius:10px;font-size:12.5px;line-height:1.5}  
+.msg-ai{background:var(--ink);color:var(--bg);border-radius:4px 10px 10px 10px;align-self:flex-start}  
+.msg-user{background:var(--green);color:white;border-radius:10px 4px 10px 10px;align-self:flex-end}  
+.typing-dots span{display:inline-block;width:5px;height:5px;background:#6b8b6b;border-radius:50%;margin:0 2px;animation:bounce 1.4s infinite}  
+.typing-dots span:nth-child(2){animation-delay:.2s}.typing-dots span:nth-child(3){animation-delay:.4s}  
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}  
+.chat-in-row{display:flex;gap:5px;padding:8px;border-top:1px solid var(--border);background:var(--card)}  
+.chat-in{flex:1;border:1px solid var(--border);background:var(--bg);border-radius:7px;padding:7px 10px;font-size:12.5px;font-family:'DM Sans',sans-serif;color:var(--ink);outline:none}  
+.chat-in:focus{border-color:var(--green)}  
+.chat-send{background:var(--green);color:white;border:none;border-radius:7px;padding:0 12px;cursor:pointer;font-size:14px}  
+.qps{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}  
+.qp{font-size:10px;padding:4px 8px;border-radius:20px;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--ink);transition:all .15s;font-family:'DM Sans',sans-serif}  
+.qp:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}  
+.prop-search-wrap{position:relative;margin-bottom:12px}  
+.prop-search{width:100%;border:1.5px solid var(--border);background:var(--card);border-radius:10px;padding:10px 13px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--ink);outline:none;transition:border-color .2s}  
+.prop-search:focus{border-color:var(--green)}  
+.prop-ac-list{position:absolute;top:100%;left:0;right:0;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-top:3px;max-height:170px;overflow-y:auto;z-index:200;display:none;box-shadow:0 6px 20px rgba(0,0,0,.1)}  
+.prop-ac-list.on{display:block}  
+.prop-ac-item{padding:9px 13px;cursor:pointer;border-bottom:1px solid var(--mist);font-size:12.5px}  
+.prop-ac-item:last-child{border-bottom:none}.prop-ac-item:hover{background:var(--mist)}  
+.prop-ac-item .ac-cat{font-size:9px;color:var(--dim);margin-top:1px}  
+.seg-form{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:16px;margin-bottom:14px}  
+.seg-item{border:1px solid var(--border);border-radius:9px;padding:11px;margin-bottom:7px;background:var(--bg);display:flex;gap:10px;align-items:flex-start}  
+.seg-status{display:inline-block;font-size:9px;padding:2px 7px;border-radius:20px;font-weight:600;text-transform:uppercase}  
+.ss-open{background:#f5e0e0;color:var(--red)}.ss-progress{background:#f5eedd;color:var(--gold)}.ss-done{background:#ddeedd;color:var(--green)}  
+.seg-vote{display:flex;align-items:center;gap:5px;margin-top:5px}  
+.seg-upvote{background:none;border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}  
+.seg-upvote:hover,.seg-upvote.on{background:var(--green);color:white;border-color:var(--green)}  
+.photo-upload{border:1.5px dashed var(--border);border-radius:9px;padding:12px;text-align:center;cursor:pointer;background:var(--mist);position:relative;margin-bottom:10px;transition:all .2s}  
+.photo-upload:hover{border-color:var(--green);background:#eef5ee}  
+.photo-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}  
+.photo-preview{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px}  
+.photo-thumb{width:56px;height:56px;border-radius:7px;object-fit:cover;border:1px solid var(--border)}  
+.avviso-item{border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:9px;background:var(--card);position:relative;transition:all .2s;cursor:pointer}  
+.avviso-item:hover{border-color:var(--green)}  
+.avviso-item.unread::before{content:'';position:absolute;top:13px;right:13px;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green)}  
+.avviso-item.unread{background:#f4f9f4}  
+.avviso-cat{font-size:9px;padding:2px 7px;border-radius:20px;font-weight:600;text-transform:uppercase;display:inline-block;margin-bottom:5px}  
+.av-urgente{background:#f5e0e0;color:var(--red)}.av-info{background:#e8eef5;color:#2a4a6a}  
+.av-lavori{background:#f5eedd;color:var(--gold)}.av-cultura{background:#eee8f5;color:#5a3a7a}.av-ambiente{background:#dde8dd;color:var(--green2)}  
+.avviso-title{font-size:13px;font-weight:600;margin-bottom:3px}  
+.avviso-body{font-size:11.5px;color:var(--dim);line-height:1.5;margin-bottom:7px}  
+.avviso-meta{font-size:10px;color:var(--dim);display:flex;gap:9px;align-items:center}  
+.notif-toggle{display:flex;align-items:center;justify-content:space-between;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:9px;margin-bottom:7px}  
+.toggle-sw{width:38px;height:20px;background:var(--mist);border-radius:10px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;border:none}  
+.toggle-sw.on{background:var(--green)}  
+.toggle-sw::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:white;transition:left .2s}  
+.toggle-sw.on::after{left:20px}  
+.source-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;background:#e8f0e8;border:1px solid #b8d4b8;color:var(--green);padding:2px 6px;border-radius:20px;font-weight:600}  
+.source-badge.istat{background:#e8eef5;border-color:#b8c8dc;color:#2a4a6a}  
+.source-badge.mef{background:#f5eee8;border-color:#dcc8b0;color:#5a3a1a}  
+.section-block{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:16px;margin-bottom:14px}  
+.section-block-title{font-family:'Playfair Display',serif;font-size:13.5px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}  
+.prob-item{border-left:3px solid var(--red);padding:9px 11px;background:var(--bg);border-radius:0 8px 8px 0;margin-bottom:7px}  
+.prob-item.mid{border-left-color:var(--gold)}.prob-item.low{border-left-color:var(--green2)}  
+.prob-title{font-size:12.5px;font-weight:600;margin-bottom:2px}  
+.prob-desc{font-size:11px;color:var(--dim);line-height:1.5;margin-bottom:4px}  
+.prob-meta{display:flex;gap:5px;align-items:center;flex-wrap:wrap}  
+.init-item{border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:7px;background:var(--bg)}  
+.init-status{display:inline-block;font-size:8px;padding:2px 6px;border-radius:20px;font-weight:600;text-transform:uppercase;margin-bottom:5px}  
+.is-active{background:#ddeedd;color:var(--green)}.is-planned{background:#f5eedd;color:var(--gold)}.is-done{background:#e8f0e8;color:var(--green2)}.is-delayed{background:#f5e0e0;color:var(--red)}  
+.amm-item{border:1px solid var(--border);border-radius:9px;padding:12px;margin-bottom:9px;background:var(--bg)}  
+.amm-title{font-size:13px;font-weight:600;margin-bottom:5px}  
+.amm-desc{font-size:11.5px;color:var(--dim);line-height:1.6;margin-bottom:7px}  
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}  
+.pros{background:#eef5ee;border:1px solid #b8d4b8;border-radius:7px;padding:8px}  
+.cons{background:#f5eee8;border:1px solid #dcc0a0;border-radius:7px;padding:8px}  
+.pc-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}  
+.pc-title.p{color:var(--green)}.pc-title.c{color:var(--gold)}  
+.pc-item{font-size:10.5px;color:var(--ink);line-height:1.5;margin-bottom:1px}  
+.pc-item::before{content:'• '}  
+.city-loading{text-align:center;padding:30px 16px;color:var(--dim);font-size:12.5px}  
+.tab-pills{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap}  
+.tab-pill{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--card);font-size:11.5px;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--dim);transition:all .2s}  
+.tab-pill.on{background:var(--green);color:white;border-color:var(--green)}  
+.data-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px}  
+.data-pill{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:11px;text-align:center}  
+.data-pill-val{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);line-height:1}  
+.data-pill-lbl{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}  
+.data-pill-src{font-size:8px;color:var(--green);margin-top:1px}  
+.verified-note{font-size:10px;color:var(--dim);background:var(--mist);border:1px solid var(--border);border-radius:6px;padding:7px 10px;margin-bottom:12px;line-height:1.5}  
+.quick-services{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:18px}  
+.qs-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px;text-align:center;cursor:pointer;transition:all .2s}  
+.qs-item:hover{border-color:var(--green);transform:translateY(-2px);box-shadow:0 4px 14px rgba(45,90,45,.1)}  
+.qs-icon{font-size:22px;margin-bottom:4px}  
+.qs-label{font-size:11px;font-weight:500;color:var(--ink)}  
+.qs-count{font-size:9px;color:var(--dim);margin-top:1px}  
+.toast{position:fixed;bottom:80px;right:16px;background:var(--ink);color:var(--bg);padding:11px 14px;border-radius:10px;font-size:12.5px;z-index:9999;transform:translateX(150%);transition:transform .3s;max-width:260px;box-shadow:0 8px 24px rgba(0,0,0,.25)}  
+.toast.show{transform:translateX(0)}  
+.cbars{display:flex;align-items:flex-end;gap:6px;height:75px;margin-top:10px}  
+.cbw{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}  
+.cb{width:100%;border-radius:3px 3px 0 0}.cb-lbl{font-size:8px;color:var(--dim);text-align:center}  
+.act{display:flex;gap:7px;align-items:flex-start;margin-bottom:8px}  
+.act-dot{width:6px;height:6px;border-radius:50%;margin-top:5px;flex-shrink:0}  
+.stitle{font-family:'Playfair Display',serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin-bottom:11px}  
+.bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--ink);border-top:1px solid #243d24;z-index:200;padding:5px 0 env(safe-area-inset-bottom,5px);flex-direction:row;justify-content:space-around}  
+.bni{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 8px;cursor:pointer;border:none;background:none;color:#4a6e4a;font-family:'DM Sans',sans-serif}  
+.bni.on{color:var(--bg)}.bni .bi{font-size:17px}.bni .bl{font-size:8px;text-transform:uppercase;letter-spacing:.4px}  
+.modal-bg{position:fixed;inset:0;background:rgba(26,46,26,.7);z-index:5000;display:none;align-items:center;justify-content:center;padding:16px}  
+.modal-bg.on{display:flex}  
+.modal{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;width:100%;max-width:410px;max-height:82vh;overflow-y:auto}  
+.modal-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;margin-bottom:13px}  
+.modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:var(--dim);line-height:1}  
+@media(max-width:768px){  
+  .sidebar{display:none}.main{margin-left:0;padding-bottom:64px}.bnav{display:flex}  
+  .content{padding:12px}.topbar{padding:0 12px}  
+  .stats{grid-template-columns:1fr 1fr;gap:9px;margin-bottom:13px}  
+  .g2{grid-template-columns:1fr}.g3{grid-template-columns:1fr}  
+  .stat-val{font-size:24px}.tb-act .btn-g{display:none}  
+  .card{padding:13px}.chat-wrap{height:270px}  
+  .quick-services{grid-template-columns:1fr 1fr}  
+}  
+@media(max-width:420px){.stat-val{font-size:20px}.tb-title{font-size:13px}}  
+</style>  
+</head>  
+<body>  
+<div class="toast" id="toast"><span id="toast-msg"></span></div>  
+  
+<div id="splash">  
+  <div class="sp-logo">Praxi<span>sy</span></div>  
+  <div class="sp-sub">Made by Porty</div>  
+  <div class="sp-bar"><div class="sp-fill"></div></div>  
+</div>  
+  
+<div id="citypick">  
+  <div class="cp-box">  
+    <div class="cp-logo">Praxi<span>sy</span></div>  
+    <div class="cp-brand">Made by Porty · Demo</div>  
+    <div class="cp-desc">Scegli il tuo comune per vedere statistiche reali, problematiche locali e come l'AI può trasformare la governance della tua città.</div>  
+    <div style="font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">🏆 Comuni pilota</div>  
+    <div class="cp-featured" id="cp-featured"></div>  
+    <div class="cp-divider">oppure cerca qualsiasi comune</div>  
+    <div class="cp-search">  
+      <input id="cp-in" class="cp-input" type="text" placeholder="🔍 Cerca comune..." autocomplete="off" oninput="cpFilter(this.value)" onfocus="cpFilter(this.value)">  
+      <div id="cp-list" class="cp-list"></div>  
+    </div>  
+    <div class="cp-selected" id="cp-sel">  
+      <div style="font-size:18px">🏛️</div>  
+      <div><div id="cp-sel-name" style="font-size:14px;font-weight:600;color:var(--ink)">—</div><div id="cp-sel-pop" style="font-size:10px;color:var(--dim)"></div></div>  
+    </div>  
+    <button id="cp-btn" class="cp-btn" onclick="confirmCity()" disabled>Entra nella piattaforma →</button>  
+    <div class="cp-demo"><a onclick="confirmCity('demo')">Entra come visitatore (senza scegliere)</a></div>  
+  </div>  
+</div>  
+  
+<div id="auth">  
+  <div class="auth-box">  
+    <div class="auth-logo">Praxi<span>sy</span></div>  
+    <div class="auth-sub">Piattaforma Civica AI</div>  
+    <div class="atabs">  
+      <button class="atab on" onclick="switchTab('login')">Accedi</button>  
+      <button class="atab" onclick="switchTab('register')">Registrati</button>  
+    </div>  
+    <div class="apanel on" id="pl">  
+      <div class="aerr" id="le">Email o password non corretti.</div>  
+      <div class="ag"><label class="al">Email</label><input class="ai" id="le-email" type="email" placeholder="la-tua@email.it"></div>  
+      <div class="ag"><label class="al">Password</label><input class="ai" id="le-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>  
+      <button class="asub" onclick="doLogin()">Accedi →</button>  
+      <div class="adiv"><div class="adiv-l"></div><div class="adiv-t">oppure</div><div class="adiv-l"></div></div>  
+      <button class="aguest" onclick="doGuest()">👀 Entra come ospite</button>  
+    </div>  
+    <div class="apanel" id="pr">  
+      <div class="aerr" id="re">Compila nome ed email.</div>  
+      <div class="ag"><label class="al">Nome e cognome</label><input class="ai" id="r-name" type="text" placeholder="Mario Rossi"></div>  
+      <div class="ag"><label class="al">Email</label><input class="ai" id="r-email" type="email" placeholder="email@esempio.it"></div>  
+      <div class="ag"><label class="al">Comune di residenza</label><input class="ai" id="r-comune" type="text" placeholder="Pre-compilato dalla scelta"></div>  
+      <button class="asub" onclick="doRegister()">Crea account →</button>  
+      <div class="adiv"><div class="adiv-l"></div><div class="adiv-t">oppure</div><div class="adiv-l"></div></div>  
+      <button class="aguest" onclick="doGuest()">👀 Entra come ospite</button>  
+      <div class="privacy-note">🔒 <strong>Privacy:</strong> raccogliamo solo nome ed email per identificarti. Nessun documento richiesto. Dati trattati ai sensi del GDPR (Reg. UE 2016/679). Puoi richiedere la cancellazione in qualsiasi momento.</div>  
+    </div>  
+  </div>  
+</div>  
+  
+<div class="gbanner" id="gbanner">  
+  <span>👀 Ospite — accesso limitato alla dashboard pubblica</span>  
+  <button onclick="document.getElementById('auth').style.display='flex'" style="background:var(--green);color:white;border:none;border-radius:5px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">Registrati</button>  
+</div>  
+  
+<nav class="sidebar">  
+  <div class="sb-brand">  
+    <div class="sb-logo">Praxi<span>sy</span></div>  
+    <div class="sb-tagline">Made by Porty · Demo</div>  
+  </div>  
+  <div class="sb-comune" onclick="changeCitta()">  
+    <div class="sb-comune-lbl">Comune attivo · clicca per cambiare</div>  
+    <div class="sb-comune-name" id="sb-name">—</div>  
+    <div class="sb-comune-pop" id="sb-pop"></div>  
+  </div>  
+  <nav class="sb-nav">  
+    <div class="sb-sec">Pannello</div>  
+    <div class="navi on" onclick="gv('dashboard',this)"><span class="ni">◈</span> Cruscotto</div>  
+    <div class="sb-sec">Partecipazione</div>  
+    <div class="navi" id="nav-proposte" onclick="gv('proposte',this)"><span class="ni">◎</span> Proposte & AI <span class="badge">9</span></div>  
+    <div class="navi" id="nav-sondaggi" onclick="gv('sondaggi',this)"><span class="ni">◉</span> Sondaggi</div>  
+    <div class="sb-sec">Amministrazione</div>  
+    <div class="navi" id="nav-delibere" onclick="gv('delibere',this)"><span class="ni">◫</span> Delibere & Atti</div>  
+    <div class="navi" id="nav-bilancio" onclick="gv('bilancio',this)"><span class="ni">◧</span> Bilancio</div>  
+    <div class="sb-sec">Intelligenza & Analisi</div>  
+    <div class="navi" id="nav-assistente" onclick="gv('assistente',this)"><span class="ni">◬</span> Assistente AI</div>  
+    <div class="navi" id="nav-citta" onclick="gv('citta',this)"><span class="ni">🏙️</span> Analisi Città</div>  
+    <div class="sb-sec">Servizi Civici</div>  
+    <div class="navi" id="nav-segnalazioni" onclick="gv('segnalazioni',this)"><span class="ni">📍</span> Segnalazioni</div>  
+    <div class="navi" id="nav-avvisi" onclick="gv('avvisi',this)"><span class="ni">🔔</span> Avvisi <span class="badge">5</span></div>  
+    <div class="navi" id="nav-trasparenza" onclick="gv('trasparenza',this)"><span class="ni">◭</span> Trasparenza</div>  
+  </nav>  
+  <div class="sb-foot">  
+    <div class="ai-pill"><div class="ai-dot"></div><div class="ai-txt"><strong>Claude AI · Attivo</strong>Connesso in tempo reale</div></div>  
+  </div>  
+</nav>  
+  
+<main class="main">  
+  <div class="topbar">  
+    <div class="tb-title" id="tb-title">Cruscotto Comunale</div>  
+    <div class="tb-act" id="tb-act">  
+      <button class="btn btn-g" onclick="changeCitta()">🏙️ Cambia città</button>  
+      <button class="btn btn-p" onclick="openNewProp()">+ Proposta</button>  
+    </div>  
+  </div>  
+  
+  <div class="content">  
+  
+    <!-- DASHBOARD -->  
+    <div class="view on" id="view-dashboard">  
+      <div class="ai-insight" id="dash-insight">  
+        <div class="ai-hd"><span class="ai-chip">💡 Claude AI · Insight</span><span style="font-size:9px;color:#4a6e4a" id="dash-ts">Generato ora</span></div>  
+        <div class="ai-body" id="dash-insight-text">Scegli il tuo comune per visualizzare l'analisi AI personalizzata.</div>  
+      </div>  
+      <div class="quick-services">  
+        <div class="qs-item" onclick="gv('segnalazioni',document.getElementById('nav-segnalazioni'))"><div class="qs-icon">📍</div><div class="qs-label">Segnalazioni</div><div class="qs-count" id="qs-seg">— aperte</div></div>  
+        <div class="qs-item" onclick="gv('avvisi',document.getElementById('nav-avvisi'))"><div class="qs-icon">🔔</div><div class="qs-label">Avvisi comunali</div><div class="qs-count" id="qs-av">5 nuovi</div></div>  
+        <div class="qs-item" onclick="gv('proposte',document.getElementById('nav-proposte'))"><div class="qs-icon">◎</div><div class="qs-label">Proposte attive</div><div class="qs-count" id="qs-pr">— in votazione</div></div>  
+        <div class="qs-item" onclick="gv('citta',document.getElementById('nav-citta'))"><div class="qs-icon">🏙️</div><div class="qs-label">Analisi città</div><div class="qs-count" id="qs-cit">Dati verificati</div></div>  
+      </div>  
+      <div class="stats" id="dash-stats">  
+        <div class="stat s1"><div class="stat-lbl">Popolazione</div><div class="stat-val" id="st-pop">—</div><div class="stat-d" id="st-pop-d"></div></div>  
+        <div class="stat s2"><div class="stat-lbl">Partecipazione</div><div class="stat-val" id="st-part">—</div><div class="stat-d" id="st-part-d"></div></div>  
+        <div class="stat s3"><div class="stat-lbl">Proposte attive</div><div class="stat-val" id="st-props">—</div><div class="stat-d" id="st-props-d"></div></div>  
+        <div class="stat s4"><div class="stat-lbl">Budget residuo</div><div class="stat-val" id="st-budget">—</div><div class="stat-d" id="st-budget-d"></div></div>  
+      </div>  
+      <div class="g3">  
+        <div class="card">  
+          <div class="card-hd"><div class="card-title">Priorità Civiche</div><span class="ctag" id="dash-tag">—</span></div>  
+          <div id="dash-priorities"><div style="text-align:center;padding:20px;color:var(--dim);font-size:12.5px">Seleziona un comune</div></div>  
+        </div>  
+        <div>  
+          <div class="card" style="margin-bottom:12px">  
+            <div class="card-hd"><div class="card-title">Attività recente</div></div>  
+            <div class="act"><div class="act-dot" style="background:var(--green2)"></div><div><div style="font-size:12px;font-weight:500">Delibera approvata</div><div style="font-size:9px;color:var(--dim)">Piano stradale · 2h fa</div></div></div>  
+            <div class="act"><div class="act-dot" style="background:var(--gold)"></div><div><div style="font-size:12px;font-weight:500">AI: nuova proposta</div><div style="font-size:9px;color:var(--dim)">Trending 🔥 · 4h fa</div></div></div>  
+            <div class="act"><div class="act-dot" style="background:var(--green)"></div><div><div style="font-size:12px;font-weight:500">Bozza delibera AI</div><div style="font-size:9px;color:var(--dim)">In revisione · ieri</div></div></div>  
+          </div>  
+          <div class="card">  
+            <div class="card-hd"><div class="card-title">Voti per area</div></div>  
+            <div class="cbars">  
+              <div class="cbw"><div class="cb" id="cb1" style="height:80%;background:var(--green)"></div><div class="cb-lbl" id="cb1l">Infra</div></div>  
+              <div class="cbw"><div class="cb" id="cb2" style="height:60%;background:var(--green2)"></div><div class="cb-lbl" id="cb2l">Verde</div></div>  
+              <div class="cbw"><div class="cb" id="cb3" style="height:45%;background:var(--gold)"></div><div class="cb-lbl" id="cb3l">Digit</div></div>  
+              <div class="cbw"><div class="cb" id="cb4" style="height:35%;background:#5a8a5a"></div><div class="cb-lbl" id="cb4l">Cult</div></div>  
+              <div class="cbw"><div class="cb" id="cb5" style="height:25%;background:#7a6a8a"></div><div class="cb-lbl" id="cb5l">Soc</div></div>  
+            </div>  
+          </div>  
+        </div>  
+      </div>  
+    </div>  
+  
+    <!-- PROPOSTE -->  
+    <div class="view" id="view-proposte">  
+      <div class="ai-insight">  
+        <div class="ai-hd"><span class="ai-chip">🤖 Claude AI · Proposte</span></div>  
+        <div class="ai-body" id="prop-insight-text">Caricamento proposte per il comune selezionato...</div>  
+      </div>  
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">  
+        <div class="stitle">Proposte & Idee AI</div>  
+        <button class="btn btn-p" onclick="openNewProp()">+ Nuova</button>  
+      </div>  
+      <div class="prop-search-wrap">  
+        <input class="prop-search" id="prop-search" type="text" placeholder="🔍 Cerca proposte e suggerimenti..." autocomplete="off" oninput="propAC(this.value)">  
+        <div class="prop-ac-list" id="prop-ac-list"></div>  
+      </div>  
+      <div class="g2" id="proposte-grid"></div>  
+    </div>  
+  
+    <!-- SONDAGGI -->  
+    <div class="view" id="view-sondaggi">  
+      <div class="ai-insight">  
+        <div class="ai-hd"><span class="ai-chip">🗳️ Consultazione Live</span></div>  
+        <div class="ai-body" id="poll-insight">Sondaggio attivo per il comune selezionato.</div>  
+      </div>  
+      <div class="g2">  
+        <div class="card">  
+          <div class="card-hd"><div class="card-title" id="poll-title">Dove investire il budget?</div><span class="ctag" style="background:#ddf0dd;color:var(--green);border-color:#b8dcb8">● Live</span></div>  
+          <div style="font-size:12px;color:var(--dim);margin-bottom:13px" id="poll-sub">Indica la tua priorità di spesa.</div>  
+          <div id="poll-opts"></div>  
+          <div id="poll-stats" style="display:flex;gap:11px;margin-top:12px;padding-top:12px;border-top:1px solid var(--mist)"></div>  
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--mist)">  
+            <div style="font-size:10px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Commenti</div>  
+            <div id="poll-cmts"></div>  
+            <div class="c-row"><input class="c-in" id="poll-cin" placeholder="Scrivi un commento..." onkeydown="if(event.key==='Enter')addPollCmt()"><button class="c-send" onclick="addPollCmt()">↑</button></div>  
+          </div>  
+        </div>  
+        <div>  
+          <div class="card" style="margin-bottom:12px">  
+            <div class="card-hd"><div class="card-title">Consultazioni chiuse</div></div>  
+            <div id="poll-history"></div>  
+          </div>  
+          <div class="card"><div class="card-hd"><div class="card-title">Il mio voto</div></div><div id="my-vote" style="font-size:12px;color:var(--dim)">Nessun voto ancora.</div></div>  
+        </div>  
+      </div>  
+    </div>  
+  
+    <!-- DELIBERE -->  
+    <div class="view" id="view-delibere">  
+      <div class="ai-insight">  
+        <div class="ai-hd"><span class="ai-chip">✍️ Claude AI · Redattore</span></div>  
+        <div class="ai-body"><strong>3 bozze</strong> pre-compilate con riferimenti D.Lgs. 267/2000. Tempo ridotto da <strong>4h a 12 minuti</strong>.</div>  
+      </div>  
+      <div class="g2">  
+        <div class="card">  
+          <div class="card-hd"><div class="card-title">Delibere recenti</div><span class="ctag">2025</span></div>  
+          <div id="delibere-list"></div>  
+        </div>  
+        <div>  
+          <div class="card" style="margin-bottom:12px">  
+            <div class="card-hd"><div class="card-title">Genera bozza AI</div></div>  
+            <div class="ag"><label class="al">Tipo atto</label><select class="ai"><option>Delibera di Giunta</option><option>Delibera di Consiglio</option><option>Ordinanza Sindacale</option><option>Regolamento</option></select></div>  
+            <div class="ag"><label class="al">Oggetto</label><input class="ai" id="del-oggetto" placeholder="Descrivi l'oggetto..."></div>  
+            <button class="btn btn-p" style="width:100%" onclick="genDelibera()">✨ Genera con Claude AI</button>  
+            <div id="del-result" style="margin-top:10px;display:none"></div>  
+          </div>  
+          <div class="card">  
+            <div class="card-hd"><div class="card-title">Statistiche</div></div>  
+            <div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span>Delibere AI</span><span style="font-family:'DM Mono',monospace;color:var(--gold)">8/12</span></div><div class="btrack"><div class="bfill" style="width:66%;background:var(--gold)"></div></div></div>  
+            <div><div style="font-size:12px;font-weight:500">Tempo medio redazione</div><div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--green2)">12 min</div><div style="font-size:10px;color:var(--dim)">era: 4h in media</div></div>  
+          </div>  
+        </div>  
+      </div>  
+    </div>  
+  
+    <!-- BILANCIO -->  
+    <div class="view" id="view-bilancio">  
+      <div class="ai-insight">  
+        <div class="ai-hd"><span class="ai-chip">📊 Claude AI · Finance</span></div>  
+        <div class="ai-body" id="bilancio-insight">Seleziona un comune per il piano finanziario.</div>  
+      </div>  
+      <div class="stats">  
+        <div class="stat s1"><div class="stat-lbl">Entrate 2025</div><div class="stat-val" id="b-ent">—</div></div>  
+        <div class="stat s2"><div class="stat-lbl">Spese impegnate</div><div class="stat-val" id="b-spe">—</div></div>  
+        <div class="stat s3"><div class="stat-lbl">Budget libero</div><div class="stat-val" id="b-lib">—</div></div>  
+        <div class="stat s4"><div class="stat-lbl">Fondi PNRR</div><div class="stat-val" id="b-pnrr">—</div></div>  
+      </div>  
+      <div class="g2">  
+        <div class="card"><div class="card-hd"><div class="card-title">Allocazione spese</div><span class="ctag">2025</span></div><div id="bilancio-bars"></div></div>  
+        <div class="card"><div class="card-hd"><div class="card-title">Piano AI allocazione</div><span class="ctag">Basato sui voti</span></div><div id="bilancio-plan"></div></div>  
+      </div>  
+    </div>  
+  
+    <!-- ASSISTENTE AI -->  
+    <div class="view" id="view-assistente">  
+      <div class="g3">  
+        <div class="card">  
+          <div class="card-hd"><div class="card-title">Assistente Praxisy AI</div><span class="ctag">Claude · Connesso</span></div>  
+          <div class="qps">  
+            <button class="qp" onclick="qs('Quali sono le priorità più urgenti del comune?')">📊 Priorità</button>  
+            <button class="qp" onclick="qs('Genera bozza delibera per il progetto principale')">✍️ Delibera</button>  
+            <button class="qp" onclick="qs('Come ottimizzare il bilancio residuo?')">💶 Budget</button>  
+            <button class="qp" onclick="qs('Quali bandi PNRR posso richiedere?')">🇪🇺 PNRR</button>  
+            <button class="qp" onclick="qs('Analisi demografica e trend del comune')">👥 Demografica</button>  
+            <button class="qp" onclick="qs('Benchmark con comuni simili della regione')">📍 Benchmark</button>  
+          </div>  
+          <div class="chat-wrap">  
+            <div class="chat-msgs" id="chat-msgs">  
+              <div class="msg msg-ai">Ciao! Sono Claude, l'assistente AI di <strong>Praxisy</strong> per <strong id="chat-comune">il tuo comune</strong>. Posso aiutarti con proposte, delibere, bilancio, bandi europei e analisi civiche. Come posso aiutarti?</div>  
+            </div>  
+            <div class="chat-in-row">  
+              <input class="chat-in" id="chat-in" placeholder="Chiedi a Claude..." onkeydown="if(event.key==='Enter')sendChat()">  
+              <button class="chat-send" onclick="sendChat()">↑</button>  
+            </div>  
+          </div>  
+        </div>  
+        <div>  
+          <div class="card" style="margin-bottom:12px">  
+            <div class="card-hd"><div class="card-title">Funzionalità</div></div>  
+            <div style="display:flex;flex-direction:column;gap:6px">  
+              <div style="display:flex;gap:7px;padding:8px;background:var(--bg);border-radius:7px;border:1px solid var(--border)"><span>✍️</span><div><div style="font-size:11.5px;font-weight:600">Redazione atti</div><div style="font-size:9px;color:var(--dim)">Conformi D.Lgs. 267/2000</div></div></div>  
+              <div style="display:flex;gap:7px;padding:8px;background:var(--bg);border-radius:7px;border:1px solid var(--border)"><span>🔍</span><div><div style="font-size:11.5px;font-weight:600">Bandi europei</div><div style="font-size:9px;color:var(--dim)">PNRR, regionali, UE</div></div></div>  
+              <div style="display:flex;gap:7px;padding:8px;background:var(--bg);border-radius:7px;border:1px solid var(--border)"><span>📊</span><div><div style="font-size:11.5px;font-weight:600">Benchmark</div><div style="font-size:9px;color:var(--dim)">Confronto comuni simili</div></div></div>  
+              <div style="display:flex;gap:7px;padding:8px;background:var(--bg);border-radius:7px;border:1px solid var(--border)"><span>💡</span><div><div style="font-size:11.5px;font-weight:600">Proposte AI</div><div style="font-size:9px;color:var(--dim)">Idee da pattern civici</div></div></div>  
+            </div>  
+          </div>  
+          <div class="card"><div class="card-hd"><div class="card-title">Questo mese</div></div><div style="font-family:'Playfair Display',serif;font-size:34px;font-weight:900;color:var(--green)">142</div><div style="font-size:10px;color:var(--dim);margin-bottom:8px">richieste elaborate</div><div style="font-size:12px;font-weight:500">Tempo risparmiato</div><div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--green2)">38 ore</div></div>  
+        </div>  
+      </div>  
+    </div>  
+  
+    <!-- ANALISI CITTÀ -->  
+    <div class="view" id="view-citta">  
+      <div class="verified-note">📋 <strong>Fonte dati:</strong> Elaborati da Claude AI su base ISTAT (demografia), MEF-DPF (bilanci), MIT (infrastrutture), OpenCoesione (PNRR), Corte dei Conti (gestione). Dati 2024-2025.</div>  
+      <div class="tab-pills">  
+        <button class="tab-pill on" onclick="switchCityTab('problemi',this)">⚠️ Problematiche</button>  
+        <button class="tab-pill" onclick="switchCityTab('iniziative',this)">🚀 Iniziative</button>  
+        <button class="tab-pill" onclick="switchCityTab('amministrazione',this)">🏛️ Amministrazione</button>  
+        <button class="tab-pill" onclick="switchCityTab('opportunita',this)">💡 Opportunità</button>  
+      </div>  
+      <div id="city-tab-problemi" class="city-tab">  
+        <div class="section-block"><div class="section-block-title">⚠️ Problematiche principali <span class="source-badge istat">ISTAT</span><span class="source-badge mef">MEF</span></div><div id="city-problemi-content"><div class="city-loading">Analisi in corso per <span id="ldr-p">il comune</span>...</div></div></div>  
+      </div>  
+      <div id="city-tab-iniziative" class="city-tab" style="display:none">  
+        <div class="section-block"><div class="section-block-title">🚀 Iniziative & Progetti <span class="source-badge">OpenCoesione</span></div><div id="city-iniziative-content"><div class="city-loading">Caricamento...</div></div></div>  
+      </div>  
+      <div id="city-tab-amministrazione" class="city-tab" style="display:none">  
+        <div class="section-block"><div class="section-block-title">✅ Cosa ha fatto l'amministrazione</div><div id="city-amm-fatto"><div class="city-loading">Caricamento...</div></div></div>  
+        <div class="section-block"><div class="section-block-title">🔭 Di cosa potrebbe occuparsi</div><div id="city-amm-potrebbe"><div class="city-loading">Elaborazione...</div></div></div>  
+      </div>  
+      <div id="city-tab-opportunita" class="city-tab" style="display:none">  
+        <div class="section-block"><div class="section-block-title">💡 Opportunità & Raccomandazioni <span class="source-badge">Claude AI</span></div><div id="city-opportunita-content"><div class="city-loading">Elaborazione...</div></div></div>  
+      </div>  
+    </div>  
+  
+    <!-- SEGNALAZIONI -->  
+    <div class="view" id="view-segnalazioni">  
+      <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">📍 Segnalazioni Civiche</span></div><div class="ai-body">Segnala problemi stradali, urbani e ambientali. Tracciati e inviati all'ufficio competente. L'AI raggruppa segnalazioni simili per priorità.</div></div>  
+      <div class="g2">  
+        <div>  
+          <div class="seg-form">  
+            <div style="font-family:'Playfair Display',serif;font-size:13.5px;font-weight:700;margin-bottom:11px">📝 Nuova segnalazione</div>  
+            <div class="ag"><label class="al">Tipo problema</label><select class="ai" id="seg-tipo"><option value="buca">🕳️ Buca/dissesto stradale</option><option value="illuminazione">💡 Illuminazione guasta</option><option value="rifiuti">🗑️ Rifiuti abbandonati</option><option value="verde">🌿 Verde trascurato</option><option value="vandalismo">🔨 Vandalismo</option><option value="acqua">💧 Perdita idrica</option><option value="pericolo">⚠️ Pericolo pubblico</option></select></div>  
+            <div class="ag"><label class="al">Descrizione</label><textarea class="ai" id="seg-desc" rows="2" placeholder="Descrivi il problema..."></textarea></div>  
+            <div class="ag"><label class="al">Indirizzo</label><input class="ai" id="seg-addr" placeholder="Via e numero civico..."></div>  
+            <div class="photo-upload" id="seg-photo-box">  
+              <input type="file" accept="image/*" multiple onchange="handlePhotos(this)">  
+              <div style="font-size:20px;margin-bottom:3px">📷</div>  
+              <div style="font-size:11px;color:var(--dim)">Aggiungi foto (max 3)</div>  
+            </div>  
+            <div class="photo-preview" id="photo-preview"></div>  
+            <button class="btn btn-p" style="width:100%" onclick="submitSeg()">Invia Segnalazione →</button>  
+          </div>  
+        </div>  
+        <div>  
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">  
+            <div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:700">Segnalazioni recenti</div>  
+            <select class="ai" id="seg-filter" onchange="renderSeg()" style="width:auto;padding:4px 9px;font-size:11px"><option value="all">Tutte</option><option value="open">Aperte</option><option value="progress">In lavorazione</option><option value="done">Risolte</option></select>  
+          </div>  
+          <div id="seg-list"></div>  
+        </div>  
+      </div>  
+    </div>  
+  
+    <!-- AVVISI -->  
+    <div class="view" id="view-avvisi">  
+      <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">🔔 Avvisi & Notifiche</span></div><div class="ai-body">Comunicazioni ufficiali del Comune · Emergenze · Lavori · Cultura · Ambiente</div></div>  
+      <div class="g3">  
+        <div><div id="avvisi-list"></div></div>  
+        <div>  
+          <div class="card" style="margin-bottom:12px">  
+            <div class="card-hd"><div class="card-title">Le mie notifiche</div></div>  
+            <div id="notif-toggles">  
+              <div class="notif-toggle"><div><div style="font-size:12px;font-weight:500">🚨 Emergenze</div><div style="font-size:9px;color:var(--dim)">Allerte e sicurezza civile</div></div><button class="toggle-sw on" onclick="this.classList.toggle('on');showToast(this.classList.contains('on')?'Emergenze attive':'Emergenze disattivate')"></button></div>  
+              <div class="notif-toggle"><div><div style="font-size:12px;font-weight:500">🚧 Lavori pubblici</div><div style="font-size:9px;color:var(--dim)">Cantieri e chiusure</div></div><button class="toggle-sw on" onclick="this.classList.toggle('on')"></button></div>  
+              <div class="notif-toggle"><div><div style="font-size:12px;font-weight:500">🗳️ Consultazioni</div><div style="font-size:9px;color:var(--dim)">Sondaggi e votazioni</div></div><button class="toggle-sw" onclick="this.classList.toggle('on')"></button></div>  
+              <div class="notif-toggle"><div><div style="font-size:12px;font-weight:500">🎭 Cultura & eventi</div><div style="font-size:9px;color:var(--dim)">Manifestazioni locali</div></div><button class="toggle-sw" onclick="this.classList.toggle('on')"></button></div>  
+            </div>  
+          </div>  
+          <div class="card"><div class="card-hd"><div class="card-title">Statistiche</div></div><div style="display:flex;flex-direction:column;gap:7px"><div style="display:flex;justify-content:space-between;font-size:12px"><span>Questo mese</span><span style="font-weight:600" id="av-total">18</span></div><div style="display:flex;justify-content:space-between;font-size:12px"><span>Non letti</span><span style="font-weight:600;color:var(--green)" id="av-unread">5</span></div><div style="display:flex;justify-content:space-between;font-size:12px"><span>Urgenti</span><span style="font-weight:600;color:var(--red)">1</span></div></div></div>  
+        </div>  
+      </div>  
+    </div>  
+  
+    <!-- TRASPARENZA -->  
+    <div class="view" id="view-trasparenza">  
+      <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">🔍 Accountability</span></div><div class="ai-body" id="trasp-insight">Monitoraggio promesse elettorali del mandato in corso.</div></div>  
+      <div class="stitle">Promesse Elettorali — Mandato in corso</div>  
+      <div class="g2"><div id="prom-col1"></div><div id="prom-col2"></div></div>  
+    </div>  
+  
+  </div>  
+</main>  
+  
+<nav class="bnav" id="bnav">  
+  <button class="bni on" onclick="gvm('dashboard',this)"><span class="bi">◈</span><span class="bl">Home</span></button>  
+  <button class="bni" onclick="gvm('proposte',this)"><span class="bi">◎</span><span class="bl">Proposte</span></button>  
+  <button class="bni" onclick="gvm('sondaggi',this)"><span class="bi">◉</span><span class="bl">Vota</span></button>  
+  <button class="bni" onclick="gvm('assistente',this)"><span class="bi">◬</span><span class="bl">AI</span></button>  
+  <button class="bni" onclick="gvm('citta',this)"><span class="bi">🏙️</span><span class="bl">Città</span></button>  
+  <button class="bni" onclick="gvm('segnalazioni',this)"><span class="bi">📍</span><span class="bl">Segnala</span></button>  
+  <button class="bni" onclick="gvm('avvisi',this)"><span class="bi">🔔</span><span class="bl">Avvisi</span></button>  
+</nav>  
+  
+<div class="modal-bg" id="modal-newprop">  
+  <div class="modal">  
+    <button class="modal-close" onclick="closeModal('modal-newprop')">×</button>  
+    <div class="modal-title">Nuova Proposta</div>  
+    <div class="ag"><label class="al">Titolo</label><input class="ai" id="np-title" placeholder="Titolo della proposta..."></div>  
+    <div class="ag"><label class="al">Categoria</label><select class="ai" id="np-cat"><option value="t-i">Infrastrutture</option><option value="t-a">Verde pubblico</option><option value="t-c">Cultura</option><option value="t-d">Digitale</option><option value="t-s">Sociale</option></select></div>  
+    <div class="ag"><label class="al">Descrizione</label><textarea class="ai" id="np-desc" rows="3" placeholder="Descrivi la proposta..."></textarea></div>  
+    <button class="asub" onclick="submitProp()">Invia Proposta →</button>  
+    <div class="privacy-note" style="margin-top:8px">La proposta verrà pubblicata con il tuo nome e sarà visibile a tutti i cittadini registrati.</div>  
+  </div>  
+</div>  
+  
+<script>  
+'use strict';  
+const CEO={email:'marcoportaro02@gmail.com',pass:'mani101M@'};  
+const RESTRICTED=['proposte','sondaggi','delibere','bilancio','assistente','citta','segnalazioni','avvisi','trasparenza'];  
+const TITLES={dashboard:'Cruscotto Comunale',proposte:'Proposte & Idee AI',sondaggi:'Sondaggi & Consultazioni',delibere:'Delibere & Atti',bilancio:'Bilancio Comunale',assistente:'Assistente AI',citta:'Analisi Città',segnalazioni:'Segnalazioni Civiche',avvisi:'Avvisi & Notifiche',trasparenza:'Trasparenza'};  
+  
+/* ═══════ COMUNI DATABASE ═══════ */  
+const COMUNI_PILOTA = [  
+  {  
+    n:'Cividale del Friuli',pv:'UD',reg:'Friuli-Venezia Giulia',p:11200,budget:8500000,pilota:true,  
+    icon:'🏰',badge:'Pilota #1',  
+    desc:'Comune medievale UNESCO, confine con Slovenia',  
+    caratteristiche:['patrimonio UNESCO','turismo culturale','confine sloveno','agricoltura collinare','piccola impresa artigiana'],  
+    priorita:[  
+      {rank:1,name:'Valorizzazione patrimonio UNESCO e turismo sostenibile',cat:'Cultura',score:'9.6'},  
+      {rank:2,name:'Manutenzione mura medievali e centro storico',cat:'Infrastrutture',score:'9.1'},  
+      {rank:3,name:'Connettività digitale per le frazioni',cat:'Digitale',score:'8.4'},  
+      {rank:4,name:'Supporto agli agricoltori e prodotti tipici DOC',cat:'Economia',score:'7.9'},  
+      {rank:5,name:'Mobilità transfrontaliera con Slovenia',cat:'Mobilità',score:'7.3'},  
+    ],  
+    chartBars:[{h:'85%',c:'var(--gold)',l:'Cult'},{h:'80%',c:'var(--green)',l:'Infra'},{h:'65%',c:'#5a8a5a',l:'Digit'},{h:'55%',c:'var(--green2)',l:'Agric'},{h:'40%',c:'var(--gold)',l:'Mob'}],  
+    poll:{title:'Dove investire i fondi PNRR cultura 2025?',sub:'€1,2M disponibili per Cividale del Friuli',options:[{l:'Restauro Tempietto Longobardo',pct:45},{l:'Museo Nazionale del Friuli ampliamento',pct:28},{l:'Percorsi UNESCO digitali',pct:18},{l:'Festival culturale internazionale',pct:9}],votanti:3240,giorni:7},  
+    pollHistory:[{q:'Piano traffico centro storico',r:'Zona pedonale estesa (67%)',data:'Nov 2024'},{q:'Sagra annuale dei sapori friulani',r:'Approvata (81%)',data:'Set 2024'}],  
+    delibere:[  
+      {num:'DEL/08',titolo:'Accordo culturale con Slovenia — progetto Natisone',stato:'ok',data:'10 Feb 2025'},  
+      {num:'DEL/07',titolo:'Piano valorizzazione siti UNESCO 2025-2027',stato:'ok',data:'22 Gen 2025'},  
+      {num:'DEL/09',titolo:'Regolamento accesso centro storico — bozza AI',stato:'dr',data:'In revisione'},  
+      {num:'DEL/10',titolo:'Contributi agricoltori DOC Friuli Colli Orientali',stato:'dr',data:'Bozza AI'},  
+    ],  
+    promesse:[  
+      {t:'Restauro completo Ponte del Diavolo',pct:78,c:'hi',n:'✅ Lavori avanzati. Completamento estate 2025.'},  
+      {t:'Fibra ottica in tutte le frazioni',pct:55,c:'mid',n:'⏳ 6 frazioni collegate su 11.'},  
+      {t:'Centro visitatori UNESCO multiling.',pct:90,c:'hi',n:'✅ Inaugurato a marzo 2025.'},  
+      {t:'Accordo con Slovenia per turismo',pct:40,c:'mid',n:'⏳ Protocollo firmato, attuazione in corso.'},  
+      {t:'Mercato agricolo settimanale coperto',pct:15,c:'lo',n:'⚠️ In attesa finanziamento regionale.'},  
+      {t:'App turistica comunale multilingue',pct:60,c:'mid',n:'⏳ Beta disponibile. Rilascio previsto giugno.'},  
+    ],  
+    segnalazioni:[  
+      {id:1,tipo:'buca',desc:'Dissesto pavimentazione medievale in via Ristori',addr:'Via Ristori 8',status:'progress',votes:34,urgent:true},  
+      {id:2,tipo:'illuminazione',desc:'Lampione storico spento sul Ponte del Diavolo',addr:'Ponte del Diavolo',status:'open',votes:67,urgent:false},  
+      {id:3,tipo:'verde',desc:'Vegetazione eccessiva sulle mura medievali',addr:'Mura Nord',status:'open',votes:22,urgent:false},  
+    ],  
+    avvisi:[  
+      {id:1,cat:'urgente',catLbl:'🚨 Urgente',title:'Allerta gialla Natisone — possibile piena',body:'Il Servizio Idrografico regionale ha emesso allerta gialla per il fiume Natisone. Evitare le sponde. Aggiornamenti su protezionecivile.fvg.it.',date:'Oggi 09:00',unread:true,fonte:'Protezione Civile FVG'},  
+      {id:2,cat:'cultura',catLbl:'🎭 Cultura',title:'Apertura stagione Museo Nazionale del Friuli',body:'Dal 1 aprile orari estesi: 9-19 dal martedì alla domenica. Ingresso gratuito per residenti il primo sabato del mese.',date:'25 Mar',unread:true,fonte:'Assessorato Cultura'},  
+      {id:3,cat:'lavori',catLbl:'🚧 Lavori',title:'Cantiere restauro Tempietto Longobardo — variante traffico',body:'Per i lavori di restauro, via Monastero sarà a senso unico dal 28 marzo al 30 giugno. Percorso alternativo indicato.',date:'22 Mar',unread:true,fonte:'Ufficio Tecnico'},  
+      {id:4,cat:'info',catLbl:'ℹ️ Info',title:'Bando contributi per imprese turistiche 2025',body:'La Regione FVG ha aperto il bando per contributi alle strutture ricettive fino al 40% delle spese. Scadenza 30 aprile. Info: sportello SUAP.',date:'18 Mar',unread:true,fonte:'Regione FVG'},  
+      {id:5,cat:'ambiente',catLbl:'🌿 Ambiente',title:'Raccolta differenziata — nuovi calendari aprile',body:'Dal 1 aprile cambiano i giorni di raccolta per alcune frazioni. Verifica il tuo calendario su www.comune.cividale.ud.it.',date:'15 Mar',unread:false,fonte:'Ufficio Ambiente'},  
+    ],  
+    insightAI:'Cividale del Friuli — patrimonio UNESCO e porta d\'ingresso al Friuli storico. Le priorità civiche si concentrano su <strong>conservazione del patrimonio medievale</strong> e <strong>turismo sostenibile</strong>. Il PNRR Cultura ha stanziato €1,2M per restauri. Opportunità chiave: sviluppo del turismo transfrontaliero con Slovenia e valorizzazione dei prodotti DOC locali.',  
+    propInsight:'6 proposte attive — il 72% riguarda patrimonio culturale e mobilità. <strong>2 proposte generate dall\'AI</strong> basate su pattern di comuni UNESCO simili (Aquileia, Gemona del Friuli).',  
+  },  
+  {  
+    n:'Cantu\'',pv:'CO',reg:'Lombardia',p:40200,budget:28000000,pilota:true,  
+    icon:'🛋️',badge:'Pilota #2',  
+    desc:'Capitale del mobile e design, distretto industriale',  
+    caratteristiche:['distretto industriale mobile','design italiano','piccole medie imprese','area metropolitana milanese','tradizione manifatturiera'],  
+    priorita:[  
+      {rank:1,name:'Riqualificazione ex area industriale via Borgovico',cat:'Infrastrutture',score:'9.3'},  
+      {rank:2,name:'Sostegno PMI del settore arredo e design',cat:'Economia',score:'8.8'},  
+      {rank:3,name:'Mobilità sostenibile verso Milano (ciclabile-ferrovia)',cat:'Mobilità',score:'8.2'},  
+      {rank:4,name:'Centro innovazione per giovani designer',cat:'Digitale',score:'7.7'},  
+      {rank:5,name:'Verde urbano e parchi nel quartiere industriale',cat:'Verde',score:'7.1'},  
+    ],  
+    chartBars:[{h:'90%',c:'var(--green)',l:'Infra'},{h:'75%',c:'var(--gold)',l:'Econ'},{h:'65%',c:'var(--green2)',l:'Mob'},{h:'50%',c:'#5a8a5a',l:'Digit'},{h:'35%',c:'var(--green)',l:'Verde'}],  
+    poll:{title:'Riqualificazione ex area industriale: quale destinazione?',sub:'Area di 18.000 mq in via Borgovico — Cantù',options:[{l:'Hub design e artigianato',pct:41},{l:'Parco urbano e sport',pct:33},{l:'Residenze e servizi',pct:17},{l:'Centro commerciale',pct:9}],votanti:11200,giorni:10},  
+    pollHistory:[{q:'Piano mobilità nord Cantù',r:'Pista ciclabile approvata (58%)',data:'Nov 2024'},{q:'Nome nuovo hub design',r:"'Cantù Design Lab' selezionato",data:'Ago 2024'}],  
+    delibere:[  
+      {num:'DEL/11',titolo:'Piano riqualificazione via Borgovico — progetto esecutivo',stato:'ok',data:'5 Feb 2025'},  
+      {num:'DEL/10',titolo:'Contributi PMI settore arredo 2025 — fondo €800k',stato:'ok',data:'18 Gen 2025'},  
+      {num:'DEL/12',titolo:'Convenzione con Politecnico Milano — design lab',stato:'dr',data:'Bozza AI'},  
+      {num:'DEL/13',titolo:'Piano Verde Urbano 2025-2028 — bozza AI',stato:'dr',data:'In revisione'},  
+    ],  
+    promesse:[  
+      {t:'Riqualificazione via Borgovico',pct:35,c:'mid',n:'⏳ Progetto esecutivo approvato. Gara appalto entro Q2.'},  
+      {t:'Hub design per giovani imprenditori',pct:60,c:'mid',n:'⏳ Accordo con Politecnico in fase finale.'},  
+      {t:'Pista ciclabile Cantù-Como',pct:25,c:'lo',n:'⚠️ Finanziamento regionale richiesto. Risposta attesa.'},  
+      {t:'Fondo sostegno PMI arredo €2M',pct:80,c:'hi',n:'✅ €800k già erogati. Seconda tranche in arrivo.'},  
+      {t:'Digitalizzazione sportelli comunali',pct:70,c:'hi',n:'✅ SUAP e anagrafe online attivi.'},  
+      {t:'Nuovo asilo nido quartiere nord',pct:40,c:'mid',n:'⏳ Progettazione completata. Gara entro giugno.'},  
+    ],  
+    segnalazioni:[  
+      {id:1,tipo:'buca',desc:'Pericolosa buca su via Milano angolo via Volta',addr:'Via Milano/Via Volta',status:'progress',votes:89,urgent:true},  
+      {id:2,tipo:'illuminazione',desc:'Zona industriale via Borgovico completamente al buio dalle 23',addr:'Via Borgovico',status:'open',votes:45,urgent:true},  
+      {id:3,tipo:'rifiuti',desc:'Rifiuti industriali abbandonati nell\'area ex Meroni',addr:'Area ex Meroni',status:'progress',votes:123,urgent:false},  
+    ],  
+    avvisi:[  
+      {id:1,cat:'info',catLbl:'ℹ️ Info',title:'Bando Cantù Design Lab — candidature aperte',body:'Aperte le candidature per 20 postazioni nel nuovo hub design. Priorità under 35 e startups del settore arredo. Scadenza 15 aprile.',date:'Oggi',unread:true,fonte:'Comune di Cantù'},  
+      {id:2,cat:'lavori',catLbl:'🚧 Lavori',title:'Inizio cantiere via Borgovico — dal 7 aprile',body:'Iniziano i lavori di bonifica e preparazione area. Traffico limitato. Deviazione indicata. Durata prevista 18 mesi.',date:'Ieri',unread:true,fonte:'Ufficio Tecnico'},  
+      {id:3,cat:'cultura',catLbl:'🎭 Cultura',title:'Cantù al Salone del Mobile 2025 — stand comunale',body:'Il Comune sarà presente al Salone del Mobile con uno stand dedicato alle PMI locali. Registrazione gratuita per le imprese entro il 31 marzo.',date:'20 Mar',unread:true,fonte:'Assessorato Sviluppo Economico'},  
+      {id:4,cat:'urgente',catLbl:'🚨 Urgente',title:'Avviso sicurezza — area ex industria via Borgovico',body:'Si raccomanda di non avvicinarsi all\'area ex industriale in attesa dell\'avvio dei lavori di bonifica. Recinzione installata.',date:'18 Mar',unread:true,fonte:'Polizia Locale'},  
+      {id:5,cat:'ambiente',catLbl:'🌿 Ambiente',title:'Settimana ecologica — raccolta straordinaria',body:'Dal 24 al 28 marzo raccolta straordinaria di rifiuti ingombranti e RAEE in tutti i quartieri. Prenotazione non necessaria.',date:'14 Mar',unread:false,fonte:'Ufficio Ambiente'},  
+    ],  
+    insightAI:'Cantù — capitale italiana del mobile e del design. Le priorità si concentrano su <strong>riqualificazione industriale</strong> e <strong>supporto alle PMI</strong>. L\'area ex Borgovico (18.000mq) è l\'intervento più atteso: Hub design potrebbe generare 200+ posti di lavoro qualificati. PNRR Imprese stanzia €3,2M per il distretto.',  
+    propInsight:'7 proposte attive — il 65% riguarda economia e riqualificazione industriale. <strong>3 proposte generate dall\'AI</strong> basate su best practice di distretti industriali riconvertiti (Biella, Prato).',  
+  },  
+  {  
+    n:'Stresa',pv:'VB',reg:'Piemonte',p:5000,budget:5200000,pilota:true,  
+    icon:'🏔️',badge:'Pilota #3',  
+    desc:'Perla del Lago Maggiore, turismo internazionale',  
+    caratteristiche:['turismo internazionale','Lago Maggiore','Isole Borromee','ospitalità lusso','ambiente naturale protetto'],  
+    priorita:[  
+      {rank:1,name:'Gestione flussi turistici e overtourism',cat:'Turismo',score:'9.5'},  
+      {rank:2,name:'Tutela qualità acque del Lago Maggiore',cat:'Ambiente',score:'9.0'},  
+      {rank:3,name:'Accessibilità e trasporto pubblico locale',cat:'Mobilità',score:'8.5'},  
+      {rank:4,name:'Manutenzione lungolago e strutture balneari',cat:'Infrastrutture',score:'8.0'},  
+      {rank:5,name:'Sostenibilità economica per residenti permanenti',cat:'Sociale',score:'7.4'},  
+    ],  
+    chartBars:[{h:'95%',c:'var(--gold)',l:'Tur'},{h:'85%',c:'var(--green2)',l:'Amb'},{h:'70%',c:'var(--green)',l:'Mob'},{h:'60%',c:'var(--green)',l:'Infra'},{h:'45%',c:'#7a6a8a',l:'Soc'}],  
+    poll:{title:'Come gestire l\'overtourism estivo 2025?',sub:'Stresa registra 800k visitatori/anno su 5.000 residenti',options:[{l:'Prenotazione obbligatoria lungolago',pct:38},{l:'Tassa soggiorno incrementata',pct:31},{l:'Navette gratuite da parcheggi esterni',pct:22},{l:'Nessuna restrizione aggiuntiva',pct:9}],votanti:2100,giorni:5},  
+    pollHistory:[{q:'Orari imbarchi Isole Borromee',r:'Turno serale aggiunto (74%)',data:'Dic 2024'},{q:'Divieto accesso moto d\'acqua',r:'Approvato (69%)',data:'Ott 2024'}],  
+    delibere:[  
+      {num:'DEL/05',titolo:'Piano gestione turistica sostenibile 2025',stato:'ok',data:'20 Gen 2025'},  
+      {num:'DEL/04',titolo:'Accordo con VCO Natura per tutela lago',stato:'ok',data:'10 Gen 2025'},  
+      {num:'DEL/06',titolo:'Regolamento overtourism estivo — bozza AI',stato:'dr',data:'In revisione'},  
+      {num:'DEL/07',titolo:'Contributi residenti permanenti 2025',stato:'dr',data:'Bozza AI'},  
+    ],  
+    promesse:[  
+      {t:'Piano tutela acque lago — protocollo',pct:85,c:'hi',n:'✅ Accordo con CNR e Regione firmato.'},  
+      {t:'Parcheggio scambiatore con navette',pct:50,c:'mid',n:'⏳ Area individuata. Gara lavori entro estate.'},  
+      {t:'App turistica multilingue',pct:95,c:'hi',n:'✅ Disponibile in 8 lingue. 40k download.'},  
+      {t:'Bonus residenti permanenti',pct:30,c:'lo',n:'⚠️ Normativa regionale in definizione.'},  
+      {t:'Riqualificazione lungolago nord',pct:65,c:'mid',n:'⏳ Lavori al 65%. Fine estate 2025.'},  
+      {t:'Accordo tariffa ridotta traghetti',pct:80,c:'hi',n:'✅ Convenzione con Navigazione Lago Maggiore attiva.'},  
+    ],  
+    segnalazioni:[  
+      {id:1,tipo:'acqua',desc:'Alghe anomale vicino alla spiaggia libera del lungolago',addr:'Lungolago Europa',status:'progress',votes:156,urgent:true},  
+      {id:2,tipo:'buca',desc:'Pavimentazione dissestata sul lungolago tra Piazza Cadorna e Villa Pallavicino',addr:'Lungolago',status:'progress',votes:78,urgent:false},  
+      {id:3,tipo:'rifiuti',desc:'Rifiuti lasciati dai turisti nella riserva naturale Fondo Toce',addr:'Riserva Fondo Toce',status:'open',votes:234,urgent:true},  
+    ],  
+    avvisi:[  
+      {id:1,cat:'ambiente',catLbl:'🌿 Ambiente',title:'Monitoraggio qualità acque — risultati marzo 2025',body:'Il CNR ha confermato la buona qualità delle acque del Lago Maggiore nel settore di Stresa. Parametri nella norma. Report completo su www.cnr.it/lago-maggiore.',date:'Oggi',unread:true,fonte:'CNR Verbania + Comune'},  
+      {id:2,cat:'info',catLbl:'ℹ️ Info',title:'Apertura stagione turistica — 15 aprile',body:'Dal 15 aprile riprendono i servizi estivi: navette gratuita stazione-lungolago, info point aperto, visite guidate gratuite ogni sabato.',date:'Ieri',unread:true,fonte:'Assessorato Turismo'},  
+      {id:3,cat:'urgente',catLbl:'🚨 Urgente',title:'Vento forte previsto — servizio traghetti sospeso',body:'Per vento forte di Tramontana previsto domenica 30 marzo, il servizio traghetti per le Isole Borromee potrebbe essere sospeso. Verificare su navigazionelaghi.it.',date:'28 Mar',unread:true,fonte:'Navigazione Laghi'},  
+      {id:4,cat:'lavori',catLbl:'🚧 Lavori',title:'Riqualificazione lungolago nord — aggiornamento cantiere',body:'I lavori procedono in anticipo rispetto al cronoprogramma. Apertura al pubblico del tratto A prevista per fine maggio 2025.',date:'20 Mar',unread:true,fonte:'Ufficio Tecnico'},  
+      {id:5,cat:'cultura',catLbl:'🎭 Cultura',title:'Settimane Musicali di Stresa 2025 — programma',body:'Il festival internazionale torna dal 14 al 30 agosto. Ospiti: Orchestra della Svizzera Italiana, Ensemble di Berlino. Biglietti in prevendita dal 1 aprile.',date:'15 Mar',unread:false,fonte:'Fondazione Settimane Musicali'},  
+    ],  
+    insightAI:'Stresa — 5.000 residenti, 800.000 visitatori/anno. La pressione turistica è la sfida principale: <strong>rapporto turisti/residenti di 160:1</strong>, tra i più alti in Italia. L\'AI suggerisce un modello di turismo a flusso contingentato (prenotazione lungolago) simile a Cinque Terre, che ha ridotto l\'overtourism del 34%.',  
+    propInsight:'5 proposte attive — il 80% riguarda turismo sostenibile e ambiente. <strong>3 proposte generate dall\'AI</strong> basate su modelli vincenti di Cinque Terre e Bellagio.',  
+  }  
+];  
+  
+const ALTRI_COMUNI = [  
+  {n:'Bologna',pv:'BO',reg:'Emilia-Romagna',p:395416,budget:210000000},{n:'Milano',pv:'MI',reg:'Lombardia',p:1371498,budget:3800000000},  
+  {n:'Torino',pv:'TO',reg:'Piemonte',p:870952,budget:980000000},{n:'Venezia',pv:'VE',reg:'Veneto',p:258685,budget:290000000},  
+  {n:'Verona',pv:'VR',reg:'Veneto',p:258765,budget:285000000},{n:'Trento',pv:'TN',reg:'Trentino-Alto Adige',p:120875,budget:58000000},  
+  {n:'Bergamo',pv:'BG',reg:'Lombardia',p:120287,budget:56000000},{n:'Brescia',pv:'BS',reg:'Lombardia',p:196745,budget:210000000},  
+  {n:'Genova',pv:'GE',reg:'Liguria',p:583601,budget:650000000},{n:'Udine',pv:'UD',reg:'Friuli-Venezia Giulia',p:99522,budget:40000000},  
+  {n:'Trieste',pv:'TS',reg:'Friuli-Venezia Giulia',p:204338,budget:220000000},{n:'Padova',pv:'PD',reg:'Veneto',p:214932,budget:230000000},  
+  {n:'Vicenza',pv:'VI',reg:'Veneto',p:112020,budget:52000000},{n:'Firenze',pv:'FI',reg:'Toscana',p:372038,budget:420000000},  
+  {n:'Roma',pv:'RM',reg:'Lazio',p:2860009,budget:5200000000},{n:'Napoli',pv:'NA',reg:'Campania',p:959188,budget:1100000000},  
+  {n:'Palermo',pv:'PA',reg:'Sicilia',p:668405,budget:740000000},{n:'Modena',pv:'MO',reg:'Emilia-Romagna',p:185273,budget:92000000},  
+  {n:'Parma',pv:'PR',reg:'Emilia-Romagna',p:197478,budget:98000000},{n:'Rimini',pv:'RN',reg:'Emilia-Romagna',p:150755,budget:62000000},  
+  {n:'Ravenna',pv:'RA',reg:'Emilia-Romagna',p:159116,budget:68000000},{n:'Ferrara',pv:'FE',reg:'Emilia-Romagna',p:131052,budget:55000000},  
+  {n:'Forlì',pv:'FC',reg:'Emilia-Romagna',p:118234,budget:48200000},{n:'Cesena',pv:'FC',reg:'Emilia-Romagna',p:97148,budget:38000000},  
+  {n:'Perugia',pv:'PG',reg:'Umbria',p:165683,budget:76000000},{n:'Cagliari',pv:'CA',reg:'Sardegna',p:154460,budget:70000000},  
+  {n:'Bari',pv:'BA',reg:'Puglia',p:315605,budget:350000000},{n:'Catania',pv:'CT',reg:'Sicilia',p:311584,budget:340000000},  
+  {n:'Monza',pv:'MB',reg:'Lombardia',p:122671,budget:57000000},{n:'Lucca',pv:'LU',reg:'Toscana',p:89577,budget:36000000},  
+];  
+const TUTTI_COMUNI = [...COMUNI_PILOTA, ...ALTRI_COMUNI];  
+  
+/* ═══ STATE ═══ */  
+let user=null, selectedComune=null;  
+const chatHistory=[];  
+const userVotes={}, segVotes={};  
+let pollVoted=null;  
+const proposals=[  
+  {id:1,ai:true,cat:'t-i',title:'[AI] Piano di manutenzione stradale prioritizzato',desc:'Claude ha analizzato le segnalazioni e identificato i tratti più critici. ROI stimato: alta soddisfazione civica.',votes:0,down:0,total:100,cmts:[]},  
+  {id:2,ai:true,cat:'t-a',title:'[AI] Riqualificazione verde urbano degradato',desc:"Pattern da comuni simili: +34% frequentazione parchi con nuove attrezzature. Costo stimato proporzionale all'area.",votes:0,down:0,total:100,cmts:[]},  
+  {id:3,ai:false,cat:'t-d',title:'App comunale per segnalazioni e servizi',desc:'Sistema mobile per segnalare problemi, consultare servizi e ricevere notifiche. Integrazione con SPID.',votes:0,down:0,total:100,cmts:[]},  
+  {id:4,ai:true,cat:'t-s',title:'[AI] Sportello digitale servizi sociali',desc:"Claude identifica gap nei servizi digitali per anziani e famiglie. Soluzione low-cost con ampio impatto.",votes:0,down:0,total:100,cmts:[]},  
+  {id:5,ai:false,cat:'t-c',title:'Festival cultura locale annuale',desc:'Valorizzare le tradizioni locali con un evento annuale che coinvolge scuole, associazioni e commercianti.',votes:0,down:0,total:100,cmts:[]},  
+  {id:6,ai:false,cat:'t-i',title:'Illuminazione pubblica LED efficiente',desc:"Sostituzione lampioni obsoleti con LED intelligenti. Risparmio energetico stimato 40%. Candidabile a bandi UE.",votes:0,down:0,total:100,cmts:[]},  
+];  
+const CAT_LABELS={'t-i':'Infrastrutture','t-c':'Cultura','t-a':'Verde','t-s':'Sociale','t-d':'Digitale'};  
+  
+/* ═══ SPLASH ═══ */  
+window.addEventListener('load',()=>{  
+  setTimeout(()=>{  
+    document.getElementById('splash').classList.add('out');  
+    setTimeout(()=>{document.getElementById('splash').remove();showCityPick();},500);  
+  },1600);  
+});  
+  
+/* ═══ CITY PICKER ═══ */  
+function showCityPick(){  
+  document.getElementById('citypick').style.display='flex';  
+  renderFeaturedComuni();  
+}  
+function changeCitta(){  
+  document.getElementById('citypick').style.display='flex';  
+  document.getElementById('cp-btn').disabled=true;  
+  document.getElementById('cp-sel').classList.remove('on');  
+  document.getElementById('cp-in').value='';  
+  document.getElementById('cp-list').classList.remove('on');  
+}  
+function renderFeaturedComuni(){  
+  document.getElementById('cp-featured').innerHTML=COMUNI_PILOTA.map((c,i)=>`  
+    <div class="cp-feat-item ${selectedComune?.n===c.n?'on':''}" onclick="cpPick(${i},true)">  
+      <div class="cp-feat-icon">${c.icon}</div>  
+      <div class="cp-feat-name">${c.n}</div>  
+      <div class="cp-feat-pop">${(c.p/1000).toFixed(0)}k ab. · ${c.pv}</div>  
+      <span class="cp-feat-badge">${c.badge}</span>  
+    </div>`).join('');  
+}  
+function cpFilter(q){  
+  const box=document.getElementById('cp-list');  
+  if(!q||q.length<1){box.classList.remove('on');return;}  
+  const m=TUTTI_COMUNI.filter(c=>c.n.toLowerCase().includes(q.toLowerCase())).slice(0,8);  
+  if(!m.length){box.classList.remove('on');return;}  
+  box.innerHTML=m.map((c,i)=>`<div class="cp-item" onclick="cpPick(${TUTTI_COMUNI.indexOf(c)},false)"><div class="cp-item-name">${c.n}${c.pilota?' 🏆':''}</div><div class="cp-item-pop">${c.p.toLocaleString('it')} ab. · ${c.reg} · Prov. ${c.pv}</div></div>`).join('');  
+  box.classList.add('on');  
+}  
+function cpPick(idx,isPilota){  
+  selectedComune=isPilota?COMUNI_PILOTA[idx]:TUTTI_COMUNI[idx];  
+  document.getElementById('cp-in').value=selectedComune.n;  
+  document.getElementById('cp-list').classList.remove('on');  
+  document.getElementById('cp-sel-name').textContent=selectedComune.n+(selectedComune.pilota?' 🏆':'');  
+  document.getElementById('cp-sel-pop').textContent=selectedComune.p.toLocaleString('it')+' ab. · '+selectedComune.reg+(selectedComune.badge?' · '+selectedComune.badge:'');  
+  document.getElementById('cp-sel').classList.add('on');  
+  document.getElementById('cp-btn').disabled=false;  
+  renderFeaturedComuni();  
+}  
+function confirmCity(mode){  
+  if(mode==='demo'){selectedComune=COMUNI_PILOTA[0];}  
+  if(!selectedComune)return;  
+  document.getElementById('citypick').style.display='none';  
+  document.getElementById('r-comune').value=selectedComune.n;  
+  document.getElementById('auth').style.display='flex';  
+}  
+document.addEventListener('click',e=>{if(!e.target.closest('.cp-search'))document.getElementById('cp-list')?.classList.remove('on');});  
+  
+/* ═══ AUTH ═══ */  
+function switchTab(t){  
+  document.querySelectorAll('.atab').forEach((el,i)=>el.classList.toggle('on',(t==='login'&&i===0)||(t==='register'&&i===1)));  
+  document.getElementById('pl').classList.toggle('on',t==='login');  
+  document.getElementById('pr').classList.toggle('on',t==='register');  
+  ['le','re'].forEach(id=>document.getElementById(id).classList.remove('on'));  
+}  
+function doLogin(){  
+  const email=document.getElementById('le-email').value.trim();  
+  const pass=document.getElementById('le-pass').value;  
+  const err=document.getElementById('le');  
+  if(email===CEO.email&&pass===CEO.pass){user={role:'ceo',name:'Marco Portaro',email,comune:selectedComune?.n||'Demo'};enterApp();}  
+  else if(email&&pass.length>=6){  
+    try{const s=JSON.parse(localStorage.getItem('px_u')||'null');  
+      if(s&&s.email===email){user={...s,role:'user'};enterApp();}  
+      else{err.textContent='Account non trovato. Registrati.';err.classList.add('on');}  
+    }catch(e){err.classList.add('on');}  
+  }else{err.classList.add('on');}  
+}  
+function doRegister(){  
+  const name=document.getElementById('r-name').value.trim();  
+  const email=document.getElementById('r-email').value.trim();  
+  const comune=document.getElementById('r-comune').value.trim()||selectedComune?.n||'Demo';  
+  const err=document.getElementById('re');  
+  if(!name||!email){err.textContent='Compila nome ed email.';err.classList.add('on');return;}  
+  if(!email.includes('@')){err.textContent='Inserisci un email valida.';err.classList.add('on');return;}  
+  user={role:'user',name,email,comune};  
+  try{localStorage.setItem('px_u',JSON.stringify(user));}catch(e){}  
+  enterApp();  
+}  
+function doGuest(){user={role:'guest',name:'Ospite',comune:selectedComune?.n||'Demo'};enterApp();}  
+  
+/* ═══ ENTER APP ═══ */  
+function enterApp(){  
+  document.getElementById('auth').style.display='none';  
+  if(!selectedComune)selectedComune=COMUNI_PILOTA[0];  
+  applyRole();updateSidebar();updateTopbar();updateDashboard();  
+  renderProposals();renderPoll();renderDelibere();updateBilancio();  
+  renderSeg();renderAvvisi();renderTrasp();  
+  document.getElementById('chat-comune').textContent=selectedComune.n;  
+  // update proposals for selected comune  
+  if(selectedComune.pilota){  
+    document.getElementById('prop-insight-text').textContent=selectedComune.propInsight;  
+    document.getElementById('qs-pr').textContent=proposals.length+' in votazione';  
+  }  
+}  
+  
+function applyRole(){  
+  const g=user.role==='guest';  
+  document.getElementById('gbanner').classList.toggle('on',g);  
+  RESTRICTED.forEach(v=>{const n=document.getElementById('nav-'+v);if(n)n.classList.toggle('locked',g);});  
+}  
+function updateSidebar(){  
+  document.getElementById('sb-name').textContent=selectedComune.n+(selectedComune.pilota?' 🏆':'');  
+  document.getElementById('sb-pop').textContent=selectedComune.p.toLocaleString('it')+' ab. · '+selectedComune.pv;  
+}  
+function updateTopbar(){  
+  const el=document.getElementById('tb-act');  
+  const init=user.name[0].toUpperCase();  
+  const badge=user.role==='ceo'?'<span class="ubadge ceo">CEO</span>':user.role==='user'?`<span class="ubadge user">${selectedComune.n.split(' ')[0]}</span>`:'<span class="ubadge guest">Ospite</span>';  
+  el.innerHTML=`<button class="btn btn-g" onclick="changeCitta()">🏙️ Cambia città</button><div class="upill" onclick="if(confirm('Esci?'))location.reload()"><div class="ua ${user.role==='ceo'?'ceo':''}">${init}</div><span style="font-size:12px;font-weight:500">${user.name}</span>${badge}</div>`;  
+}  
+  
+/* ═══ DASHBOARD ═══ */  
+function updateDashboard(){  
+  const c=selectedComune;  
+  const pop=c.p;  
+  const budget=c.budget;  
+  const residuo=Math.round(budget*0.059);  
+  const fmtN=n=>n>=1e9?(n/1e9).toFixed(1)+'Mld':n>=1e6?(n/1e6).toFixed(0)+'M':n>=1000?(n/1000).toFixed(0)+'k':n.toString();  
+  const fmtE=n=>n>=1e9?'€'+(n/1e9).toFixed(1)+'Mld':n>=1e6?'€'+(n/1e6).toFixed(0)+'M':n>=1000?'€'+(n/1000).toFixed(0)+'k':'€'+n;  
+  document.getElementById('st-pop').textContent=fmtN(pop);  
+  document.getElementById('st-pop-d').textContent='Prov. '+c.pv+' · '+c.reg;  
+  document.getElementById('st-part').textContent='67%';  
+  document.getElementById('st-part-d').textContent='↑ +12% vs anno fa';  
+  document.getElementById('st-props').textContent=proposals.length;  
+  document.getElementById('st-props-d').textContent=proposals.filter(p=>p.ai).length+' generate da AI';  
+  document.getElementById('st-budget').textContent=fmtE(residuo);  
+  document.getElementById('st-budget-d').textContent='Su '+fmtE(budget)+' totali';  
+  document.getElementById('dash-tag').textContent=c.n;  
+  document.getElementById('qs-seg').textContent=(c.segnalazioni||[]).filter(s=>s.status!=='done').length+' aperte';  
+  // Priorities — use pilota data or generate generic  
+  const prios=c.priorita||[  
+    {rank:1,name:'Manutenzione strade principali',cat:'Infrastrutture',score:'9.1'},  
+    {rank:2,name:'Verde urbano e parchi',cat:'Verde',score:'8.6'},  
+    {rank:3,name:'Digitalizzazione servizi',cat:'Digitale',score:'7.9'},  
+    {rank:4,name:'Servizi sociali e anziani',cat:'Sociale',score:'7.3'},  
+    {rank:5,name:'Cultura e eventi locali',cat:'Cultura',score:'6.8'},  
+  ];  
+  document.getElementById('dash-priorities').innerHTML=prios.map(p=>`  
+    <div class="prio">  
+      <div class="prio-rank ${p.rank<=2?'top':''}">${p.rank}</div>  
+      <div style="flex:1"><div class="prio-name">${p.name}</div><div class="prio-votes">${p.cat}</div></div>  
+      <div class="prio-score">${p.score}</div>  
+    </div>`).join('');  
+  // Chart bars  
+  const bars=c.chartBars||[{h:'80%',c:'var(--green)',l:'Infra'},{h:'60%',c:'var(--green2)',l:'Verde'},{h:'45%',c:'var(--gold)',l:'Digit'},{h:'35%',c:'#5a8a5a',l:'Cult'},{h:'25%',c:'#7a6a8a',l:'Soc'}];  
+  for(let i=1;i<=5;i++){const b=bars[i-1]||bars[0];document.getElementById('cb'+i).style.height=b.h;document.getElementById('cb'+i).style.background=b.c;document.getElementById('cb'+i+'l').textContent=b.l;}  
+  // AI Insight  
+  if(c.insightAI){document.getElementById('dash-insight-text').innerHTML=c.insightAI;document.getElementById('dash-ts').textContent='Dati verificati ISTAT/MEF';}  
+  else{loadGenericInsight(c);}  
+}  
+  
+async function loadGenericInsight(c){  
+  const el=document.getElementById('dash-insight-text');  
+  el.innerHTML='<span style="opacity:.6">Claude sta analizzando '+c.n+'...</span>';  
+  const prompt=`Genera UN paragrafo breve (max 55 parole) di analisi civica per ${c.n} (${c.p.toLocaleString('it')} ab., ${c.reg}). Evidenzia le 2 priorità principali e un'opportunità PNRR. Usa <strong> per max 3 dati chiave. Solo il paragrafo.`;  
+  try{  
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:150,messages:[{role:'user',content:prompt}]})});  
+    const data=await res.json();  
+    const txt=data.content?.map(b=>b.text||'').join('')||'';  
+    if(txt)el.innerHTML=txt.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');  
+  }catch(e){el.innerHTML=`<strong>${c.n}</strong>: ${c.p.toLocaleString('it')} abitanti · ${c.reg}. Analisi AI temporaneamente non disponibile.`;}  
+}  
+  
+/* ═══ BILANCIO ═══ */  
+function updateBilancio(){  
+  const c=selectedComune;  
+  const b=c.budget;  
+  const fmtE=n=>n>=1e9?'€'+(n/1e9).toFixed(1)+'Mld':n>=1e6?'€'+(n/1e6).toFixed(0)+'M':n>=1000?'€'+(n/1000).toFixed(0)+'k':'€'+n;  
+  document.getElementById('b-ent').textContent=fmtE(b);  
+  document.getElementById('b-spe').textContent=fmtE(Math.round(b*.66));  
+  document.getElementById('b-lib').textContent=fmtE(Math.round(b*.059));  
+  document.getElementById('b-pnrr').textContent=fmtE(Math.round(b*.088));  
+  const cats=[['Infrastrutture & Strade',68,b*.232,'var(--green)'],['Verde Pubblico',45,b*.145,'var(--green2)'],['Cultura & Istruzione',80,b*.112,'var(--gold)'],['Servizi Sociali',55,b*.184,'#5a8a5a'],['Digitalizzazione',25,b*.065,'#7a6a8a']];  
+  document.getElementById('bilancio-bars').innerHTML=cats.map(([name,pct,amt,color])=>`<div class="bi"><div class="bi-hd"><span class="bname">${name}</span><span class="bamt">${fmtE(Math.round(amt))}</span></div><div class="btrack"><div class="bfill" style="width:${pct}%;background:${color}"></div></div></div>`).join('');  
+  const res=b*.059;  
+  const fmtP=n=>fmtE(Math.round(n));  
+  document.getElementById('bilancio-plan').innerHTML=`<div style="font-size:11.5px;color:var(--dim);margin-bottom:11px;line-height:1.6">Piano ottimale basato su priorità civiche di <strong>${c.n}</strong>.</div><div style="display:flex;flex-direction:column;gap:7px">  
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:9px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600">${(c.priorita||[{name:'Strade'}])[0].name.slice(0,28)}</div><div style="font-size:9px;color:var(--dim)">Priorità #1</div></div><div style="font-family:'DM Mono',monospace;color:var(--green);font-weight:600">${fmtP(res*.39)}</div></div>  
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:9px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600">${(c.priorita||[{},{name:'Verde'}])[1]?.name.slice(0,28)||'Verde urbano'}</div><div style="font-size:9px;color:var(--dim)">Priorità #2</div></div><div style="font-family:'DM Mono',monospace;color:var(--green2);font-weight:600">${fmtP(res*.28)}</div></div>  
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:9px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600">${(c.priorita||[{},{},{name:'Digitale'}])[2]?.name.slice(0,28)||'Digitalizzazione'}</div><div style="font-size:9px;color:var(--dim)">Priorità #3</div></div><div style="font-family:'DM Mono',monospace;color:var(--gold);font-weight:600">${fmtP(res*.21)}</div></div>  
+  </div><button class="btn btn-p" style="width:100%;margin-top:11px">Applica piano AI →</button>`;  
+  document.getElementById('bilancio-insight').innerHTML=`Budget di <strong>${c.n}</strong>: <strong>${fmtE(b)}</strong> totali, residuo <strong>${fmtE(Math.round(b*.059))}</strong>. Piano AI: ${(c.priorita||[{name:'strade'}])[0].name.toLowerCase()} (39%), ${(c.priorita||[{},{name:'verde'}])[1]?.name.toLowerCase()||'verde'} (28%), ${(c.priorita||[{},{},{name:'digitale'}])[2]?.name.toLowerCase()||'digitale'} (21%).`;  
+}  
+  
+/* ═══ PROPOSTE ═══ */  
+function renderProposals(filter=''){  
+  const grid=document.getElementById('proposte-grid');  
+  let list=filter?proposals.filter(p=>p.title.toLowerCase().includes(filter.toLowerCase())||p.desc.toLowerCase().includes(filter.toLowerCase())):proposals;  
+  grid.innerHTML=list.map(p=>{  
+    const mv=userVotes[p.id];  
+    const can=user&&user.role!=='guest';  
+    const votes=p.votes;  
+    const downs=p.down;  
+    return `<div class="prop-item ${p.ai?'ai-gen':''}">  
+      <div class="pmeta">${p.ai?'<span class="ai-lbl">🤖 Claude AI</span>':''}<span class="tag ${p.cat}">${CAT_LABELS[p.cat]||p.cat}</span></div>  
+      <div class="ptitle">${p.title}</div>  
+      <div class="pdesc">${p.desc}</div>  
+      <div class="vacts">  
+        ${can?`<button class="vbtn ${mv==='up'?'voted':''}" onclick="castVote(${p.id},'up')">👍 ${mv==='up'?'Supportato':'Supporta'}${votes>0?' ('+votes+')':''}</button>  
+               <button class="vbtn ${mv==='down'?'dnvoted':''}" onclick="castVote(${p.id},'down')">👎${downs>0?' ('+downs+')':''}</button>`  
+        :`<button class="vbtn" onclick="if(confirm('Accedi per votare.'))document.getElementById('auth').style.display='flex'">👍 Supporta</button>`}  
+        <button class="vbtn" onclick="toggleCmts(${p.id})">💬 ${p.cmts.length}</button>  
+      </div>  
+      <div class="cmts" id="cmts-${p.id}">  
+        <div id="clist-${p.id}">${p.cmts.map(c=>cmtHtml(c)).join('')}</div>  
+        ${can?`<div class="c-row"><input class="c-in" id="cin-${p.id}" placeholder="Commenta..." onkeydown="if(event.key==='Enter')addCmt(${p.id})"><button class="c-send" onclick="addCmt(${p.id})">↑</button></div>`:'<div style="font-size:10px;color:var(--dim);padding:4px 0"><a href="#" onclick="document.getElementById(\'auth\').style.display=\'flex\';return false" style="color:var(--green)">Accedi</a> per commentare</div>'}  
+      </div>  
+    </div>`;}).join('');  
+  if(!list.length)grid.innerHTML='<div style="text-align:center;padding:24px;color:var(--dim);font-size:13px;grid-column:span 2">Nessuna proposta trovata.</div>';  
+}  
+function cmtHtml(c){const init=(c.n||'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);return `<div class="cmt"><div class="cav ${c.r==='ceo'?'ceo':c.r==='ai'?'ai':''}">${c.r==='ai'?'AI':init}</div><div class="cbody"><div class="cmeta"><strong>${c.n}</strong> · ${c.r==='ceo'?'CEO':c.r==='ai'?'Claude AI':'Cittadino'}</div><div class="ctext">${c.t}</div></div></div>`;}  
+function castVote(id,dir){  
+  if(!user||user.role==='guest'){if(confirm('Accedi per votare.'))document.getElementById('auth').style.display='flex';return;}  
+  const p=proposals.find(x=>x.id===id);if(!p)return;  
+  const prev=userVotes[id];  
+  if(prev===dir){delete userVotes[id];if(dir==='up')p.votes--;else p.down--;}  
+  else{if(prev==='up')p.votes--;if(prev==='down')p.down--;userVotes[id]=dir;if(dir==='up')p.votes++;else p.down++;}  
+  renderProposals(document.getElementById('prop-search')?.value||'');  
+  showToast(dir==='up'?'Voto registrato! 👍':'Voto contrario registrato 👎');  
+}  
+function toggleCmts(id){document.getElementById('cmts-'+id)?.classList.toggle('on');}  
+function addCmt(id){  
+  if(!user||user.role==='guest')return;  
+  const inp=document.getElementById('cin-'+id);const t=inp.value.trim();if(!t)return;  
+  const p=proposals.find(x=>x.id===id);p.cmts.push({n:user.name,r:user.role,t});inp.value='';  
+  const cl=document.getElementById('clist-'+id);if(cl)cl.innerHTML+=cmtHtml(p.cmts[p.cmts.length-1]);  
+  const btn=document.querySelector(`#cmts-${id}`)?.previousElementSibling?.querySelector('button:last-child');  
+  if(btn&&btn.textContent.includes('💬'))btn.textContent=`💬 ${p.cmts.length}`;  
+}  
+function propAC(q){  
+  const box=document.getElementById('prop-ac-list');  
+  if(!q||q.length<2){box.classList.remove('on');renderProposals();return;}  
+  const m=proposals.filter(p=>p.title.toLowerCase().includes(q.toLowerCase())||p.desc.toLowerCase().includes(q.toLowerCase())||CAT_LABELS[p.cat]?.toLowerCase().includes(q.toLowerCase()));  
+  box.innerHTML=m.slice(0,5).map(p=>`<div class="prop-ac-item" onclick="propSel(${p.id})"><div>${p.ai?'🤖 ':''}<strong>${p.title.replace('[AI] ','')}</strong></div><div class="ac-cat">${CAT_LABELS[p.cat]||p.cat}</div></div>`).join('');  
+  box.classList.toggle('on',m.length>0);renderProposals(q);  
+}  
+function propSel(id){const p=proposals.find(x=>x.id===id);if(!p)return;document.getElementById('prop-search').value=p.title.replace('[AI] ','');document.getElementById('prop-ac-list').classList.remove('on');renderProposals(p.title);}  
+document.addEventListener('click',e=>{if(!e.target.closest('.prop-search-wrap'))document.getElementById('prop-ac-list')?.classList.remove('on');});  
+function openNewProp(){  
+  if(!user||user.role==='guest'){if(confirm('Accedi per inviare proposte.'))document.getElementById('auth').style.display='flex';return;}  
+  document.getElementById('modal-newprop').classList.add('on');  
+}  
+function submitProp(){  
+  const title=document.getElementById('np-title').value.trim();  
+  const cat=document.getElementById('np-cat').value;  
+  const desc=document.getElementById('np-desc').value.trim();  
+  if(!title||!desc){alert('Compila titolo e descrizione.');return;}  
+  proposals.unshift({id:Date.now(),ai:false,cat,title,desc,votes:0,down:0,total:100,cmts:[]});  
+  closeModal('modal-newprop');document.getElementById('np-title').value='';document.getElementById('np-desc').value='';  
+  renderProposals();showToast('Proposta inviata! ✅');  
+}  
+  
+/* ═══ SONDAGGI ═══ */  
+function renderPoll(){  
+  const c=selectedComune;  
+  const poll=c.poll||{title:'Dove investire il budget?',sub:'Indica la tua priorità.',options:[{l:'Infrastrutture',pct:42},{l:'Verde',pct:31},{l:'Digitale',pct:18},{l:'Sociale',pct:9}],votanti:1000,giorni:7};  
+  document.getElementById('poll-title').textContent=poll.title;  
+  document.getElementById('poll-sub').textContent=poll.sub;  
+  document.getElementById('poll-insight').innerHTML=`Sondaggio attivo per <strong>${c.n}</strong>: <strong>${poll.votanti.toLocaleString('it')} cittadini</strong> hanno già votato. Scadenza: <strong>${poll.giorni} giorni</strong>.`;  
+  document.getElementById('poll-opts').innerHTML=poll.options.map((o,i)=>`  
+    <div class="poll-opt ${pollVoted===i?'voted':''}" onclick="votePoll(${i})">  
+      <div class="poll-bar" style="width:${pollVoted!==null?o.pct:0}%"></div>  
+      <div class="poll-name">${o.l}</div>  
+      ${pollVoted!==null?`<div class="poll-pct">${o.pct}%</div>`:''}  
+    </div>`).join('');  
+  document.getElementById('poll-stats').innerHTML=`  
+    <div style="text-align:center;flex:1"><div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--green)">${poll.votanti.toLocaleString('it')}</div><div style="font-size:9px;color:var(--dim)">votanti</div></div>  
+    <div style="text-align:center;flex:1"><div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold)">${Math.round(poll.votanti/c.p*100)}%</div><div style="font-size:9px;color:var(--dim)">affluenza</div></div>  
+    <div style="text-align:center;flex:1"><div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--green2)">${poll.giorni}</div><div style="font-size:9px;color:var(--dim)">giorni</div></div>`;  
+  document.getElementById('poll-history').innerHTML=(c.pollHistory||[]).map(h=>`  
+    <div style="padding:9px;background:var(--bg);border-radius:7px;border:1px solid var(--border);margin-bottom:7px">  
+      <div style="font-size:12px;font-weight:600;margin-bottom:2px">${h.q}</div>  
+      <div style="font-size:10px;color:var(--dim)">${h.data}</div>  
+      <div style="font-size:11.5px;margin-top:3px"><strong>Risultato:</strong> ${h.r}</div>  
+    </div>`).join('')||'<div style="font-size:12px;color:var(--dim)">Nessuna consultazione precedente.</div>';  
+  document.getElementById('my-vote').textContent=pollVoted!==null?`Hai votato: "${poll.options[pollVoted].l}"`:user&&user.role!=='guest'?'Non hai ancora votato.':'Accedi per votare.';  
+  document.getElementById('poll-cmts').innerHTML='';  
+}  
+function votePoll(i){  
+  if(!user||user.role==='guest'){if(confirm('Accedi per votare.'))document.getElementById('auth').style.display='flex';return;}  
+  if(pollVoted!==null){showToast('Hai già votato!','⚠️');return;}  
+  pollVoted=i;  
+  const c=selectedComune;const poll=c.poll||{options:[{pct:42},{pct:31},{pct:18},{pct:9}]};  
+  poll.options[i].pct+=1;const tot=poll.options.reduce((a,o)=>a+o.pct,0);poll.options.forEach(o=>o.pct=Math.round(o.pct/tot*100));  
+  renderPoll();showToast('Voto registrato! 🗳️');  
+}  
+function addPollCmt(){  
+  if(!user||user.role==='guest'){if(confirm('Accedi per commentare.'))document.getElementById('auth').style.display='flex';return;}  
+  const inp=document.getElementById('poll-cin');const t=inp.value.trim();if(!t)return;  
+  const el=document.getElementById('poll-cmts');el.innerHTML+=cmtHtml({n:user.name,r:user.role,t});inp.value='';  
+}  
+  
+/* ═══ DELIBERE ═══ */  
+function renderDelibere(){  
+  const c=selectedComune;  
+  const dels=c.delibere||[  
+    {num:'DEL/08',titolo:'Piano manutenzione strade 2025',stato:'ok',data:'10 Feb 2025'},  
+    {num:'DEL/07',titolo:'Variazione bilancio Q1',stato:'ok',data:'22 Gen 2025'},  
+    {num:'DEL/09',titolo:'Regolamento servizi digitali — bozza AI',stato:'dr',data:'In revisione'},  
+    {num:'DEL/10',titolo:'Piano verde urbano — bozza AI',stato:'dr',data:'Bozza AI'},  
+  ];  
+  document.getElementById('delibere-list').innerHTML=dels.map(d=>`  
+    <div class="del"><div class="del-num">${d.num}</div><div style="flex:1"><div style="font-size:12px;font-weight:500;margin-bottom:2px">${d.titolo}</div><div style="display:flex;gap:5px;align-items:center"><span class="sdot ${d.stato==='ok'?'s-ok':d.stato==='dr'?'s-dr':'s-rv'}"></span><span style="font-size:9px;color:var(--dim)">${d.data}</span></div></div></div>`).join('');  
+}  
+async function genDelibera(){  
+  const obj=document.getElementById('del-oggetto').value.trim();if(!obj){showToast('Descrivi l\'oggetto','⚠️');return;}  
+  const res=document.getElementById('del-result');res.style.display='block';  
+  res.innerHTML='<div style="font-size:12px;color:var(--dim)">Claude sta generando la bozza...</div>';  
+  const c=selectedComune;  
+  const prompt=`Genera una bozza sintetica (max 120 parole) di delibera comunale per il Comune di ${c.n} (${c.p.toLocaleString('it')} ab., ${c.reg}). Oggetto: "${obj}". Includi: premesse normative (D.Lgs. 267/2000), dispositivo, copertura finanziaria generica. Formato professionale.`;  
+  try{  
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,messages:[{role:'user',content:prompt}]})});  
+    const data=await r.json();const txt=data.content?.map(b=>b.text||'').join('')||'Errore.';  
+    res.innerHTML=`<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px;font-size:11.5px;line-height:1.7;color:var(--ink)">${txt.replace(/\n/g,'<br>')}</div><button class="btn btn-g" style="width:100%;margin-top:7px" onclick="this.parentElement.style.display='none'">Chiudi</button>`;  
+  }catch(e){res.innerHTML='<div style="font-size:12px;color:var(--red)">Errore di connessione. Riprova.</div>';}  
+}  
+  
+/* ═══ SEGNALAZIONI ═══ */  
+const icons={buca:'🕳️',illuminazione:'💡',rifiuti:'🗑️',verde:'🌿',vandalismo:'🔨',acqua:'💧',pericolo:'⚠️',altro:'📋'};  
+const segStatusLabel={open:'Aperta',progress:'In lavorazione',done:'Risolta'};  
+const segStatusClass={open:'ss-open',progress:'ss-progress',done:'ss-done'};  
+function renderSeg(){  
+  const c=selectedComune;const filter=document.getElementById('seg-filter')?.value||'all';  
+  const segs=(c.segnalazioni||[]).filter(s=>filter==='all'||s.status===filter);  
+  document.getElementById('seg-list').innerHTML=segs.map(s=>`  
+    <div class="seg-item">  
+      <div style="font-size:22px;flex-shrink:0;margin-top:2px">${icons[s.tipo]||'📋'}</div>  
+      <div style="flex:1">  
+        <div style="display:flex;gap:5px;align-items:center;margin-bottom:3px">  
+          <span class="seg-status ${segStatusClass[s.status]}">${segStatusLabel[s.status]}</span>  
+          ${s.urgent?'<span style="font-size:8px;background:#f5e0e0;color:var(--red);padding:1px 5px;border-radius:20px;font-weight:600">🔴 Urgente</span>':''}  
+        </div>  
+        <div style="font-size:12px;font-weight:500;margin-bottom:1px">${s.desc}</div>  
+        <div style="font-size:9px;color:var(--dim)">📍 ${s.addr}</div>  
+        <div class="seg-vote">  
+          <button class="seg-upvote ${segVotes[s.id]?'on':''}" onclick="voteSeg(${s.id})">👍 ${s.votes+(segVotes[s.id]?1:0)} confermano</button>  
+        </div>  
+      </div>  
+    </div>`).join('')||'<div style="text-align:center;padding:18px;color:var(--dim);font-size:12.5px">Nessuna segnalazione.</div>';  
+}  
+function voteSeg(id){if(!user||user.role==='guest'){if(confirm('Accedi per votare.'))document.getElementById('auth').style.display='flex';return;}segVotes[id]=!segVotes[id];renderSeg();showToast(segVotes[id]?'Confermato! 👍':'Voto rimosso');}  
+function submitSeg(){  
+  if(!user||user.role==='guest'){if(confirm('Accedi per segnalare.'))document.getElementById('auth').style.display='flex';return;}  
+  const tipo=document.getElementById('seg-tipo').value;  
+  const desc=document.getElementById('seg-desc').value.trim();  
+  const addr=document.getElementById('seg-addr').value.trim();  
+  if(!desc){showToast('Descrivi il problema ⚠️');return;}  
+  if(!selectedComune.segnalazioni)selectedComune.segnalazioni=[];  
+  selectedComune.segnalazioni.unshift({id:Date.now(),tipo,desc,addr:addr||'Posizione GPS',status:'open',votes:0,urgent:false});  
+  document.getElementById('seg-desc').value='';document.getElementById('seg-addr').value='';  
+  document.getElementById('photo-preview').innerHTML='';  
+  renderSeg();showToast('Segnalazione inviata! 📍 Il comune la riceverà entro 24h',4000);  
+}  
+function handlePhotos(inp){const prev=document.getElementById('photo-preview');prev.innerHTML='';Array.from(inp.files).slice(0,3).forEach(f=>{const url=URL.createObjectURL(f);prev.innerHTML+=`<img src="${url}" class="photo-thumb" alt="">`});}  
+  
+/* ═══ AVVISI ═══ */  
+const readAv=new Set();  
+function renderAvvisi(){  
+  const c=selectedComune;const avvisi=c.avvisi||[];  
+  document.getElementById('avvisi-list').innerHTML=avvisi.map(a=>`  
+    <div class="avviso-item ${a.unread&&!readAv.has(a.id)?'unread':''}" onclick="markRead(${a.id},this)">  
+      <span class="avviso-cat av-${a.cat}">${a.catLbl}</span>  
+      <div class="avviso-title">${a.title}</div>  
+      <div class="avviso-body">${a.body}</div>  
+      <div class="avviso-meta"><span>📅 ${a.date}</span><span>📋 ${a.fonte}</span></div>  
+    </div>`).join('')||'<div style="text-align:center;padding:20px;color:var(--dim);font-size:12.5px">Nessun avviso disponibile.</div>';  
+  const total=avvisi.length;const unread=avvisi.filter(a=>a.unread&&!readAv.has(a.id)).length;  
+  document.getElementById('av-total').textContent=total;document.getElementById('av-unread').textContent=unread;document.getElementById('qs-av').textContent=unread+' nuovi';  
+}  
+function markRead(id,el){readAv.add(id);el.classList.remove('unread');renderAvvisi();}  
+  
+/* ═══ TRASPARENZA ═══ */  
+function renderTrasp(){  
+  const c=selectedComune;const proms=c.promesse||[];  
+  const half=Math.ceil(proms.length/2);  
+  const render=arr=>arr.map(p=>`  
+    <div class="prom">  
+      <div class="prom-hd"><div class="prom-title">${p.t}</div><div class="prom-pct ${p.c}">${p.pct}%</div></div>  
+      <div class="prom-track"><div class="prom-fill ${p.c==='hi'?'f-hi':p.c==='mid'?'f-mid':'f-lo'}" style="width:${p.pct}%"></div></div>  
+      <div style="font-size:10.5px;color:var(--dim)">${p.n}</div>  
+    </div>`).join('');  
+  document.getElementById('prom-col1').innerHTML=render(proms.slice(0,half))||'<div style="font-size:12.5px;color:var(--dim)">Seleziona un comune pilota per il monitoraggio promesse.</div>';  
+  document.getElementById('prom-col2').innerHTML=render(proms.slice(half));  
+  const avg=proms.length?Math.round(proms.reduce((a,p)=>a+p.pct,0)/proms.length):0;  
+  document.getElementById('trasp-insight').innerHTML=`Monitoraggio <strong>${proms.length} promesse</strong> del mandato in corso per ${c.n}. Avanzamento medio: <strong>${avg}%</strong>. ${proms.filter(p=>p.c==='lo').length} promesse in ritardo.`;  
+}  
+  
+/* ═══ ANALISI CITTÀ ═══ */  
+const cityTabsLoaded={};  
+let activeCityTab='problemi';  
+function switchCityTab(tab,el){  
+  activeCityTab=tab;  
+  document.querySelectorAll('.city-tab').forEach(t=>t.style.display='none');  
+  document.querySelectorAll('.tab-pill').forEach(p=>p.classList.remove('on'));  
+  document.getElementById('city-tab-'+tab).style.display='block';  
+  if(el)el.classList.add('on');  
+  if(!cityTabsLoaded[tab+'_'+(selectedComune?.n||'')])loadCityTab(tab);  
+}  
+function getComuneChars(c){const ch=[];if(c.caratteristiche)return c.caratteristiche.join(', ');if(c.p>500000)ch.push('grande città');else if(c.p>100000)ch.push('città media');else ch.push('piccolo comune');return ch.join(', ');}  
+async function loadCityTab(tab){  
+  if(!selectedComune)return;const c=selectedComune;const key=tab+'_'+c.n;if(cityTabsLoaded[key])return;  
+  const prompts={  
+    problemi:`Sei esperto di governance locale italiana. Analizza PROBLEMATICHE di ${c.n} (${c.p.toLocaleString('it')} ab., ${c.reg}, caratteristiche: ${getComuneChars(c)}). Restituisci SOLO JSON array con 5 oggetti: [{"titolo":"...","gravita":"alta|media|bassa","descrizione":"...","dato":"dato numerico reale","fonte":"ISTAT 2024|MEF 2024|MIT","categoria":"..."}]. Solo JSON.`,  
+    iniziative:`Elenca iniziative/progetti reali o plausibili per ${c.n} (${c.p.toLocaleString('it')} ab., ${c.reg}, ${getComuneChars(c)}). SOLO JSON array 5 oggetti: [{"titolo":"...","stato":"attivo|pianificato|completato|ritardo","descrizione":"...","budget":"€Xk|€XM","fonte":"PNRR|Regione|Comune|MIT","anno":"2024|2025","categoria":"..."}]. Solo JSON.`,  
+    amministrazione:`Per ${c.n} (${c.p.toLocaleString('it')} ab., ${c.reg}, ${getComuneChars(c)}): SOLO JSON: {"fatto":[{"titolo":"...","descrizione":"...","periodo":"2021-2024","fonte":"...","impatto":"..."}],"potrebbe":[{"titolo":"...","descrizione":"...","priorita":"alta|media","pros":["...","..."],"cons":["...","..."],"costo_stimato":"..."}]}. 4 elementi per sezione. Solo JSON.`,  
+    opportunita:`Opportunità strategiche per ${c.n} (${c.p.toLocaleString('it')} ab., ${c.reg}, budget €${Math.round(c.budget/1e6)}M, ${getComuneChars(c)}). SOLO JSON array 4 oggetti: [{"titolo":"...","descrizione":"...","tipo":"PNRR|Bando|Partnership","impatto_stimato":"...","urgenza":"immediata|breve|medio termine","azione_consigliata":"..."}]. Solo JSON.`  
+  };  
+  try{  
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,messages:[{role:'user',content:prompts[tab]}]})});  
+    const data=await res.json();let raw=data.content?.map(b=>b.text||'').join('')||'[]';  
+    raw=raw.replace(/```json|```/g,'').trim();const parsed=JSON.parse(raw);  
+    cityTabsLoaded[key]=true;renderCityTabData(tab,parsed);  
+  }catch(e){renderCityErr(tab,c.n);}  
+}  
+function renderCityTabData(tab,data){  
+  if(tab==='problemi'){  
+    document.getElementById('city-problemi-content').innerHTML=data.map(p=>`  
+      <div class="prob-item ${p.gravita==='media'?'mid':p.gravita==='bassa'?'low':''}">  
+        <div class="prob-title">${p.titolo}</div>  
+        <div class="prob-desc">${p.descrizione}</div>  
+        <div class="prob-meta">  
+          <span style="font-size:9px;background:var(--mist);padding:2px 6px;border-radius:20px">${p.categoria||''}</span>  
+          ${p.dato?`<span style="font-family:'DM Mono',monospace;font-size:9px;background:var(--mist);padding:2px 6px;border-radius:20px">${p.dato}</span>`:''}  
+          <span class="source-badge ${p.fonte?.includes('ISTAT')?'istat':'mef'}">📋 ${p.fonte||'Fonte'}</span>  
+          <span style="font-size:8px;padding:1px 6px;border-radius:20px;font-weight:600;${p.gravita==='alta'?'background:#f5e0e0;color:var(--red)':p.gravita==='media'?'background:#f5eedd;color:var(--gold)':'background:#eef5ee;color:var(--green2)'}">${(p.gravita||'media').toUpperCase()}</span>  
+        </div>  
+      </div>`).join('');  
+  }else if(tab==='iniziative'){  
+    document.getElementById('city-iniziative-content').innerHTML=data.map(p=>`  
+      <div class="init-item">  
+        <span class="init-status is-${p.stato==='attivo'?'active':p.stato==='pianificato'?'planned':p.stato==='completato'?'done':'delayed'}">${(p.stato||'attivo').toUpperCase()}</span>  
+        <div style="font-size:12.5px;font-weight:600;margin-bottom:3px">${p.titolo}</div>  
+        <div style="font-size:11px;color:var(--dim);line-height:1.5">${p.descrizione}</div>  
+        <div style="display:flex;gap:6px;align-items:center;margin-top:5px;flex-wrap:wrap">  
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--gold)">💶 ${p.budget||'N/D'}</span>  
+          <span class="source-badge">📋 ${p.fonte||'Comune'}</span>  
+          <span style="font-size:9px;background:var(--mist);padding:2px 6px;border-radius:20px">${p.categoria||''}</span>  
+        </div>  
+      </div>`).join('');  
+  }else if(tab==='amministrazione'){  
+    document.getElementById('city-amm-fatto').innerHTML=(data.fatto||[]).map(f=>`  
+      <div class="amm-item">  
+        <div class="amm-title">✅ ${f.titolo}</div>  
+        <div class="amm-desc">${f.descrizione}</div>  
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">  
+          <span class="source-badge">${f.periodo||'2021-2024'}</span>  
+          <span class="source-badge istat">📋 ${f.fonte||'Comune'}</span>  
+          ${f.impatto?`<span style="font-size:10px;color:var(--dim)">Impact: ${f.impatto}</span>`:''}  
+        </div>  
+      </div>`).join('');  
+    document.getElementById('city-amm-potrebbe').innerHTML=(data.potrebbe||[]).map(p=>`  
+      <div class="amm-item">  
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px">  
+          <div class="amm-title" style="margin-bottom:0">🔭 ${p.titolo}</div>  
+          <span style="font-size:8px;padding:2px 7px;border-radius:20px;font-weight:600;white-space:nowrap;${p.priorita==='alta'?'background:#f5e0e0;color:var(--red)':'background:#f5eedd;color:var(--gold)'}">${(p.priorita||'media').toUpperCase()}</span>  
+        </div>  
+        <div class="amm-desc">${p.descrizione}</div>  
+        ${p.costo_stimato?`<div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);margin-bottom:7px">💶 ${p.costo_stimato}</div>`:''}  
+        <div class="pros-cons">  
+          <div class="pros"><div class="pc-title p">✅ Pregi</div>${(p.pros||[]).map(x=>`<div class="pc-item">${x}</div>`).join('')}</div>  
+          <div class="cons"><div class="pc-title c">⚠️ Difetti</div>${(p.cons||[]).map(x=>`<div class="pc-item">${x}</div>`).join('')}</div>  
+        </div>  
+      </div>`).join('');  
+  }else if(tab==='opportunita'){  
+    document.getElementById('city-opportunita-content').innerHTML=`  
+      <div class="data-grid" style="margin-bottom:13px">  
+        <div class="data-pill"><div class="data-pill-val">${(selectedComune.budget/1e6).toFixed(0)}M</div><div class="data-pill-lbl">Bilancio €</div><div class="data-pill-src">MEF-DPF 2024</div></div>  
+        <div class="data-pill"><div class="data-pill-val">${selectedComune.p.toLocaleString('it')}</div><div class="data-pill-lbl">Abitanti</div><div class="data-pill-src">ISTAT 2024</div></div>  
+        <div class="data-pill"><div class="data-pill-val">${Math.round(selectedComune.budget/selectedComune.p).toLocaleString('it')}€</div><div class="data-pill-lbl">Pro-capite</div><div class="data-pill-src">Elaborazione</div></div>  
+      </div>`+data.map(o=>`  
+      <div class="amm-item" style="border-left:3px solid var(--green)">  
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">  
+          <div class="amm-title" style="margin-bottom:0">💡 ${o.titolo}</div>  
+          <span style="font-size:8px;padding:2px 7px;border-radius:20px;background:#ddf0dd;color:var(--green);font-weight:600;white-space:nowrap">${o.tipo||'AI'}</span>  
+        </div>  
+        <div class="amm-desc">${o.descrizione}</div>  
+        <div style="background:#eef5ee;border-radius:7px;padding:8px;margin-top:7px">  
+          <div style="font-size:9px;font-weight:600;color:var(--green);margin-bottom:2px">📋 Azione</div>  
+          <div style="font-size:11px;color:var(--ink)">${o.azione_consigliata||''}</div>  
+        </div>  
+        <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">  
+          ${o.impatto_stimato?`<span style="font-size:9px;color:var(--dim)">📈 ${o.impatto_stimato}</span>`:''}  
+          <span style="font-size:9px;background:var(--mist);padding:2px 6px;border-radius:20px;color:var(--dim)">⏱ ${o.urgenza||'breve'}</span>  
+        </div>  
+      </div>`).join('');  
+  }  
+}  
+function renderCityErr(tab,nome){  
+  const ids={problemi:'city-problemi-content',iniziative:'city-iniziative-content',amministrazione:'city-amm-fatto',opportunita:'city-opportunita-content'};  
+  const el=document.getElementById(ids[tab]);if(el)el.innerHTML=`<div style="padding:18px;text-align:center;color:var(--dim)">⚠️ Dati per ${nome} temporaneamente non disponibili. Riprova.</div>`;  
+}  
+  
+/* ═══ NAV ═══ */  
+function gv(name,el){  
+  if(user&&user.role==='guest'&&RESTRICTED.includes(name)){if(confirm('Registrati per accedere.'))document.getElementById('auth').style.display='flex';return;}  
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));  
+  document.querySelectorAll('.navi').forEach(n=>n.classList.remove('on'));  
+  document.getElementById('view-'+name).classList.add('on');  
+  if(el)el.classList.add('on');  
+  document.getElementById('tb-title').textContent=TITLES[name]||name;  
+  syncBnav(name);window.scrollTo(0,0);  
+  if(name==='citta'&&selectedComune&&!cityTabsLoaded['problemi_'+selectedComune.n]){  
+    const ldr=document.getElementById('ldr-p');if(ldr)ldr.textContent=selectedComune.n;loadCityTab('problemi');  
+  }  
+}  
+function gvm(name,el){  
+  if(user&&user.role==='guest'&&RESTRICTED.includes(name)){if(confirm('Registrati per accedere.'))document.getElementById('auth').style.display='flex';return;}  
+  gv(name,null);document.querySelectorAll('.bni').forEach(b=>b.classList.remove('on'));el.classList.add('on');  
+  document.querySelectorAll('.navi').forEach(ni=>{if((ni.getAttribute('onclick')||'').includes("'"+name+"'"))ni.classList.add('on');});  
+}  
+function syncBnav(n){document.querySelectorAll('.bni').forEach(b=>b.classList.toggle('on',(b.getAttribute('onclick')||'').includes("'"+n+"'")));}  
+  
+/* ═══ CHAT ═══ */  
+const SYS=`Sei Claude, l'assistente AI di Praxisy per la governance civica italiana.  
+Comune: {C}, {P} abitanti, {R}, bilancio €{B}M.  
+Caratteristiche: {CHARS}.  
+Priorità civiche principali: {PRIOS}.  
+Rispondi in italiano, conciso e pratico. Usa <strong> per evidenziare dati chiave. Usa salti riga per leggibilità.`;  
+function qs(t){document.getElementById('chat-in').value=t;sendChat();}  
+async function sendChat(){  
+  const inp=document.getElementById('chat-in');const t=inp.value.trim();if(!t)return;  
+  const msgs=document.getElementById('chat-msgs');  
+  const ub=document.createElement('div');ub.className='msg msg-user';ub.textContent=t;msgs.appendChild(ub);  
+  chatHistory.push({role:'user',content:t});inp.value='';inp.disabled=true;  
+  const ty=document.createElement('div');ty.className='msg msg-ai';ty.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';msgs.appendChild(ty);msgs.scrollTop=msgs.scrollHeight;  
+  const c=selectedComune||COMUNI_PILOTA[0];  
+  const sys=SYS.replace('{C}',c.n).replace('{P}',c.p.toLocaleString('it')).replace('{R}',c.reg).replace('{B}',Math.round(c.budget/1e6)).replace('{CHARS}',getComuneChars(c)).replace('{PRIOS}',(c.priorita||[]).slice(0,3).map(p=>p.name).join(', ')||'strade, verde, digitale');  
+  try{  
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:900,system:sys,messages:chatHistory})});  
+    const data=await res.json();const reply=data.content?.map(b=>b.text||'').join('')||'Errore.';  
+    chatHistory.push({role:'assistant',content:reply});  
+    ty.innerHTML=reply.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');  
+  }catch(e){ty.innerHTML='⚠️ Errore connessione. Riprova.';}  
+  inp.disabled=false;inp.focus();msgs.scrollTop=msgs.scrollHeight;  
+}  
+  
+/* ═══ UTILS ═══ */  
+function showToast(msg,duration=2800){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),duration);}  
+function closeModal(id){document.getElementById(id).classList.remove('on');}  
+document.addEventListener('click',e=>{if(e.target.classList.contains('modal-bg'))e.target.classList.remove('on');});  
+  
+/* ═══ PWA ═══ */  
+const mf={name:"Praxisy — Made by Porty",short_name:"Praxisy",start_url:"./",display:"standalone",background_color:"#1a2e1a",theme_color:"#1a2e1a",icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%231a2e1a'/%3E%3Ctext x='256' y='340' font-family='serif' font-size='280' font-weight='900' text-anchor='middle' fill='%23f0ead8'%3EP%3C/text%3E%3C/svg%3E",sizes:"512x512",type:"image/svg+xml",purpose:"any maskable"}]};  
+try{const b=new Blob([JSON.stringify(mf)],{type:'application/json'});document.getElementById('manifest-link').href=URL.createObjectURL(b);}catch(e){}  
+if('serviceWorker'in navigator){try{const sw=`const C='px-v3';self.addEventListener('install',e=>{self.skipWaiting()});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))));self.clients.claim()});self.addEventListener('fetch',e=>{if(e.request.url.includes('api.anthropic.com')||e.request.url.includes('fonts.google'))return;e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)))});`;const sb=new Blob([sw],{type:'application/javascript'});navigator.serviceWorker.register(URL.createObjectURL(sb)).catch(()=>{});}catch(e){}}  
+let di=null;  
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();di=e;setTimeout(()=>{if(!user)return;const tb=document.getElementById('tb-act');if(!tb||tb.querySelector('.install-pill'))return;const p=document.createElement('button');p.className='btn btn-g install-pill';p.textContent='📲 Installa';p.onclick=async()=>{if(!di)return;di.prompt();const{outcome}=await di.userChoice;if(outcome==='accepted')p.remove();di=null;};tb.insertBefore(p,tb.firstChild);},5000);});  
+</script>  
+</body>  
+</html>  
