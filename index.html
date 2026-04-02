@@ -684,7 +684,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-
   <div class="modal">  
     <button class="modal-close" onclick="closeModal('modal-newprop')">×</button>  
     <div class="modal-title">Nuova Proposta</div>  
-    <div class="ag"><label class="al">Titolo</label><input class="ai" id="np-title" placeholder="Titolo della proposta..."></div>  
+    <div class="ag"><label class="al">Titolo</label><input class="ai" id="np-title" placeholder="Titolo della proposta..."
+  oninput="if(window.suggerisciProposta && selectedComune) suggerisciProposta(this.value, selectedComune.n)">
+<div id="prop-ai-suggestion" style="display:none;font-size:10.5px;color:var(--green);background:#eef5ee;border-radius:6px;padding:6px 9px;margin-top:4px;line-height:1.5"></div> placeholder="Titolo della proposta..."></div>  
     <div class="ag"><label class="al">Categoria</label><select class="ai" id="np-cat"><option value="t-i">Infrastrutture</option><option value="t-a">Verde pubblico</option><option value="t-c">Cultura</option><option value="t-d">Digitale</option><option value="t-s">Sociale</option></select></div>  
     <div class="ag"><label class="al">Descrizione</label><textarea class="ai" id="np-desc" rows="3" placeholder="Descrivi la proposta..."></textarea></div>  
     <button class="asub" onclick="submitProp()">Invia Proposta →</button>  
