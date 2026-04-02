@@ -302,7 +302,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-
   .quick-services{grid-template-columns:1fr 1fr}  
 }  
 @media(max-width:420px){.stat-val{font-size:20px}.tb-title{font-size:13px}}  
-</style>  
+</style> 
+<!-- Leaflet Maps -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>  
 <body>  
 <div class="toast" id="toast"><span id="toast-msg"></span></div>  
@@ -607,7 +610,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-
         <div class="section-block"><div class="section-block-title">💡 Opportunità & Raccomandazioni <span class="source-badge">Claude AI</span></div><div id="city-opportunita-content"><div class="city-loading">Elaborazione...</div></div></div>  
       </div>  
     </div>  
-  
+<div id="mappa-segnalazioni" style="height:280px;border-radius:11px;overflow:hidden;border:1px solid var(--border);margin-bottom:14px"></div>
     <!-- SEGNALAZIONI -->  
     <div class="view" id="view-segnalazioni">  
       <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">📍 Segnalazioni Civiche</span></div><div class="ai-body">Segnala problemi stradali, urbani e ambientali. Tracciati e inviati all'ufficio competente. L'AI raggruppa segnalazioni simili per priorità.</div></div>  
@@ -1392,23 +1395,35 @@ Caratteristiche: {CHARS}.
 Priorità civiche principali: {PRIOS}.  
 Rispondi in italiano, conciso e pratico. Usa <strong> per evidenziare dati chiave. Usa salti riga per leggibilità.`;  
 function qs(t){document.getElementById('chat-in').value=t;sendChat();}  
-async function sendChat(){  
-  const inp=document.getElementById('chat-in');const t=inp.value.trim();if(!t)return;  
-  const msgs=document.getElementById('chat-msgs');  
-  const ub=document.createElement('div');ub.className='msg msg-user';ub.textContent=t;msgs.appendChild(ub);  
-  chatHistory.push({role:'user',content:t});inp.value='';inp.disabled=true;  
-  const ty=document.createElement('div');ty.className='msg msg-ai';ty.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';msgs.appendChild(ty);msgs.scrollTop=msgs.scrollHeight;  
-  const c=selectedComune||COMUNI_PILOTA[0];  
-  const sys=SYS.replace('{C}',c.n).replace('{P}',c.p.toLocaleString('it')).replace('{R}',c.reg).replace('{B}',Math.round(c.budget/1e6)).replace('{CHARS}',getComuneChars(c)).replace('{PRIOS}',(c.priorita||[]).slice(0,3).map(p=>p.name).join(', ')||'strade, verde, digitale');  
-  try{  
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:900,system:sys,messages:chatHistory})});  
-    const data=await res.json();const reply=data.content?.map(b=>b.text||'').join('')||'Errore.';  
-    chatHistory.push({role:'assistant',content:reply});  
-    ty.innerHTML=reply.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');  
-  }catch(e){ty.innerHTML='⚠️ Errore connessione. Riprova.';}  
-  inp.disabled=false;inp.focus();msgs.scrollTop=msgs.scrollHeight;  
-}  
-  
+async function sendChat() {
+  const inp = document.getElementById('chat-in');
+  const t = inp.value.trim(); if (!t) return;
+  const msgs = document.getElementById('chat-msgs');
+  const ub = document.createElement('div'); ub.className='msg msg-user'; ub.textContent=t; msgs.appendChild(ub);
+  chatHistory.push({role:'user',content:t}); inp.value=''; inp.disabled=true;
+  chatMsgCount++; if(document.getElementById('chat-count')) document.getElementById('chat-count').textContent=chatMsgCount;
+  const ty = document.createElement('div'); ty.className='msg msg-ai';
+  ty.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';
+  msgs.appendChild(ty); msgs.scrollTop=msgs.scrollHeight;
+
+  const c = selectedComune || COMUNI_PILOTA[0];
+  const segsCount = document.getElementById('seg-badge')?.textContent || '0';
+  const propsCount = document.getElementById('prop-badge')?.textContent || '0';
+
+  // Usa il sistema smart se disponibile
+  const sys = window.buildSmartSystem
+    ? window.buildSmartSystem(c.n, propsCount, segsCount)
+    : `Sei Claude AI di Praxisy. Comune: ${c.n}, ${c.p?.toLocaleString('it')} ab., ${c.reg}. Rispondi in italiano.`;
+
+  try {
+    const reply = await callClaude(chatHistory, sys, 900);
+    chatHistory.push({role:'assistant',content:reply});
+    ty.innerHTML = reply.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  } catch(e) {
+    ty.innerHTML = '⚠️ Errore connessione. Controlla che la ANTHROPIC_API_KEY sia configurata su Vercel.';
+  }
+  inp.disabled=false; inp.focus(); msgs.scrollTop=msgs.scrollHeight;
+}
 /* ═══ UTILS ═══ */  
 function showToast(msg,duration=2800){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),duration);}  
 function closeModal(id){document.getElementById(id).classList.remove('on');}  
@@ -1421,5 +1436,16 @@ if('serviceWorker'in navigator){try{const sw=`const C='px-v3';self.addEventListe
 let di=null;  
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();di=e;setTimeout(()=>{if(!user)return;const tb=document.getElementById('tb-act');if(!tb||tb.querySelector('.install-pill'))return;const p=document.createElement('button');p.className='btn btn-g install-pill';p.textContent='📲 Installa';p.onclick=async()=>{if(!di)return;di.prompt();const{outcome}=await di.userChoice;if(outcome==='accepted')p.remove();di=null;};tb.insertBefore(p,tb.firstChild);},5000);});  
 </script>  
+<!-- Praxisy Upgrades -->
+<script src="/ai-upgrades.js"></script>
+<script src="/mappa.js"></script>
+<script>
+  // Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(() => console.log('SW registrato'))
+      .catch(e => console.error('SW error:', e));
+  }
+</script>
 </body>  
 </html>  
