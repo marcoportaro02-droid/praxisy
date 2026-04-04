@@ -937,16 +937,50 @@ const readAv = new Set();
 const cityTabsLoaded = {};
 let pollVotedOption = null;
 
+/* ═══ GLOBAL ERROR HANDLER ═══ */
+window.onerror = function(msg, src, line, col, err) {
+  console.error('JS Error:', msg, 'at line', line);
+  const sp = document.getElementById('splash');
+  if (sp) sp.style.display = 'none';
+  const cp = document.getElementById('citypick');
+  if (cp && cp.style.display !== 'flex') { cp.style.display = 'flex'; try { renderFeaturedComuni(); } catch(e){} }
+  return false;
+};
+window.addEventListener('unhandledrejection', function(e) {
+  console.error('Promise rejection:', e.reason);
+});
+
 /* ═══ SPLASH ═══ */
 window.addEventListener('load', () => {
+  function removeSplash() {
+    try {
+      const sp = document.getElementById('splash');
+      if (sp) { sp.classList.add('out'); setTimeout(() => { sp.remove(); }, 500); }
+      showCityPick();
+    } catch(e) {
+      console.error('removeSplash error:', e);
+      const sp = document.getElementById('splash');
+      if (sp) sp.style.display = 'none';
+      const cp = document.getElementById('citypick');
+      if (cp) { cp.style.display = 'flex'; try { renderFeaturedComuni(); } catch(e2){} }
+    }
+  }
+  setTimeout(removeSplash, 1600);
+  // Safety fallback — force remove after 4 seconds
   setTimeout(() => {
-    document.getElementById('splash').classList.add('out');
-    setTimeout(() => { document.getElementById('splash').remove(); showCityPick(); }, 500);
-  }, 1600);
+    const sp = document.getElementById('splash');
+    if (sp) sp.style.display = 'none';
+    const cp = document.getElementById('citypick');
+    if (cp && cp.style.display !== 'flex') { cp.style.display = 'flex'; try { renderFeaturedComuni(); } catch(e){} }
+  }, 4000);
 });
 
 /* ═══ CITY PICKER ═══ */
-function showCityPick() { document.getElementById('citypick').style.display = 'flex'; renderFeaturedComuni(); }
+function showCityPick() {
+  const cp = document.getElementById('citypick');
+  if (cp) cp.style.display = 'flex';
+  try { renderFeaturedComuni(); } catch(e) { console.error('renderFeaturedComuni:', e); }
+}
 function changeCitta() {
   cityTabsLoaded['__all'] = false;
   Object.keys(cityTabsLoaded).forEach(k => delete cityTabsLoaded[k]);
@@ -1086,13 +1120,28 @@ async function doLogout() {
 
 /* ═══ ENTER APP ═══ */
 async function enterApp() {
-  document.getElementById('auth').style.display = 'none';
-  if (!selectedComune) selectedComune = COMUNI_PILOTA[0];
-  applyRole(); updateSidebar(); updateTopbar(); updateDashboard();
-  await loadProposte(); renderPoll(); renderDelibere(); updateBilancio();
-  await loadSegnalazioni(); renderAvvisi(); renderTrasp();
-  renderFeedback(); renderKPI(); loadFeedbackAI();
-  document.getElementById('chat-comune').textContent = selectedComune.n;
+  try {
+    document.getElementById('auth').style.display = 'none';
+    if (!selectedComune) selectedComune = COMUNI_PILOTA[0];
+    try { applyRole(); } catch(e) { console.error('applyRole:', e); }
+    try { updateSidebar(); } catch(e) { console.error('updateSidebar:', e); }
+    try { updateTopbar(); } catch(e) { console.error('updateTopbar:', e); }
+    try { updateDashboard(); } catch(e) { console.error('updateDashboard:', e); }
+    try { await loadProposte(); } catch(e) { console.error('loadProposte:', e); }
+    try { renderPoll(); } catch(e) { console.error('renderPoll:', e); }
+    try { renderDelibere(); } catch(e) { console.error('renderDelibere:', e); }
+    try { updateBilancio(); } catch(e) { console.error('updateBilancio:', e); }
+    try { await loadSegnalazioni(); } catch(e) { console.error('loadSegnalazioni:', e); }
+    try { renderAvvisi(); } catch(e) { console.error('renderAvvisi:', e); }
+    try { renderTrasp(); } catch(e) { console.error('renderTrasp:', e); }
+    try { renderFeedback(); } catch(e) { console.error('renderFeedback:', e); }
+    try { renderKPI(); } catch(e) { console.error('renderKPI:', e); }
+    const ccn = document.getElementById('chat-comune');
+    if (ccn) ccn.textContent = selectedComune.n;
+    setTimeout(() => { try { loadFeedbackAI(); } catch(e) {} }, 2000);
+  } catch(e) {
+    console.error('enterApp error:', e);
+  }
 }
 
 function applyRole() {
