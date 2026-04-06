@@ -5,7 +5,9 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) return res.status(500).json({ error: 'ANTHROPIC_API_KEY non configurata su Vercel → Settings → Environment Variables' });
+  if (!apiKey) return res.status(500).json({
+    error: 'ANTHROPIC_API_KEY non configurata. Vai su Vercel → Settings → Environment Variables → aggiungi ANTHROPIC_API_KEY come Secret con la tua chiave sk-ant-...'
+  });
   try {
     const body = req.body;
     const response = await fetch('https://api.anthropic.com/v1/messages', {
