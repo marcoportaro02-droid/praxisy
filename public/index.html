@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -17,32 +18,21 @@
 :root{--bg:#f0ead8;--ink:#1a2e1a;--green:#2d5a2d;--green2:#4a7c4a;--gold:#7a6e3a;--mist:#e2dcc8;--card:#f7f2e2;--border:#c8c0a8;--dim:#6b7d5a;--red:#8b2e2e}
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}
-#splash{
-  position:fixed;inset:0;background:#1a2e1a;z-index:9999;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
-  animation:splashFade 0.5s ease 2.8s forwards;
-  pointer-events:none;
-}
-@keyframes splashFade{
-  0%{opacity:1;visibility:visible}
-  100%{opacity:0;visibility:hidden;display:none}
-}
-.sp-logo-ring{position:relative;width:110px;height:110px;display:flex;align-items:center;justify-content:center}
-.sp-svg{width:78px;height:78px;animation:logoSpin 2s cubic-bezier(.4,0,.6,1) infinite;filter:drop-shadow(0 0 12px rgba(106,173,106,.5))}
-@keyframes logoSpin{
-  0%{transform:rotate(0deg) scale(1)}
-  50%{transform:rotate(180deg) scale(1.08)}
-  100%{transform:rotate(360deg) scale(1)}
-}
-.sp-ring-a{position:absolute;inset:-8px;border-radius:50%;border:1.5px solid transparent;border-top-color:#6aad6a;border-right-color:rgba(106,173,106,.3);animation:ringA 1.6s linear infinite}
-.sp-ring-b{position:absolute;inset:-18px;border-radius:50%;border:1px solid transparent;border-bottom-color:#4a8a4a;border-left-color:rgba(74,138,74,.2);animation:ringB 2.8s linear infinite}
-@keyframes ringA{to{transform:rotate(360deg)}}
-@keyframes ringB{to{transform:rotate(-360deg)}}
-.sp-wordmark{font-family:'Georgia',serif;font-size:28px;font-weight:900;color:#f0ead8;letter-spacing:-0.5px}
-.sp-wordmark span{color:#6aad6a;font-style:italic}
-.sp-tagline{font-size:9px;color:#3a5e3a;letter-spacing:4px;text-transform:uppercase;font-family:sans-serif}
-.sp-line{width:48px;height:1.5px;background:linear-gradient(90deg,transparent,#6aad6a,transparent);margin-top:4px;animation:lineGrow 2s ease forwards}
-@keyframes lineGrow{from{width:0;opacity:0}to{width:48px;opacity:1}}
+/* SPLASH — pure CSS, no JS dependency */
+#splash{position:fixed;inset:0;background:#1a2e1a;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;animation:spHide .4s ease 2.5s forwards}
+@keyframes spHide{to{opacity:0;visibility:hidden;pointer-events:none}}
+.sp-wrap{position:relative;width:112px;height:112px;display:flex;align-items:center;justify-content:center}
+.sp-svg{width:80px;height:80px;animation:spSpin 2s ease-in-out infinite;filter:drop-shadow(0 0 10px rgba(106,173,106,.6))}
+@keyframes spSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.sp-ra{position:absolute;inset:-10px;border-radius:50%;border:2px solid rgba(106,173,106,.15);border-top-color:#6aad6a;animation:spRa 1.5s linear infinite}
+.sp-rb{position:absolute;inset:-20px;border-radius:50%;border:1.5px solid rgba(106,173,106,.08);border-bottom-color:#4a8a4a;animation:spRb 2.5s linear infinite}
+@keyframes spRa{to{transform:rotate(360deg)}}
+@keyframes spRb{to{transform:rotate(-360deg)}}
+.sp-name{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:#f0ead8;letter-spacing:-0.5px}
+.sp-name em{color:#6aad6a;font-style:italic}
+.sp-sub{font-size:9px;color:#3a5a3a;letter-spacing:4px;text-transform:uppercase;font-family:'DM Sans',sans-serif}
+.sp-bar{width:0;height:1.5px;background:#6aad6a;border-radius:2px;margin-top:4px;animation:spBar 2s ease forwards;box-shadow:0 0 8px rgba(106,173,106,.5)}
+@keyframes spBar{to{width:60px}}
 #citypick{position:fixed;inset:0;background:var(--ink);z-index:8500;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
 .cp-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px 24px;width:100%;max-width:440px}
 .cp-logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--ink);text-align:center}.cp-logo span{color:var(--green)}
@@ -323,20 +313,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-
 <div class="toast" id="toast"><span id="toast-msg"></span></div>
 
 <div id="splash">
-  <div class="sp-logo-ring">
-    <div class="sp-ring-a"></div>
-    <div class="sp-ring-b"></div>
-    <svg class="sp-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <g fill="none" stroke="#6aad6a" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M100,100 Q70,100 60,83 Q50,66 63,52 Q76,38 92,47 Q108,56 103,71 Q98,86 84,83 Q70,80 74,67"/>
-        <path d="M100,100 Q122,75 137,77 Q152,79 155,95 Q158,111 144,118 Q130,125 121,113 Q112,101 120,92 Q128,83 137,90"/>
-        <path d="M100,100 Q82,125 86,141 Q90,157 106,160 Q122,163 128,149 Q134,135 120,129 Q106,123 101,136 Q96,149 108,152"/>
+  <div class="sp-wrap">
+    <div class="sp-ra"></div>
+    <div class="sp-rb"></div>
+    <svg class="sp-svg" viewBox="0 0 200 210" xmlns="http://www.w3.org/2000/svg">
+      <!-- Triskelion - three spirals -->
+      <g fill="none" stroke="#6aad6a" stroke-width="13" stroke-linecap="round" stroke-linejoin="round">
+        <!-- top-left arm -->
+        <path d="M105,105 C105,105 82,105 72,91 C62,77 66,57 80,51 C94,45 108,56 106,70 C104,84 91,88 84,81 C77,74 80,63 88,62"/>
+        <!-- top-right arm -->
+        <path d="M105,105 C105,105 122,78 136,79 C150,80 158,92 154,105 C150,118 136,122 126,115 C116,108 117,94 126,91 C135,88 141,96 138,104"/>
+        <!-- bottom arm -->
+        <path d="M105,105 C105,105 88,132 92,146 C96,160 110,164 121,156 C132,148 131,134 119,131 C107,128 101,138 106,147 C111,156 123,154 126,145"/>
       </g>
     </svg>
   </div>
-  <div class="sp-wordmark">Praxi<span>sy</span></div>
-  <div class="sp-tagline">Made by Porty</div>
-  <div class="sp-line"></div>
+  <div class="sp-name">Praxi<em>sy</em></div>
+  <div class="sp-sub">Made by Porty</div>
+  <div class="sp-bar"></div>
 </div>
 
 <div id="citypick">
@@ -442,242 +436,244 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-
   </div>
   <div class="content">
 
-    <!-- DASHBOARD -->
-    <div class="view on" id="view-dashboard">
-      <div class="ai-insight" id="dash-insight">
-        <div class="ai-hd"><span class="ai-chip">💡 Claude AI · Insight</span><span class="istat-live"><span class="istat-dot"></span>Dati ISTAT live</span></div>
-        <div class="ai-body" id="dash-insight-text">Seleziona il tuo comune per l'analisi AI personalizzata.</div>
+```
+<!-- DASHBOARD -->
+<div class="view on" id="view-dashboard">
+  <div class="ai-insight" id="dash-insight">
+    <div class="ai-hd"><span class="ai-chip">💡 Claude AI · Insight</span><span class="istat-live"><span class="istat-dot"></span>Dati ISTAT live</span></div>
+    <div class="ai-body" id="dash-insight-text">Seleziona il tuo comune per l'analisi AI personalizzata.</div>
+  </div>
+  <div class="quick-services">
+    <div class="qs-item" onclick="gv('segnalazioni',document.getElementById('nav-segnalazioni'))"><div class="qs-icon">📍</div><div class="qs-label">Segnalazioni</div><div class="qs-count" id="qs-seg">— aperte</div></div>
+    <div class="qs-item" onclick="gv('avvisi',document.getElementById('nav-avvisi'))"><div class="qs-icon">🔔</div><div class="qs-label">Avvisi</div><div class="qs-count">5 nuovi</div></div>
+    <div class="qs-item" onclick="gv('proposte',document.getElementById('nav-proposte'))"><div class="qs-icon">◎</div><div class="qs-label">Proposte</div><div class="qs-count" id="qs-pr">— in votazione</div></div>
+    <div class="qs-item" onclick="gv('citta',document.getElementById('nav-citta'))"><div class="qs-icon">🏙️</div><div class="qs-label">Analisi città</div><div class="qs-count">Dati ISTAT verificati</div></div>
+  </div>
+  <div class="stats">
+    <div class="stat s1"><div class="stat-lbl">Popolazione</div><div class="stat-val" id="st-pop">—</div><div class="stat-d" id="st-pop-d"></div></div>
+    <div class="stat s2"><div class="stat-lbl">Partecipazione</div><div class="stat-val" id="st-part">—</div><div class="stat-d" id="st-part-d"></div></div>
+    <div class="stat s3"><div class="stat-lbl">Proposte attive</div><div class="stat-val" id="st-props">—</div><div class="stat-d" id="st-props-d"></div></div>
+    <div class="stat s4"><div class="stat-lbl">Budget residuo</div><div class="stat-val" id="st-budget">—</div><div class="stat-d" id="st-budget-d"></div></div>
+  </div>
+  <div class="g3">
+    <div class="card">
+      <div class="card-hd"><div class="card-title">Priorità Civiche</div><span class="ctag" id="dash-tag">—</span></div>
+      <div id="dash-priorities"><div style="text-align:center;padding:18px;color:var(--dim);font-size:12px">Seleziona un comune</div></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:11px">
+        <div class="card-hd"><div class="card-title">Attività recente</div></div>
+        <div id="dash-activity"><div class="act"><div class="act-dot" style="background:var(--green2)"></div><div><div style="font-size:11.5px;font-weight:500">Caricamento...</div></div></div></div>
       </div>
-      <div class="quick-services">
-        <div class="qs-item" onclick="gv('segnalazioni',document.getElementById('nav-segnalazioni'))"><div class="qs-icon">📍</div><div class="qs-label">Segnalazioni</div><div class="qs-count" id="qs-seg">— aperte</div></div>
-        <div class="qs-item" onclick="gv('avvisi',document.getElementById('nav-avvisi'))"><div class="qs-icon">🔔</div><div class="qs-label">Avvisi</div><div class="qs-count">5 nuovi</div></div>
-        <div class="qs-item" onclick="gv('proposte',document.getElementById('nav-proposte'))"><div class="qs-icon">◎</div><div class="qs-label">Proposte</div><div class="qs-count" id="qs-pr">— in votazione</div></div>
-        <div class="qs-item" onclick="gv('citta',document.getElementById('nav-citta'))"><div class="qs-icon">🏙️</div><div class="qs-label">Analisi città</div><div class="qs-count">Dati ISTAT verificati</div></div>
-      </div>
-      <div class="stats">
-        <div class="stat s1"><div class="stat-lbl">Popolazione</div><div class="stat-val" id="st-pop">—</div><div class="stat-d" id="st-pop-d"></div></div>
-        <div class="stat s2"><div class="stat-lbl">Partecipazione</div><div class="stat-val" id="st-part">—</div><div class="stat-d" id="st-part-d"></div></div>
-        <div class="stat s3"><div class="stat-lbl">Proposte attive</div><div class="stat-val" id="st-props">—</div><div class="stat-d" id="st-props-d"></div></div>
-        <div class="stat s4"><div class="stat-lbl">Budget residuo</div><div class="stat-val" id="st-budget">—</div><div class="stat-d" id="st-budget-d"></div></div>
-      </div>
-      <div class="g3">
-        <div class="card">
-          <div class="card-hd"><div class="card-title">Priorità Civiche</div><span class="ctag" id="dash-tag">—</span></div>
-          <div id="dash-priorities"><div style="text-align:center;padding:18px;color:var(--dim);font-size:12px">Seleziona un comune</div></div>
+      <div class="card">
+        <div class="card-hd"><div class="card-title">Voti per area</div></div>
+        <div class="cbars">
+          <div class="cbw"><div class="cb" id="cb1" style="height:80%;background:var(--green)"></div><div class="cb-lbl" id="cb1l">Infra</div></div>
+          <div class="cbw"><div class="cb" id="cb2" style="height:60%;background:var(--green2)"></div><div class="cb-lbl" id="cb2l">Verde</div></div>
+          <div class="cbw"><div class="cb" id="cb3" style="height:45%;background:var(--gold)"></div><div class="cb-lbl" id="cb3l">Digit</div></div>
+          <div class="cbw"><div class="cb" id="cb4" style="height:35%;background:#5a8a5a"></div><div class="cb-lbl" id="cb4l">Cult</div></div>
+          <div class="cbw"><div class="cb" id="cb5" style="height:25%;background:#7a6a8a"></div><div class="cb-lbl" id="cb5l">Soc</div></div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROPOSTE -->
+<div class="view" id="view-proposte">
+  <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">🤖 Claude AI · Proposte</span></div><div class="ai-body" id="prop-insight-text">Proposte dei cittadini e idee generate da Claude AI.</div></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px">
+    <div class="stitle">Proposte & Idee AI</div>
+    <button class="btn btn-p" onclick="openNewProp()">+ Nuova</button>
+  </div>
+  <div class="prop-search-wrap">
+    <input class="prop-search" id="prop-search" type="text" placeholder="🔍 Cerca proposte..." autocomplete="off" oninput="propAC(this.value)">
+    <div class="prop-ac-list" id="prop-ac-list"></div>
+  </div>
+  <div class="g2" id="proposte-grid"><div style="text-align:center;padding:24px;color:var(--dim);grid-column:span 2">Caricamento proposte...</div></div>
+</div>
+
+<!-- SONDAGGI -->
+<div class="view" id="view-sondaggi">
+  <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">🗳️ Consultazione Live</span></div><div class="ai-body" id="poll-insight">Sondaggio attivo per il comune selezionato.</div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-hd"><div class="card-title" id="poll-title">Dove investire il budget?</div><span class="ctag" style="background:#ddf0dd;color:var(--green);border-color:#b8dcb8">● Live</span></div>
+      <div style="font-size:11.5px;color:var(--dim);margin-bottom:12px" id="poll-sub">Indica la tua priorità.</div>
+      <div id="poll-opts"></div>
+      <div id="poll-stats" style="display:flex;gap:10px;margin-top:11px;padding-top:11px;border-top:1px solid var(--mist)"></div>
+      <div style="margin-top:11px;padding-top:11px;border-top:1px solid var(--mist)">
+        <div style="font-size:9.5px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px">Commenti</div>
+        <div id="poll-cmts"></div>
+        <div class="c-row"><input class="c-in" id="poll-cin" placeholder="Scrivi un commento..." onkeydown="if(event.key==='Enter')addPollCmt()"><button class="c-send" onclick="addPollCmt()">↑</button></div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:11px">
+        <div class="card-hd"><div class="card-title">Consultazioni chiuse</div></div>
+        <div id="poll-history"></div>
+      </div>
+      <div class="card"><div class="card-hd"><div class="card-title">Il mio voto</div></div><div id="my-vote" style="font-size:11.5px;color:var(--dim)">Nessun voto ancora.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DELIBERE -->
+<div class="view" id="view-delibere">
+  <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">✍️ Claude AI · Redattore</span></div><div class="ai-body"><strong>Bozze</strong> generate con riferimenti D.Lgs. 267/2000. Tempo ridotto da <strong>4h a 12 min</strong>.</div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-hd"><div class="card-title">Delibere recenti</div><span class="ctag">2025</span></div>
+      <div id="delibere-list"></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:11px">
+        <div class="card-hd"><div class="card-title">Genera bozza Claude AI</div></div>
+        <div class="ag"><label class="al">Tipo atto</label><select class="ai"><option>Delibera di Giunta</option><option>Delibera di Consiglio</option><option>Ordinanza Sindacale</option><option>Regolamento</option></select></div>
+        <div class="ag"><label class="al">Oggetto</label><input class="ai" id="del-oggetto" placeholder="Descrivi l'oggetto..."></div>
+        <button class="btn btn-p" style="width:100%" onclick="genDelibera()">✨ Genera con Claude</button>
+        <div id="del-result" style="margin-top:9px;display:none"></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div class="card-title">Statistiche redazione</div></div>
+        <div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px"><span>Delibere AI</span><span style="font-family:'DM Mono',monospace;color:var(--gold)">8/12</span></div><div class="btrack"><div class="bfill" style="width:66%;background:var(--gold)"></div></div></div>
+        <div><div style="font-size:11.5px;font-weight:500">Tempo medio</div><div style="font-family:'Playfair Display',serif;font-size:23px;font-weight:900;color:var(--green2)">12 min</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BILANCIO -->
+<div class="view" id="view-bilancio">
+  <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">📊 Claude AI · Finance</span><span class="istat-live"><span class="istat-dot"></span>MEF live</span></div><div class="ai-body" id="bilancio-insight">Seleziona un comune per il piano finanziario.</div></div>
+  <div class="stats">
+    <div class="stat s1"><div class="stat-lbl">Entrate 2025</div><div class="stat-val" id="b-ent">—</div></div>
+    <div class="stat s2"><div class="stat-lbl">Spese impegnate</div><div class="stat-val" id="b-spe">—</div></div>
+    <div class="stat s3"><div class="stat-lbl">Budget libero</div><div class="stat-val" id="b-lib">—</div></div>
+    <div class="stat s4"><div class="stat-lbl">Fondi PNRR</div><div class="stat-val" id="b-pnrr">—</div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="card-hd"><div class="card-title">Allocazione spese</div><span class="ctag">2025</span></div><div id="bilancio-bars"></div></div>
+    <div class="card"><div class="card-hd"><div class="card-title">Piano AI</div><span class="ctag">Basato sui voti</span></div><div id="bilancio-plan"></div></div>
+  </div>
+</div>
+
+<!-- ASSISTENTE -->
+<div class="view" id="view-assistente">
+  <div class="g3">
+    <div class="card">
+      <div class="card-hd"><div class="card-title">Assistente Claude AI</div><span class="ctag">Connesso</span></div>
+      <div class="qps">
+        <button class="qp" onclick="qs('Quali sono le priorità più urgenti?')">📊 Priorità</button>
+        <button class="qp" onclick="qs('Genera bozza delibera')">✍️ Delibera</button>
+        <button class="qp" onclick="qs('Ottimizza il bilancio residuo')">💶 Budget</button>
+        <button class="qp" onclick="qs('Quali bandi PNRR posso richiedere?')">🇪🇺 PNRR</button>
+        <button class="qp" onclick="qs('Analisi demografica ISTAT del comune')">👥 ISTAT</button>
+        <button class="qp" onclick="qs('Benchmark con comuni simili')">📍 Benchmark</button>
+      </div>
+      <div class="chat-wrap">
+        <div class="chat-msgs" id="chat-msgs">
+          <div class="msg msg-ai">Ciao! Sono Claude, l'assistente AI di <strong>Praxisy</strong>. Lavoro con dati <strong>ISTAT, MEF e OpenCoesione</strong> aggiornati per <strong id="chat-comune">il tuo comune</strong>. Come posso aiutarti?</div>
+        </div>
+        <div class="chat-in-row">
+          <input class="chat-in" id="chat-in" placeholder="Chiedi a Claude..." onkeydown="if(event.key==='Enter')sendChat()">
+          <button class="chat-send" onclick="sendChat()">↑</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:11px">
+        <div class="card-hd"><div class="card-title">Fonti dati</div></div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <div style="display:flex;gap:7px;padding:8px;background:var(--bg);border-radius:7px;border:1px solid var(--border)"><span>📊</span><div><div style="font-size:11px;font-weight:600">ISTAT</div><div style="font-size:9px;color:var(--dim)">Demo, statistiche, qualità vita</div></div></div>
+          <div style="display:flex;gap:7px;padding:8px;background:var(--bg);border-radius:7px;border:1px solid var(--border)"><span>💶</span><div><div style="font-size:11px;font-weight:600">MEF-DPF</div><div style="font-size:9px;color:var(--dim)">Bilanci comunali certificati</div></div></div>
+          <div style="display:flex;gap:7px;padding:8px;background:var(--bg);border-radius:7px;border:1px solid var(--border)"><span>🇪🇺</span><div><div style="font-size:11px;font-weight:600">OpenCoesione</div><div style="font-size:9px;color:var(--dim)">Progetti PNRR in tempo reale</div></div></div>
+          <div style="display:flex;gap:7px;padding:8px;background:var(--bg);border-radius:7px;border:1px solid var(--border)"><span>⚖️</span><div><div style="font-size:11px;font-weight:600">Corte dei Conti</div><div style="font-size:9px;color:var(--dim)">Relazioni di gestione</div></div></div>
+        </div>
+      </div>
+      <div class="card"><div class="card-hd"><div class="card-title">Sessione</div></div>
+        <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--green)" id="chat-count">0</div>
+        <div style="font-size:9.5px;color:var(--dim)">messaggi questa sessione</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ANALISI CITTÀ -->
+<div class="view" id="view-citta">
+  <div class="verified-note">📋 <strong>Fonti:</strong> Claude AI elabora dati da ISTAT (demografia), MEF-DPF (bilanci), MIT (infrastrutture), OpenCoesione (PNRR), Corte dei Conti. Aggiornati 2024-2025.</div>
+  <div class="tab-pills">
+    <button class="tab-pill on" onclick="switchCityTab('problemi',this)">⚠️ Problematiche</button>
+    <button class="tab-pill" onclick="switchCityTab('iniziative',this)">🚀 Iniziative</button>
+    <button class="tab-pill" onclick="switchCityTab('amministrazione',this)">🏛️ Amministrazione</button>
+    <button class="tab-pill" onclick="switchCityTab('opportunita',this)">💡 Opportunità</button>
+  </div>
+  <div id="city-tab-problemi"><div class="section-block"><div class="section-block-title">⚠️ Problematiche <span class="source-badge istat">ISTAT</span><span class="source-badge">MEF</span></div><div id="city-problemi-content"><div class="city-loading">Analisi Claude AI in corso per <span id="ldr-p">il comune</span>...</div></div></div></div>
+  <div id="city-tab-iniziative" style="display:none"><div class="section-block"><div class="section-block-title">🚀 Iniziative & Progetti <span class="source-badge">OpenCoesione</span></div><div id="city-iniziative-content"><div class="city-loading">Caricamento...</div></div></div></div>
+  <div id="city-tab-amministrazione" style="display:none">
+    <div class="section-block"><div class="section-block-title">✅ Cosa ha fatto l'amministrazione</div><div id="city-amm-fatto"><div class="city-loading">Caricamento...</div></div></div>
+    <div class="section-block"><div class="section-block-title">🔭 Di cosa potrebbe occuparsi</div><div id="city-amm-potrebbe"><div class="city-loading">Elaborazione...</div></div></div>
+  </div>
+  <div id="city-tab-opportunita" style="display:none"><div class="section-block"><div class="section-block-title">💡 Opportunità <span class="source-badge">Claude AI</span></div><div id="city-opportunita-content"><div class="city-loading">Elaborazione...</div></div></div></div>
+</div>
+
+<!-- SEGNALAZIONI -->
+<div class="view" id="view-segnalazioni">
+  <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">📍 Segnalazioni Civiche</span></div><div class="ai-body">Segnala problemi stradali e urbani. <strong>Salvate su database</strong> e inviate all'ufficio competente. L'AI raggruppa le segnalazioni simili.</div></div>
+  <div class="g2">
+    <div>
+      <div class="seg-form">
+        <div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:700;margin-bottom:10px">📝 Nuova segnalazione</div>
+        <div class="ag"><label class="al">Tipo problema</label><select class="ai" id="seg-tipo"><option value="buca">🕳️ Buca/dissesto stradale</option><option value="illuminazione">💡 Illuminazione guasta</option><option value="rifiuti">🗑️ Rifiuti abbandonati</option><option value="verde">🌿 Verde trascurato</option><option value="vandalismo">🔨 Vandalismo</option><option value="acqua">💧 Perdita idrica</option><option value="pericolo">⚠️ Pericolo pubblico</option></select></div>
+        <div class="ag"><label class="al">Descrizione</label><textarea class="ai" id="seg-desc" rows="2" placeholder="Descrivi il problema..."></textarea></div>
+        <div class="ag"><label class="al">Indirizzo</label><input class="ai" id="seg-addr" placeholder="Via e numero civico..."></div>
+        <div class="photo-upload"><input type="file" accept="image/*" multiple onchange="handlePhotos(this)"><div style="font-size:18px;margin-bottom:2px">📷</div><div style="font-size:10.5px;color:var(--dim)">Aggiungi foto (max 3)</div></div>
+        <div class="photo-preview" id="photo-preview"></div>
+        <button class="btn btn-p" style="width:100%" onclick="submitSeg()">Invia Segnalazione →</button>
+      </div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+        <div style="font-family:'Playfair Display',serif;font-size:12.5px;font-weight:700">Segnalazioni recenti</div>
+        <select class="ai" id="seg-filter" onchange="loadSegnalazioni()" style="width:auto;padding:4px 8px;font-size:10.5px"><option value="all">Tutte</option><option value="open">Aperte</option><option value="progress">In lavorazione</option><option value="done">Risolte</option></select>
+      </div>
+      <div id="seg-list"><div style="text-align:center;padding:16px;color:var(--dim);font-size:12px">Caricamento...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- AVVISI -->
+<div class="view" id="view-avvisi">
+  <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">🔔 Avvisi & Notifiche</span></div><div class="ai-body">Comunicazioni ufficiali del comune · Emergenze · Lavori · Cultura</div></div>
+  <div class="g3">
+    <div><div id="avvisi-list"></div></div>
+    <div>
+      <div class="card" style="margin-bottom:11px">
+        <div class="card-hd"><div class="card-title">Le mie notifiche</div></div>
         <div>
-          <div class="card" style="margin-bottom:11px">
-            <div class="card-hd"><div class="card-title">Attività recente</div></div>
-            <div id="dash-activity"><div class="act"><div class="act-dot" style="background:var(--green2)"></div><div><div style="font-size:11.5px;font-weight:500">Caricamento...</div></div></div></div>
-          </div>
-          <div class="card">
-            <div class="card-hd"><div class="card-title">Voti per area</div></div>
-            <div class="cbars">
-              <div class="cbw"><div class="cb" id="cb1" style="height:80%;background:var(--green)"></div><div class="cb-lbl" id="cb1l">Infra</div></div>
-              <div class="cbw"><div class="cb" id="cb2" style="height:60%;background:var(--green2)"></div><div class="cb-lbl" id="cb2l">Verde</div></div>
-              <div class="cbw"><div class="cb" id="cb3" style="height:45%;background:var(--gold)"></div><div class="cb-lbl" id="cb3l">Digit</div></div>
-              <div class="cbw"><div class="cb" id="cb4" style="height:35%;background:#5a8a5a"></div><div class="cb-lbl" id="cb4l">Cult</div></div>
-              <div class="cbw"><div class="cb" id="cb5" style="height:25%;background:#7a6a8a"></div><div class="cb-lbl" id="cb5l">Soc</div></div>
-            </div>
-          </div>
+          <div class="notif-toggle"><div><div style="font-size:11.5px;font-weight:500">🚨 Emergenze</div><div style="font-size:9px;color:var(--dim)">Allerte e sicurezza</div></div><button class="toggle-sw on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="notif-toggle"><div><div style="font-size:11.5px;font-weight:500">🚧 Lavori</div><div style="font-size:9px;color:var(--dim)">Cantieri e chiusure</div></div><button class="toggle-sw on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="notif-toggle"><div><div style="font-size:11.5px;font-weight:500">🗳️ Consultazioni</div><div style="font-size:9px;color:var(--dim)">Sondaggi aperti</div></div><button class="toggle-sw" onclick="this.classList.toggle('on')"></button></div>
+          <div class="notif-toggle"><div><div style="font-size:11.5px;font-weight:500">🎭 Cultura</div><div style="font-size:9px;color:var(--dim)">Eventi locali</div></div><button class="toggle-sw" onclick="this.classList.toggle('on')"></button></div>
+        </div>
+      </div>
+      <div class="card"><div class="card-hd"><div class="card-title">Statistiche</div></div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;justify-content:space-between;font-size:11.5px"><span>Questo mese</span><span style="font-weight:600" id="av-total">—</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11.5px"><span>Non letti</span><span style="font-weight:600;color:var(--green)" id="av-unread">—</span></div>
         </div>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- PROPOSTE -->
-    <div class="view" id="view-proposte">
-      <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">🤖 Claude AI · Proposte</span></div><div class="ai-body" id="prop-insight-text">Proposte dei cittadini e idee generate da Claude AI.</div></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px">
-        <div class="stitle">Proposte & Idee AI</div>
-        <button class="btn btn-p" onclick="openNewProp()">+ Nuova</button>
-      </div>
-      <div class="prop-search-wrap">
-        <input class="prop-search" id="prop-search" type="text" placeholder="🔍 Cerca proposte..." autocomplete="off" oninput="propAC(this.value)">
-        <div class="prop-ac-list" id="prop-ac-list"></div>
-      </div>
-      <div class="g2" id="proposte-grid"><div style="text-align:center;padding:24px;color:var(--dim);grid-column:span 2">Caricamento proposte...</div></div>
-    </div>
-
-    <!-- SONDAGGI -->
-    <div class="view" id="view-sondaggi">
-      <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">🗳️ Consultazione Live</span></div><div class="ai-body" id="poll-insight">Sondaggio attivo per il comune selezionato.</div></div>
-      <div class="g2">
-        <div class="card">
-          <div class="card-hd"><div class="card-title" id="poll-title">Dove investire il budget?</div><span class="ctag" style="background:#ddf0dd;color:var(--green);border-color:#b8dcb8">● Live</span></div>
-          <div style="font-size:11.5px;color:var(--dim);margin-bottom:12px" id="poll-sub">Indica la tua priorità.</div>
-          <div id="poll-opts"></div>
-          <div id="poll-stats" style="display:flex;gap:10px;margin-top:11px;padding-top:11px;border-top:1px solid var(--mist)"></div>
-          <div style="margin-top:11px;padding-top:11px;border-top:1px solid var(--mist)">
-            <div style="font-size:9.5px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px">Commenti</div>
-            <div id="poll-cmts"></div>
-            <div class="c-row"><input class="c-in" id="poll-cin" placeholder="Scrivi un commento..." onkeydown="if(event.key==='Enter')addPollCmt()"><button class="c-send" onclick="addPollCmt()">↑</button></div>
-          </div>
-        </div>
-        <div>
-          <div class="card" style="margin-bottom:11px">
-            <div class="card-hd"><div class="card-title">Consultazioni chiuse</div></div>
-            <div id="poll-history"></div>
-          </div>
-          <div class="card"><div class="card-hd"><div class="card-title">Il mio voto</div></div><div id="my-vote" style="font-size:11.5px;color:var(--dim)">Nessun voto ancora.</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DELIBERE -->
-    <div class="view" id="view-delibere">
-      <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">✍️ Claude AI · Redattore</span></div><div class="ai-body"><strong>Bozze</strong> generate con riferimenti D.Lgs. 267/2000. Tempo ridotto da <strong>4h a 12 min</strong>.</div></div>
-      <div class="g2">
-        <div class="card">
-          <div class="card-hd"><div class="card-title">Delibere recenti</div><span class="ctag">2025</span></div>
-          <div id="delibere-list"></div>
-        </div>
-        <div>
-          <div class="card" style="margin-bottom:11px">
-            <div class="card-hd"><div class="card-title">Genera bozza Claude AI</div></div>
-            <div class="ag"><label class="al">Tipo atto</label><select class="ai"><option>Delibera di Giunta</option><option>Delibera di Consiglio</option><option>Ordinanza Sindacale</option><option>Regolamento</option></select></div>
-            <div class="ag"><label class="al">Oggetto</label><input class="ai" id="del-oggetto" placeholder="Descrivi l'oggetto..."></div>
-            <button class="btn btn-p" style="width:100%" onclick="genDelibera()">✨ Genera con Claude</button>
-            <div id="del-result" style="margin-top:9px;display:none"></div>
-          </div>
-          <div class="card">
-            <div class="card-hd"><div class="card-title">Statistiche redazione</div></div>
-            <div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px"><span>Delibere AI</span><span style="font-family:'DM Mono',monospace;color:var(--gold)">8/12</span></div><div class="btrack"><div class="bfill" style="width:66%;background:var(--gold)"></div></div></div>
-            <div><div style="font-size:11.5px;font-weight:500">Tempo medio</div><div style="font-family:'Playfair Display',serif;font-size:23px;font-weight:900;color:var(--green2)">12 min</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- BILANCIO -->
-    <div class="view" id="view-bilancio">
-      <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">📊 Claude AI · Finance</span><span class="istat-live"><span class="istat-dot"></span>MEF live</span></div><div class="ai-body" id="bilancio-insight">Seleziona un comune per il piano finanziario.</div></div>
-      <div class="stats">
-        <div class="stat s1"><div class="stat-lbl">Entrate 2025</div><div class="stat-val" id="b-ent">—</div></div>
-        <div class="stat s2"><div class="stat-lbl">Spese impegnate</div><div class="stat-val" id="b-spe">—</div></div>
-        <div class="stat s3"><div class="stat-lbl">Budget libero</div><div class="stat-val" id="b-lib">—</div></div>
-        <div class="stat s4"><div class="stat-lbl">Fondi PNRR</div><div class="stat-val" id="b-pnrr">—</div></div>
-      </div>
-      <div class="g2">
-        <div class="card"><div class="card-hd"><div class="card-title">Allocazione spese</div><span class="ctag">2025</span></div><div id="bilancio-bars"></div></div>
-        <div class="card"><div class="card-hd"><div class="card-title">Piano AI</div><span class="ctag">Basato sui voti</span></div><div id="bilancio-plan"></div></div>
-      </div>
-    </div>
-
-    <!-- ASSISTENTE -->
-    <div class="view" id="view-assistente">
-      <div class="g3">
-        <div class="card">
-          <div class="card-hd"><div class="card-title">Assistente Claude AI</div><span class="ctag">Connesso</span></div>
-          <div class="qps">
-            <button class="qp" onclick="qs('Quali sono le priorità più urgenti?')">📊 Priorità</button>
-            <button class="qp" onclick="qs('Genera bozza delibera')">✍️ Delibera</button>
-            <button class="qp" onclick="qs('Ottimizza il bilancio residuo')">💶 Budget</button>
-            <button class="qp" onclick="qs('Quali bandi PNRR posso richiedere?')">🇪🇺 PNRR</button>
-            <button class="qp" onclick="qs('Analisi demografica ISTAT del comune')">👥 ISTAT</button>
-            <button class="qp" onclick="qs('Benchmark con comuni simili')">📍 Benchmark</button>
-          </div>
-          <div class="chat-wrap">
-            <div class="chat-msgs" id="chat-msgs">
-              <div class="msg msg-ai">Ciao! Sono Claude, l'assistente AI di <strong>Praxisy</strong>. Lavoro con dati <strong>ISTAT, MEF e OpenCoesione</strong> aggiornati per <strong id="chat-comune">il tuo comune</strong>. Come posso aiutarti?</div>
-            </div>
-            <div class="chat-in-row">
-              <input class="chat-in" id="chat-in" placeholder="Chiedi a Claude..." onkeydown="if(event.key==='Enter')sendChat()">
-              <button class="chat-send" onclick="sendChat()">↑</button>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="card" style="margin-bottom:11px">
-            <div class="card-hd"><div class="card-title">Fonti dati</div></div>
-            <div style="display:flex;flex-direction:column;gap:5px">
-              <div style="display:flex;gap:7px;padding:8px;background:var(--bg);border-radius:7px;border:1px solid var(--border)"><span>📊</span><div><div style="font-size:11px;font-weight:600">ISTAT</div><div style="font-size:9px;color:var(--dim)">Demo, statistiche, qualità vita</div></div></div>
-              <div style="display:flex;gap:7px;padding:8px;background:var(--bg);border-radius:7px;border:1px solid var(--border)"><span>💶</span><div><div style="font-size:11px;font-weight:600">MEF-DPF</div><div style="font-size:9px;color:var(--dim)">Bilanci comunali certificati</div></div></div>
-              <div style="display:flex;gap:7px;padding:8px;background:var(--bg);border-radius:7px;border:1px solid var(--border)"><span>🇪🇺</span><div><div style="font-size:11px;font-weight:600">OpenCoesione</div><div style="font-size:9px;color:var(--dim)">Progetti PNRR in tempo reale</div></div></div>
-              <div style="display:flex;gap:7px;padding:8px;background:var(--bg);border-radius:7px;border:1px solid var(--border)"><span>⚖️</span><div><div style="font-size:11px;font-weight:600">Corte dei Conti</div><div style="font-size:9px;color:var(--dim)">Relazioni di gestione</div></div></div>
-            </div>
-          </div>
-          <div class="card"><div class="card-hd"><div class="card-title">Sessione</div></div>
-            <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--green)" id="chat-count">0</div>
-            <div style="font-size:9.5px;color:var(--dim)">messaggi questa sessione</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ANALISI CITTÀ -->
-    <div class="view" id="view-citta">
-      <div class="verified-note">📋 <strong>Fonti:</strong> Claude AI elabora dati da ISTAT (demografia), MEF-DPF (bilanci), MIT (infrastrutture), OpenCoesione (PNRR), Corte dei Conti. Aggiornati 2024-2025.</div>
-      <div class="tab-pills">
-        <button class="tab-pill on" onclick="switchCityTab('problemi',this)">⚠️ Problematiche</button>
-        <button class="tab-pill" onclick="switchCityTab('iniziative',this)">🚀 Iniziative</button>
-        <button class="tab-pill" onclick="switchCityTab('amministrazione',this)">🏛️ Amministrazione</button>
-        <button class="tab-pill" onclick="switchCityTab('opportunita',this)">💡 Opportunità</button>
-      </div>
-      <div id="city-tab-problemi"><div class="section-block"><div class="section-block-title">⚠️ Problematiche <span class="source-badge istat">ISTAT</span><span class="source-badge">MEF</span></div><div id="city-problemi-content"><div class="city-loading">Analisi Claude AI in corso per <span id="ldr-p">il comune</span>...</div></div></div></div>
-      <div id="city-tab-iniziative" style="display:none"><div class="section-block"><div class="section-block-title">🚀 Iniziative & Progetti <span class="source-badge">OpenCoesione</span></div><div id="city-iniziative-content"><div class="city-loading">Caricamento...</div></div></div></div>
-      <div id="city-tab-amministrazione" style="display:none">
-        <div class="section-block"><div class="section-block-title">✅ Cosa ha fatto l'amministrazione</div><div id="city-amm-fatto"><div class="city-loading">Caricamento...</div></div></div>
-        <div class="section-block"><div class="section-block-title">🔭 Di cosa potrebbe occuparsi</div><div id="city-amm-potrebbe"><div class="city-loading">Elaborazione...</div></div></div>
-      </div>
-      <div id="city-tab-opportunita" style="display:none"><div class="section-block"><div class="section-block-title">💡 Opportunità <span class="source-badge">Claude AI</span></div><div id="city-opportunita-content"><div class="city-loading">Elaborazione...</div></div></div></div>
-    </div>
-
-    <!-- SEGNALAZIONI -->
-    <div class="view" id="view-segnalazioni">
-      <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">📍 Segnalazioni Civiche</span></div><div class="ai-body">Segnala problemi stradali e urbani. <strong>Salvate su database</strong> e inviate all'ufficio competente. L'AI raggruppa le segnalazioni simili.</div></div>
-      <div class="g2">
-        <div>
-          <div class="seg-form">
-            <div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:700;margin-bottom:10px">📝 Nuova segnalazione</div>
-            <div class="ag"><label class="al">Tipo problema</label><select class="ai" id="seg-tipo"><option value="buca">🕳️ Buca/dissesto stradale</option><option value="illuminazione">💡 Illuminazione guasta</option><option value="rifiuti">🗑️ Rifiuti abbandonati</option><option value="verde">🌿 Verde trascurato</option><option value="vandalismo">🔨 Vandalismo</option><option value="acqua">💧 Perdita idrica</option><option value="pericolo">⚠️ Pericolo pubblico</option></select></div>
-            <div class="ag"><label class="al">Descrizione</label><textarea class="ai" id="seg-desc" rows="2" placeholder="Descrivi il problema..."></textarea></div>
-            <div class="ag"><label class="al">Indirizzo</label><input class="ai" id="seg-addr" placeholder="Via e numero civico..."></div>
-            <div class="photo-upload"><input type="file" accept="image/*" multiple onchange="handlePhotos(this)"><div style="font-size:18px;margin-bottom:2px">📷</div><div style="font-size:10.5px;color:var(--dim)">Aggiungi foto (max 3)</div></div>
-            <div class="photo-preview" id="photo-preview"></div>
-            <button class="btn btn-p" style="width:100%" onclick="submitSeg()">Invia Segnalazione →</button>
-          </div>
-        </div>
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
-            <div style="font-family:'Playfair Display',serif;font-size:12.5px;font-weight:700">Segnalazioni recenti</div>
-            <select class="ai" id="seg-filter" onchange="loadSegnalazioni()" style="width:auto;padding:4px 8px;font-size:10.5px"><option value="all">Tutte</option><option value="open">Aperte</option><option value="progress">In lavorazione</option><option value="done">Risolte</option></select>
-          </div>
-          <div id="seg-list"><div style="text-align:center;padding:16px;color:var(--dim);font-size:12px">Caricamento...</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- AVVISI -->
-    <div class="view" id="view-avvisi">
-      <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">🔔 Avvisi & Notifiche</span></div><div class="ai-body">Comunicazioni ufficiali del comune · Emergenze · Lavori · Cultura</div></div>
-      <div class="g3">
-        <div><div id="avvisi-list"></div></div>
-        <div>
-          <div class="card" style="margin-bottom:11px">
-            <div class="card-hd"><div class="card-title">Le mie notifiche</div></div>
-            <div>
-              <div class="notif-toggle"><div><div style="font-size:11.5px;font-weight:500">🚨 Emergenze</div><div style="font-size:9px;color:var(--dim)">Allerte e sicurezza</div></div><button class="toggle-sw on" onclick="this.classList.toggle('on')"></button></div>
-              <div class="notif-toggle"><div><div style="font-size:11.5px;font-weight:500">🚧 Lavori</div><div style="font-size:9px;color:var(--dim)">Cantieri e chiusure</div></div><button class="toggle-sw on" onclick="this.classList.toggle('on')"></button></div>
-              <div class="notif-toggle"><div><div style="font-size:11.5px;font-weight:500">🗳️ Consultazioni</div><div style="font-size:9px;color:var(--dim)">Sondaggi aperti</div></div><button class="toggle-sw" onclick="this.classList.toggle('on')"></button></div>
-              <div class="notif-toggle"><div><div style="font-size:11.5px;font-weight:500">🎭 Cultura</div><div style="font-size:9px;color:var(--dim)">Eventi locali</div></div><button class="toggle-sw" onclick="this.classList.toggle('on')"></button></div>
-            </div>
-          </div>
-          <div class="card"><div class="card-hd"><div class="card-title">Statistiche</div></div>
-            <div style="display:flex;flex-direction:column;gap:6px">
-              <div style="display:flex;justify-content:space-between;font-size:11.5px"><span>Questo mese</span><span style="font-weight:600" id="av-total">—</span></div>
-              <div style="display:flex;justify-content:space-between;font-size:11.5px"><span>Non letti</span><span style="font-weight:600;color:var(--green)" id="av-unread">—</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TRASPARENZA -->
-    <div class="view" id="view-trasparenza">
-      <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">🔍 Accountability</span></div><div class="ai-body" id="trasp-insight">Monitoraggio promesse elettorali del mandato in corso.</div></div>
-      <div class="stitle">Promesse Elettorali — Mandato in corso</div>
-      <div class="g2"><div id="prom-col1"></div><div id="prom-col2"></div></div>
-    </div>
+<!-- TRASPARENZA -->
+<div class="view" id="view-trasparenza">
+  <div class="ai-insight"><div class="ai-hd"><span class="ai-chip">🔍 Accountability</span></div><div class="ai-body" id="trasp-insight">Monitoraggio promesse elettorali del mandato in corso.</div></div>
+  <div class="stitle">Promesse Elettorali — Mandato in corso</div>
+  <div class="g2"><div id="prom-col1"></div><div id="prom-col2"></div></div>
+</div>
+```
 
   </div>
 </main>
@@ -708,28 +704,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-
 'use strict';
 
 /* ═══ SUPABASE INIT ═══ */
-const sb = (function() {
+// Supabase init — safe, handles CDN loading delay
+let sb = null;
+function initSB() {
+  if (sb) return sb;
   try {
-    if (typeof supabase === 'undefined') { console.warn('Supabase not loaded yet'); return null; }
-    return supabase.createClient('https://ukylvdadytrnlcmoiqor.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVreWx2ZGFkeXRybmxjbW9pcW9yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4MzQ3NjgsImV4cCI6MjA5MDQxMDc2OH0.y97OOSphSo1gZ8_CtjZCe6jGXt3PU-wNB6lopa3KnQY');
-  } catch(e) { console.error('Supabase init:', e); return null; }
-})();
+    if (typeof supabase === 'undefined') return null;
+    sb = supabase.createClient(
+      'https://ukylvdadytrnlcmoiqor.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVreWx2ZGFkeXRybmxjbW9pcW9yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4MzQ3NjgsImV4cCI6MjA5MDQxMDc2OH0.y97OOSphSo1gZ8_CtjZCe6jGXt3PU-wNB6lopa3KnQY'
+    );
+    return sb;
+  } catch(e) { console.warn('Supabase not ready:', e.message); return null; }
+}
+// getSB — returns current sb instance, lazy-init if needed
+function getSB() {
+  if (sb) return sb;
+  return initSB();
+}
+
 
 /* ═══ CONSTANTS ═══ */
-
-// Safe Supabase wrapper - handles null sb gracefully
-function sbFrom(table) {
-  if (!sb) {
-    console.warn('Supabase not initialized - check CDN');
-    return {
-      select: () => ({ eq: () => ({ order: () => Promise.resolve({data:[], error:'no_sb'}), single: () => Promise.resolve({data:null, error:'no_sb'}) }), single: () => Promise.resolve({data:null, error:'no_sb'}) }),
-      insert: () => Promise.resolve({error: 'no_sb'}),
-      update: () => ({ eq: () => Promise.resolve({error:'no_sb'}) }),
-      delete: () => ({ eq: () => Promise.resolve({error:'no_sb'}) }),
-    };
-  }
-  return sb.from(table);
-}
 const CEO = {email:'marcoportaro02@gmail.com', pass:'mani101M@'};
 const RESTRICTED = ['proposte','sondaggi','delibere','bilancio','assistente','citta','segnalazioni','avvisi','trasparenza'];
 const TITLES = {dashboard:'Cruscotto Comunale',proposte:'Proposte & Idee AI',sondaggi:'Sondaggi',delibere:'Delibere & Atti',bilancio:'Bilancio Comunale',assistente:'Assistente AI',citta:'Analisi Città',segnalazioni:'Segnalazioni Civiche',avvisi:'Avvisi & Notifiche',trasparenza:'Trasparenza'};
@@ -793,25 +788,24 @@ const cityTabsLoaded = {};
 let pollVotedOption = null;
 
 /* ═══ SPLASH ═══ */
-// Splash is handled by CSS animation (2.8s)
-// JS shows city picker after splash animation ends
-document.addEventListener('DOMContentLoaded', function() {
-  // Show city picker after splash CSS animation completes
+// Splash auto-hides via CSS at 2.5s
+// This just ensures city picker shows after
+window.addEventListener('DOMContentLoaded', function() {
+  // Primary: show city picker at 2.8s (after CSS animation)
   setTimeout(function() {
     try {
-      var sp = document.getElementById('splash');
-      if (sp) sp.style.display = 'none';
+      document.getElementById('splash').style.display = 'none';
     } catch(e) {}
     try { showCityPick(); } catch(e) {
-      var cp = document.getElementById('citypick');
-      if (cp) cp.style.display = 'flex';
-      try { renderFeaturedComuni(); } catch(e2) {}
+      try {
+        document.getElementById('citypick').style.display = 'flex';
+        renderFeaturedComuni();
+      } catch(e2) {}
     }
-  }, 3000);
-  // Hard fallback at 5s
+  }, 2800);
+  // Hard fallback at 5s no matter what
   setTimeout(function() {
-    var sp = document.getElementById('splash');
-    if (sp) sp.style.display = 'none';
+    try { document.getElementById('splash').style.display = 'none'; } catch(e) {}
     var cp = document.getElementById('citypick');
     if (cp && cp.style.display !== 'flex') {
       cp.style.display = 'flex';
@@ -893,7 +887,8 @@ async function doLogin() {
     return;
   }
 
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+  const _sb = getSB(); if (!_sb) { err.textContent='Database non disponibile. Prova a ricaricare la pagina.'; err.classList.add('on'); btn.disabled=false; btn.textContent='Accedi →'; return; }
+    const { data, error } = await _sb.auth.signInWithPassword({ email, password: pass });
   btn.disabled = false; btn.textContent = 'Accedi →';
 
   if (error) {
@@ -903,7 +898,7 @@ async function doLogin() {
 
   sbUser = data.user;
   // Load profile from DB
-  const { data: profile } = await sb.from('profiles').select('*').eq('id', sbUser.id).single();
+  const { data: profile } = await (getSB()||sb).from('profiles').select('*').eq('id', sbUser.id).single();
   user = {
     role: profile?.ruolo || 'user',
     name: profile?.nome || sbUser.email,
@@ -928,7 +923,8 @@ async function doRegister() {
 
   btn.disabled = true; btn.textContent = 'Registrazione in corso...';
 
-  const { data, error } = await sb.auth.signUp({
+  const _sbr = getSB(); if (!_sbr) { err.textContent='Database non disponibile. Prova a ricaricare.'; err.classList.add('on'); btn.disabled=false; btn.textContent='Crea account →'; return; }
+  const { data, error } = await _sbr.auth.signUp({
     email,
     password: pass,
     options: { data: { nome: name, comune } }
@@ -963,16 +959,26 @@ async function doLogout() {
 async function enterApp() {
   try { document.getElementById('auth').style.display='none'; } catch(e) {}
   if (!selectedComune) selectedComune = COMUNI_PILOTA[0];
-  const run = async (fn, name) => { try { await fn(); } catch(e) { console.error(name+':', e); } };
-  await run(()=>{ applyRole(); updateSidebar(); updateTopbar(); updateDashboard(); }, 'ui');
-  await run(loadProposte, 'proposte');
-  await run(()=>{ renderPoll(); renderDelibere(); updateBilancio(); }, 'render');
-  await run(loadSegnalazioni, 'segnalazioni');
-  await run(()=>{ renderAvvisi(); renderTrasp(); }, 'avvisi');
+  const _run = async (fn, name) => {
+    try { await fn(); } catch(e) { console.error('enterApp/'+name+':', e.message||e); }
+  };
+  await _run(() => { applyRole(); updateSidebar(); updateTopbar(); updateDashboard(); }, 'ui');
+  await _run(loadProposte, 'proposte');
+  await _run(() => { renderPoll(); renderDelibere(); updateBilancio(); }, 'render');
+  await _run(loadSegnalazioni, 'segnalazioni');
+  await _run(() => { renderAvvisi(); renderTrasp(); }, 'avvisi');
   try { renderFeedback(); } catch(e) {}
   try { renderKPI(); } catch(e) {}
-  try { const ccn=document.getElementById('chat-comune'); if(ccn) ccn.textContent=selectedComune.n; } catch(e) {}
-  setTimeout(()=>{ try{loadFeedbackAI();}catch(e){} }, 3000);
+  try {
+    var ccn = document.getElementById('chat-comune');
+    if (ccn) ccn.textContent = selectedComune.n;
+  } catch(e) {}
+  setTimeout(function() { try { loadFeedbackAI(); } catch(e) {} }, 3000);
+  try {
+    var mf = {name:"Praxisy",short_name:"Praxisy",start_url:"/",display:"standalone",background_color:"#1a2e1a",theme_color:"#1a2e1a"};
+    var b = new Blob([JSON.stringify(mf)],{type:'application/json'});
+    document.getElementById('manifest-link').href = URL.createObjectURL(b);
+  } catch(e) {}
 }
 
 function applyRole() {
@@ -1053,7 +1059,8 @@ async function loadProposte(filter='') {
   const grid = document.getElementById('proposte-grid');
   grid.innerHTML = '<div style="text-align:center;padding:24px;color:var(--dim);grid-column:span 2">Caricamento...</div>';
 
-  let query = sb.from('proposte').select('*, profiles(nome)').eq('comune', c.n).order('created_at', {ascending:false});
+  const _sbp = getSB(); if (!_sbp) { grid.innerHTML='<div style="text-align:center;padding:24px;color:var(--dim);grid-column:span 2">Database non disponibile — funzionalità offline.</div>'; return; }
+  let query = _sbp.from('proposte').select('*, profiles(nome)').eq('comune', c.n).order('created_at', {ascending:false});
   if (filter) query = query.or(`titolo.ilike.%${filter}%,descrizione.ilike.%${filter}%`);
 
   const { data: props, error } = await query;
@@ -1227,7 +1234,8 @@ async function submitProp() {
   const btn = document.getElementById('prop-submit-btn');
   btn.disabled = true; btn.textContent = 'Invio in corso...';
 
-  const { error } = await sb.from('proposte').insert({
+  const _sbsp = getSB(); if (!_sbsp) { showToast('Database non disponibile'); btn.disabled=false; btn.textContent='Invia Proposta →'; return; }
+  const { error } = await _sbsp.from('proposte').insert({
     comune: selectedComune.n, titolo: title, descrizione: desc, categoria: cat,
     ai_generated: false, autore_id: sbUser?.id || null,
     autore_nome: user.name, voti_su: 0, voti_giu: 0
@@ -1250,7 +1258,8 @@ async function loadSegnalazioni() {
   const list = document.getElementById('seg-list');
   if (!list) return;
 
-  let query = sb.from('segnalazioni').select('*').eq('comune', c.n).order('created_at', {ascending:false});
+  const _sbs = getSB(); if (!_sbs) { list.innerHTML='<div style="text-align:center;padding:16px;color:var(--dim)">Database non disponibile.</div>'; return; }
+  let query = _sbs.from('segnalazioni').select('*').eq('comune', c.n).order('created_at', {ascending:false});
   if (filter !== 'all') query = query.eq('stato', filter);
 
   const { data: segs } = await query;
@@ -1301,7 +1310,8 @@ async function submitSeg() {
   const addr = document.getElementById('seg-addr').value.trim();
   if (!desc) { showToast('Descrivi il problema ⚠️'); return; }
 
-  const { error } = await sb.from('segnalazioni').insert({
+  const _sbss = getSB(); if (!_sbss) { showToast('Database non disponibile'); return; }
+  const { error } = await _sbss.from('segnalazioni').insert({
     comune: selectedComune.n, tipo, descrizione: desc,
     indirizzo: addr || 'Posizione GPS', stato: 'open', urgente: false,
     voti: 0, autore_id: sbUser?.id || null
@@ -1611,16 +1621,22 @@ function showToast(msg, duration=2800) { const t=document.getElementById('toast'
 function closeModal(id) { document.getElementById(id).classList.remove('on'); }
 document.addEventListener('click', e => { if (e.target.classList.contains('modal-bg')) e.target.classList.remove('on'); });
 
+
+function renderFeedback() { /* feedback not in this version */ }
+function renderKPI() { /* kpi not in this version */ }
+function loadFeedbackAI() { /* ai feedback not in this version */ }
+
 /* ═══ PWA ═══ */
 const mf={name:"Praxisy — Made by Porty",short_name:"Praxisy",start_url:"./",display:"standalone",background_color:"#1a2e1a",theme_color:"#1a2e1a",icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%231a2e1a'/%3E%3Ctext x='256' y='340' font-family='serif' font-size='280' font-weight='900' text-anchor='middle' fill='%23f0ead8'%3EP%3C/text%3E%3C/svg%3E",sizes:"512x512",type:"image/svg+xml",purpose:"any maskable"}]};
 try{const b=new Blob([JSON.stringify(mf)],{type:'application/json'});document.getElementById('manifest-link').href=URL.createObjectURL(b);}catch(e){}
 
 /* ═══ AUTO LOGIN CHECK ═══ */
-sb.auth.onAuthStateChange(async (event, session) => {
+// Auth state listener — only if sb is available
+setTimeout(function() { const _sba = getSB(); if (_sba) _sba.auth.onAuthStateChange(async (event, session) => {
   if (event === 'SIGNED_IN' && session) {
     sbUser = session.user;
     if (!user || user.role === 'guest') {
-      const { data: profile } = await sb.from('profiles').select('*').eq('id', sbUser.id).single();
+      const { data: profile } = await (getSB()||sb).from('profiles').select('*').eq('id', sbUser.id).single();
       if (profile) {
         user = { role: profile.ruolo||'user', name: profile.nome||sbUser.email, email: sbUser.email, comune: profile.comune||'' };
         if (!selectedComune && profile.comune) {
@@ -1629,8 +1645,10 @@ sb.auth.onAuthStateChange(async (event, session) => {
       }
     }
   }
-});
+}); }, 1000);;
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onload="initSB()" onerror="console.error('Supabase CDN failed')"></script>
+
 </body>
 </html>
