@@ -18,21 +18,19 @@
 :root{--bg:#f0ead8;--ink:#1a2e1a;--green:#2d5a2d;--green2:#4a7c4a;--gold:#7a6e3a;--mist:#e2dcc8;--card:#f7f2e2;--border:#c8c0a8;--dim:#6b7d5a;--red:#8b2e2e}
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}
-/* SPLASH — pure CSS, no JS dependency */
-#splash{position:fixed;inset:0;background:#1a2e1a;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;animation:spHide .4s ease 2.5s forwards}
-@keyframes spHide{to{opacity:0;visibility:hidden;pointer-events:none}}
-.sp-wrap{position:relative;width:112px;height:112px;display:flex;align-items:center;justify-content:center}
-.sp-svg{width:80px;height:80px;animation:spSpin 2s ease-in-out infinite;filter:drop-shadow(0 0 10px rgba(106,173,106,.6))}
-@keyframes spSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
-.sp-ra{position:absolute;inset:-10px;border-radius:50%;border:2px solid rgba(106,173,106,.15);border-top-color:#6aad6a;animation:spRa 1.5s linear infinite}
-.sp-rb{position:absolute;inset:-20px;border-radius:50%;border:1.5px solid rgba(106,173,106,.08);border-bottom-color:#4a8a4a;animation:spRb 2.5s linear infinite}
+#splash{position:fixed;inset:0;background:#1a2e1a;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.sp-wrap{position:relative;width:110px;height:110px;display:flex;align-items:center;justify-content:center}
+.sp-svg{width:78px;height:78px;animation:spSpin 2s linear infinite;filter:drop-shadow(0 0 10px #6aad6a)}
+@keyframes spSpin{to{transform:rotate(360deg)}}
+.sp-ra{position:absolute;inset:-10px;border-radius:50%;border:2px solid transparent;border-top-color:#6aad6a;animation:spRa 1.5s linear infinite}
+.sp-rb{position:absolute;inset:-20px;border-radius:50%;border:1.5px solid transparent;border-bottom-color:#4a8a4a;animation:spRb 2.5s linear infinite}
 @keyframes spRa{to{transform:rotate(360deg)}}
 @keyframes spRb{to{transform:rotate(-360deg)}}
-.sp-name{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:#f0ead8;letter-spacing:-0.5px}
-.sp-name em{color:#6aad6a;font-style:italic}
-.sp-sub{font-size:9px;color:#3a5a3a;letter-spacing:4px;text-transform:uppercase;font-family:'DM Sans',sans-serif}
-.sp-bar{width:0;height:1.5px;background:#6aad6a;border-radius:2px;margin-top:4px;animation:spBar 2s ease forwards;box-shadow:0 0 8px rgba(106,173,106,.5)}
-@keyframes spBar{to{width:60px}}
+.sp-logo{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:#f0ead8}
+.sp-logo span{color:#6aad6a;font-style:italic}
+.sp-sub{font-size:9px;color:#4a6e4a;letter-spacing:4px;text-transform:uppercase}
+.sp-bar{width:50px;height:2px;background:linear-gradient(90deg,transparent,#6aad6a,transparent);margin-top:2px;animation:spBar 2s ease forwards}
+@keyframes spBar{from{opacity:0;width:0}to{opacity:1;width:50px}}
 #citypick{position:fixed;inset:0;background:var(--ink);z-index:8500;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
 .cp-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px 24px;width:100%;max-width:440px}
 .cp-logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--ink);text-align:center}.cp-logo span{color:var(--green)}
@@ -314,21 +312,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-
 
 <div id="splash">
   <div class="sp-wrap">
-    <div class="sp-ra"></div>
-    <div class="sp-rb"></div>
-    <svg class="sp-svg" viewBox="0 0 200 210" xmlns="http://www.w3.org/2000/svg">
-      <!-- Triskelion - three spirals -->
-      <g fill="none" stroke="#6aad6a" stroke-width="13" stroke-linecap="round" stroke-linejoin="round">
-        <!-- top-left arm -->
-        <path d="M105,105 C105,105 82,105 72,91 C62,77 66,57 80,51 C94,45 108,56 106,70 C104,84 91,88 84,81 C77,74 80,63 88,62"/>
-        <!-- top-right arm -->
-        <path d="M105,105 C105,105 122,78 136,79 C150,80 158,92 154,105 C150,118 136,122 126,115 C116,108 117,94 126,91 C135,88 141,96 138,104"/>
-        <!-- bottom arm -->
-        <path d="M105,105 C105,105 88,132 92,146 C96,160 110,164 121,156 C132,148 131,134 119,131 C107,128 101,138 106,147 C111,156 123,154 126,145"/>
+    <div class="sp-ra"></div><div class="sp-rb"></div>
+    <svg class="sp-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#6aad6a" stroke-width="13" stroke-linecap="round">
+        <path d="M100,100 C80,100 68,88 68,74 C68,60 80,52 92,56 C104,60 106,74 98,80 C90,86 80,80 82,70"/>
+        <path d="M100,100 C116,78 130,78 138,88 C146,98 142,112 130,116 C118,120 110,108 116,98 C122,88 134,90 134,102"/>
+        <path d="M100,100 C84,122 84,138 94,146 C104,154 118,150 122,138 C126,126 116,118 106,124 C96,130 98,144 110,146"/>
       </g>
     </svg>
   </div>
-  <div class="sp-name">Praxi<em>sy</em></div>
+  <div class="sp-logo">Praxi<span>sy</span></div>
   <div class="sp-sub">Made by Porty</div>
   <div class="sp-bar"></div>
 </div>
@@ -704,25 +697,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-
 'use strict';
 
 /* ═══ SUPABASE INIT ═══ */
-// Supabase init — safe, handles CDN loading delay
 let sb = null;
-function initSB() {
-  if (sb) return sb;
+function _initSB() {
   try {
-    if (typeof supabase === 'undefined') return null;
-    sb = supabase.createClient(
-      'https://ukylvdadytrnlcmoiqor.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVreWx2ZGFkeXRybmxjbW9pcW9yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4MzQ3NjgsImV4cCI6MjA5MDQxMDc2OH0.y97OOSphSo1gZ8_CtjZCe6jGXt3PU-wNB6lopa3KnQY'
-    );
-    return sb;
-  } catch(e) { console.warn('Supabase not ready:', e.message); return null; }
+    if (typeof supabase==='undefined') return;
+    const {createClient} = supabase;
+    sb = createClient('https://ukylvdadytrnlcmoiqor.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVreWx2ZGFkeXRybmxjbW9pcW9yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ4MzQ3NjgsImV4cCI6MjA5MDQxMDc2OH0.y97OOSphSo1gZ8_CtjZCe6jGXt3PU-wNB6lopa3KnQY');
+  } catch(e) { console.warn('SB init:',e.message); }
 }
-// getSB — returns current sb instance, lazy-init if needed
-function getSB() {
-  if (sb) return sb;
-  return initSB();
-}
-
+_initSB(); // try immediately (may fail if CDN not loaded yet)
+window._sbOnLoad = function() { if(!sb) _initSB(); }; // called by CDN onload
 
 /* ═══ CONSTANTS ═══ */
 const CEO = {email:'marcoportaro02@gmail.com', pass:'mani101M@'};
@@ -788,31 +772,20 @@ const cityTabsLoaded = {};
 let pollVotedOption = null;
 
 /* ═══ SPLASH ═══ */
-// Splash auto-hides via CSS at 2.5s
-// This just ensures city picker shows after
-window.addEventListener('DOMContentLoaded', function() {
-  // Primary: show city picker at 2.8s (after CSS animation)
-  setTimeout(function() {
-    try {
-      document.getElementById('splash').style.display = 'none';
-    } catch(e) {}
-    try { showCityPick(); } catch(e) {
-      try {
-        document.getElementById('citypick').style.display = 'flex';
-        renderFeaturedComuni();
-      } catch(e2) {}
-    }
-  }, 2800);
-  // Hard fallback at 5s no matter what
-  setTimeout(function() {
-    try { document.getElementById('splash').style.display = 'none'; } catch(e) {}
+(function() {
+  var done = false;
+  function go() {
+    if (done) return; done = true;
+    var sp = document.getElementById('splash');
+    if (sp) sp.style.cssText = 'display:none!important';
     var cp = document.getElementById('citypick');
-    if (cp && cp.style.display !== 'flex') {
-      cp.style.display = 'flex';
-      try { renderFeaturedComuni(); } catch(e) {}
-    }
-  }, 5000);
-});
+    if (cp) cp.style.display = 'flex';
+    try { renderFeaturedComuni(); } catch(e) {}
+  }
+  setTimeout(go, 2200);
+  setTimeout(go, 4500);
+  window.addEventListener('load', function() { setTimeout(go, 1800); });
+})();
 
 /* ═══ CITY PICKER ═══ */
 function showCityPick() { document.getElementById('citypick').style.display = 'flex'; renderFeaturedComuni(); }
@@ -887,8 +860,7 @@ async function doLogin() {
     return;
   }
 
-  const _sb = getSB(); if (!_sb) { err.textContent='Database non disponibile. Prova a ricaricare la pagina.'; err.classList.add('on'); btn.disabled=false; btn.textContent='Accedi →'; return; }
-    const { data, error } = await _sb.auth.signInWithPassword({ email, password: pass });
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
   btn.disabled = false; btn.textContent = 'Accedi →';
 
   if (error) {
@@ -898,7 +870,7 @@ async function doLogin() {
 
   sbUser = data.user;
   // Load profile from DB
-  const { data: profile } = await (getSB()||sb).from('profiles').select('*').eq('id', sbUser.id).single();
+  const { data: profile } = await sb.from('profiles').select('*').eq('id', sbUser.id).single();
   user = {
     role: profile?.ruolo || 'user',
     name: profile?.nome || sbUser.email,
@@ -923,8 +895,7 @@ async function doRegister() {
 
   btn.disabled = true; btn.textContent = 'Registrazione in corso...';
 
-  const _sbr = getSB(); if (!_sbr) { err.textContent='Database non disponibile. Prova a ricaricare.'; err.classList.add('on'); btn.disabled=false; btn.textContent='Crea account →'; return; }
-  const { data, error } = await _sbr.auth.signUp({
+  const { data, error } = await sb.auth.signUp({
     email,
     password: pass,
     options: { data: { nome: name, comune } }
@@ -959,26 +930,18 @@ async function doLogout() {
 async function enterApp() {
   try { document.getElementById('auth').style.display='none'; } catch(e) {}
   if (!selectedComune) selectedComune = COMUNI_PILOTA[0];
-  const _run = async (fn, name) => {
-    try { await fn(); } catch(e) { console.error('enterApp/'+name+':', e.message||e); }
-  };
-  await _run(() => { applyRole(); updateSidebar(); updateTopbar(); updateDashboard(); }, 'ui');
-  await _run(loadProposte, 'proposte');
-  await _run(() => { renderPoll(); renderDelibere(); updateBilancio(); }, 'render');
-  await _run(loadSegnalazioni, 'segnalazioni');
-  await _run(() => { renderAvvisi(); renderTrasp(); }, 'avvisi');
-  try { renderFeedback(); } catch(e) {}
-  try { renderKPI(); } catch(e) {}
-  try {
-    var ccn = document.getElementById('chat-comune');
-    if (ccn) ccn.textContent = selectedComune.n;
-  } catch(e) {}
-  setTimeout(function() { try { loadFeedbackAI(); } catch(e) {} }, 3000);
-  try {
-    var mf = {name:"Praxisy",short_name:"Praxisy",start_url:"/",display:"standalone",background_color:"#1a2e1a",theme_color:"#1a2e1a"};
-    var b = new Blob([JSON.stringify(mf)],{type:'application/json'});
-    document.getElementById('manifest-link').href = URL.createObjectURL(b);
-  } catch(e) {}
+  const _t = async (fn,n) => { try { await fn(); } catch(e) { console.error(n,e.message); } };
+  await _t(()=>{applyRole();updateSidebar();updateTopbar();updateDashboard();},'ui');
+  await _t(loadProposte,'proposte');
+  await _t(()=>{renderPoll();renderDelibere();updateBilancio();},'render');
+  await _t(loadSegnalazioni,'segnalazioni');
+  await _t(()=>{renderAvvisi();renderTrasp();},'avvisi');
+  try{document.getElementById('chat-comune').textContent=selectedComune.n;}catch(e){}
+  try{
+    const mf={name:"Praxisy",short_name:"Praxisy",start_url:"/",display:"standalone",background_color:"#1a2e1a",theme_color:"#1a2e1a",icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%231a2e1a'/%3E%3Ctext x='256' y='340' font-family='serif' font-size='280' font-weight='900' text-anchor='middle' fill='%23f0ead8'%3EP%3C/text%3E%3C/svg%3E",sizes:"512x512",type:"image/svg+xml",purpose:"any maskable"}]};
+    const b=new Blob([JSON.stringify(mf)],{type:'application/json'});
+    document.getElementById('manifest-link').href=URL.createObjectURL(b);
+  }catch(e){}
 }
 
 function applyRole() {
@@ -1059,8 +1022,7 @@ async function loadProposte(filter='') {
   const grid = document.getElementById('proposte-grid');
   grid.innerHTML = '<div style="text-align:center;padding:24px;color:var(--dim);grid-column:span 2">Caricamento...</div>';
 
-  const _sbp = getSB(); if (!_sbp) { grid.innerHTML='<div style="text-align:center;padding:24px;color:var(--dim);grid-column:span 2">Database non disponibile — funzionalità offline.</div>'; return; }
-  let query = _sbp.from('proposte').select('*, profiles(nome)').eq('comune', c.n).order('created_at', {ascending:false});
+  let query = sb.from('proposte').select('*, profiles(nome)').eq('comune', c.n).order('created_at', {ascending:false});
   if (filter) query = query.or(`titolo.ilike.%${filter}%,descrizione.ilike.%${filter}%`);
 
   const { data: props, error } = await query;
@@ -1234,8 +1196,7 @@ async function submitProp() {
   const btn = document.getElementById('prop-submit-btn');
   btn.disabled = true; btn.textContent = 'Invio in corso...';
 
-  const _sbsp = getSB(); if (!_sbsp) { showToast('Database non disponibile'); btn.disabled=false; btn.textContent='Invia Proposta →'; return; }
-  const { error } = await _sbsp.from('proposte').insert({
+  const { error } = await sb.from('proposte').insert({
     comune: selectedComune.n, titolo: title, descrizione: desc, categoria: cat,
     ai_generated: false, autore_id: sbUser?.id || null,
     autore_nome: user.name, voti_su: 0, voti_giu: 0
@@ -1258,8 +1219,7 @@ async function loadSegnalazioni() {
   const list = document.getElementById('seg-list');
   if (!list) return;
 
-  const _sbs = getSB(); if (!_sbs) { list.innerHTML='<div style="text-align:center;padding:16px;color:var(--dim)">Database non disponibile.</div>'; return; }
-  let query = _sbs.from('segnalazioni').select('*').eq('comune', c.n).order('created_at', {ascending:false});
+  let query = sb.from('segnalazioni').select('*').eq('comune', c.n).order('created_at', {ascending:false});
   if (filter !== 'all') query = query.eq('stato', filter);
 
   const { data: segs } = await query;
@@ -1310,8 +1270,7 @@ async function submitSeg() {
   const addr = document.getElementById('seg-addr').value.trim();
   if (!desc) { showToast('Descrivi il problema ⚠️'); return; }
 
-  const _sbss = getSB(); if (!_sbss) { showToast('Database non disponibile'); return; }
-  const { error } = await _sbss.from('segnalazioni').insert({
+  const { error } = await sb.from('segnalazioni').insert({
     comune: selectedComune.n, tipo, descrizione: desc,
     indirizzo: addr || 'Posizione GPS', stato: 'open', urgente: false,
     voti: 0, autore_id: sbUser?.id || null
@@ -1621,22 +1580,20 @@ function showToast(msg, duration=2800) { const t=document.getElementById('toast'
 function closeModal(id) { document.getElementById(id).classList.remove('on'); }
 document.addEventListener('click', e => { if (e.target.classList.contains('modal-bg')) e.target.classList.remove('on'); });
 
-
-function renderFeedback() { /* feedback not in this version */ }
-function renderKPI() { /* kpi not in this version */ }
-function loadFeedbackAI() { /* ai feedback not in this version */ }
+function renderFeedback(){}
+function renderKPI(){}
+function loadFeedbackAI(){}
 
 /* ═══ PWA ═══ */
 const mf={name:"Praxisy — Made by Porty",short_name:"Praxisy",start_url:"./",display:"standalone",background_color:"#1a2e1a",theme_color:"#1a2e1a",icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%231a2e1a'/%3E%3Ctext x='256' y='340' font-family='serif' font-size='280' font-weight='900' text-anchor='middle' fill='%23f0ead8'%3EP%3C/text%3E%3C/svg%3E",sizes:"512x512",type:"image/svg+xml",purpose:"any maskable"}]};
 try{const b=new Blob([JSON.stringify(mf)],{type:'application/json'});document.getElementById('manifest-link').href=URL.createObjectURL(b);}catch(e){}
 
 /* ═══ AUTO LOGIN CHECK ═══ */
-// Auth state listener — only if sb is available
-setTimeout(function() { const _sba = getSB(); if (_sba) _sba.auth.onAuthStateChange(async (event, session) => {
+if(sb) sb.auth.onAuthStateChange(async (event, session) => {
   if (event === 'SIGNED_IN' && session) {
     sbUser = session.user;
     if (!user || user.role === 'guest') {
-      const { data: profile } = await (getSB()||sb).from('profiles').select('*').eq('id', sbUser.id).single();
+      const { data: profile } = await sb.from('profiles').select('*').eq('id', sbUser.id).single();
       if (profile) {
         user = { role: profile.ruolo||'user', name: profile.nome||sbUser.email, email: sbUser.email, comune: profile.comune||'' };
         if (!selectedComune && profile.comune) {
@@ -1645,10 +1602,10 @@ setTimeout(function() { const _sba = getSB(); if (_sba) _sba.auth.onAuthStateCha
       }
     }
   }
-}); }, 1000);;
+});
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onload="initSB()" onerror="console.error('Supabase CDN failed')"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onload="window._sbOnLoad&&window._sbOnLoad()"></script>
 
 </body>
 </html>
